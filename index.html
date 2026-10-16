@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Listing & Cleaner Schedule Manager</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; }
+    
+    .unit-florence { color: #dc2626 !important; font-weight: 700; } /* Red font for Florence */
+    .unit-yang { color: #2563eb !important; font-weight: 700; } /* Blue font for Yang */
+
+    /* Highlight Badges */
+    .tag-nights { background-color: #fef08a !important; color: #a16207 !important; font-weight: 800 !important; padding: 1px 6px; border-radius: 4px; display: inline-block; } /* Yellow Highlight for Nights */
+    .tag-rs { background-color: #fbcfe8 !important; color: #be185d !important; font-weight: 800 !important; padding: 1px 6px; border-radius: 4px; display: inline-block; } /* Pink Highlight */
+    .tag-ls { background-color: #bbf7d0 !important; color: #15803d !important; font-weight: 800 !important; padding: 1px 6px; border-radius: 4px; display: inline-block; } /* Green Highlight */
+    .tag-su { background-color: #ffedd5 !important; color: #c2410c !important; font-weight: 800 !important; padding: 1px 6px; border-radius: 4px; display: inline-block; } /* Orange Highlight */
+
+    .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+  </style>
+</head>
+<body class="text-slate-800 antialiased min-h-screen flex flex-col">
+
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between h-16 items-center">
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center text-white text-xl shadow-md">
+            🫧
+          </div>
+          <div>
+            <h1 class="text-lg font-bold text-slate-900 leading-tight">Cleaner Schedule Manager</h1>
+            <p class="text-xs text-slate-500 font-medium">Master DB & Automated Schedule</p>
+          </div>
+        </div>
+
+        <nav class="flex space-x-1 bg-slate-100 p-1.5 rounded-xl border border-slate-200">
+          <button onclick="switchTab('weekly')" id="tab-weekly" class="px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-white text-indigo-700 shadow-sm">
+            <i class="fa-solid fa-calendar-week"></i> Weekly List
+          </button>
+          <button onclick="switchTab('daily')" id="tab-daily" class="px-3.5 py-1.5 text-xs font-semibold rounded-lg text-slate-600 hover:text-slate-900">
+            <i class="fa-solid fa-calendar-day"></i> Daily List
+          </button>
+          <button onclick="switchTab('master')" id="tab-master" class="px-3.5 py-1.5 text-xs font-semibold rounded-lg text-slate-600 hover:text-slate-900">
+            <i class="fa-solid fa-database"></i> Master DB (<span id="master-count">0</span>/60)
+          </button>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full">
+
+    <!-- MASTER DATABASE VIEW -->
+    <div id="view-master" class="hidden space-y-6">
+      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+        <div class="flex justify-between items-center">
+          <h2 class="text-base font-bold text-slate-900">Master Database Management (Max 60 Units)</h2>
+          <button onclick="clearMasterDB()" class="px-3 py-1.5 text-xs font-semibold bg-rose-600 hover:bg-rose-700 text-white rounded-lg shadow-sm">
+            <i class="fa-solid fa-trash-can"></i> Clear All Units
+          </button>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-3">
+          <input type="text" id="new-unit-code" placeholder="Enter Unit Code (e.g. AU6514)" class="flex-1 px-4 py-2 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          <select id="new-unit-cleaner" class="px-4 py-2 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <option value="FLORENCE">Florence (Red Font)</option>
+            <option value="YANG">Yang (Blue Font)</option>
+          </select>
+          <button onclick="addMasterUnit()" class="px-5 py-2 bg-indigo-600 text-white rounded-xl text-xs font-bold hover:bg-indigo-700">
+            Add Unit
+          </button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+          <h3 class="text-sm font-bold text-red-600 mb-3 border-b pb-2"><i class="fa-solid fa-user"></i> Florence Units (Red)</h3>
+          <ul id="florence-master-list" class="space-y-2 text-sm custom-scrollbar max-h-96 overflow-y-auto"></ul>
+        </div>
+        <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+          <h3 class="text-sm font-bold text-blue-600 mb-3 border-b pb-2"><i class="fa-solid fa-user"></i> Yang Units (Blue)</h3>
+          <ul id="yang-master-list" class="space-y-2 text-sm custom-scrollbar max-h-96 overflow-y-auto"></ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- DAILY LIST VIEW -->
+    <div id="view-daily" class="hidden space-y-6">
+      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+        <div class="flex flex-col sm:flex-row justify-between items-center gap-3">
+          <div class="flex items-center gap-3">
+            <input type="date" id="daily-date-picker" onchange="renderDailyView()" class="px-3 py-1.5 border rounded-lg text-sm font-semibold">
+            <span id="daily-date-label" class="text-sm font-bold text-slate-700"></span>
+          </div>
+          <div class="flex items-center gap-2">
+            <select id="daily-entry-type" class="px-3 py-2 border rounded-xl text-xs font-bold">
+              <option value="CHECKOUT">Check-Out</option>
+              <option value="CHECKIN">Check-In</option>
+            </select>
+          </div>
+        </div>
+
+        <textarea id="daily-input" rows="3" placeholder="Enter units here (e.g., Check-Out: AU6514 RS | Check-In: AU6514 2 RS)..." class="w-full px-4 py-3 border rounded-xl text-sm font-mono focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+        
+        <div class="flex justify-end">
+          <button onclick="processDailyInput()" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold shadow-md">
+            Enter & Sort Daily List
+          </button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-white p-4 rounded-2xl border border-pink-200 shadow-sm">
+          <h3 class="text-sm font-bold text-pink-700 mb-3 border-b pb-2">Florence Schedule</h3>
+          <div class="space-y-4">
+            <div>
+              <h4 class="text-xs font-bold text-slate-500 mb-1">Check-Out:</h4>
+              <div id="daily-florence-checkout" class="space-y-1 text-sm min-h-[40px]"></div>
+            </div>
+            <div>
+              <h4 class="text-xs font-bold text-slate-500 mb-1">Check-In:</h4>
+              <div id="daily-florence-checkin" class="space-y-1 text-sm min-h-[40px]"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white p-4 rounded-2xl border border-sky-200 shadow-sm">
+          <h3 class="text-sm font-bold text-sky-700 mb-3 border-b pb-2">Yang Schedule</h3>
+          <div class="space-y-4">
+            <div>
+              <h4 class="text-xs font-bold text-slate-500 mb-1">Check-Out:</h4>
+              <div id="daily-yang-checkout" class="space-y-1 text-sm min-h-[40px]"></div>
+            </div>
+            <div>
+              <h4 class="text-xs font-bold text-slate-500 mb-1">Check-In:</h4>
+              <div id="daily-yang-checkin" class="space-y-1 text-sm min-h-[40px]"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WEEKLY LIST VIEW -->
+    <div id="view-weekly" class="space-y-6">
+      <!-- WEEKLY INPUT PANEL -->
+      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+        <div class="flex flex-col sm:flex-row justify-between items-center gap-3">
+          <div class="flex items-center gap-3">
+            <span class="text-xs font-bold text-slate-600">Select Target Date:</span>
+            <input type="date" id="weekly-target-date" class="px-3 py-1.5 border rounded-lg text-sm font-semibold">
+          </div>
+          <div class="flex items-center gap-2">
+            <select id="weekly-entry-type" class="px-3 py-2 border rounded-xl text-xs font-bold">
+              <option value="CHECKOUT">Check-Out</option>
+              <option value="CHECKIN">Check-In</option>
+            </select>
+          </div>
+        </div>
+
+        <textarea id="weekly-input" rows="3" placeholder="Enter weekly units here (e.g. Check-Out: AU6514 RS | Check-In: AU6514 2 RS)..." class="w-full px-4 py-3 border rounded-xl text-sm font-mono focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+        
+        <div class="flex justify-end">
+          <button onclick="processWeeklyInput()" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold shadow-md">
+            <i class="fa-solid fa-filter"></i> Sort to Weekly List
+          </button>
+        </div>
+      </div>
+
+      <!-- WEEK PICKER & CLEANER TAB SWITCHER -->
+      <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row justify-between items-center gap-3">
+        <div class="flex items-center gap-3">
+          <span class="text-xs font-bold text-slate-600">Select Week Anchor:</span>
+          <input type="date" id="weekly-picker" onchange="renderWeeklyView()" class="px-3 py-1.5 border rounded-lg text-sm font-semibold">
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="switchCleanerTab('FLORENCE')" id="cleaner-tab-florence" class="px-4 py-1.5 text-xs font-bold rounded-lg bg-pink-600 text-white">Florence</button>
+          <button onclick="switchCleanerTab('YANG')" id="cleaner-tab-yang" class="px-4 py-1.5 text-xs font-bold rounded-lg bg-slate-200 text-slate-700">Yang</button>
+        </div>
+      </div>
+
+      <!-- FLORENCE WEEKLY TAB -->
+      <div id="weekly-florence-section" class="space-y-6">
+        <div class="bg-white rounded-2xl border border-pink-200 overflow-hidden shadow-sm">
+          <div class="bg-pink-100 px-4 py-2 font-bold text-pink-900 text-xs uppercase tracking-wider">Florence - Check Out List</div>
+          <div id="f-weekly-checkout-grid" class="grid grid-cols-7 divide-x divide-slate-200 text-xs min-h-[120px]"></div>
+        </div>
+        <div class="bg-white rounded-2xl border border-pink-200 overflow-hidden shadow-sm">
+          <div class="bg-pink-200 px-4 py-2 font-bold text-pink-900 text-xs uppercase tracking-wider">Florence - Check In List</div>
+          <div id="f-weekly-checkin-grid" class="grid grid-cols-7 divide-x divide-slate-200 text-xs min-h-[120px]"></div>
+        </div>
+      </div>
+
+      <!-- YANG WEEKLY TAB -->
+      <div id="weekly-yang-section" class="hidden space-y-6">
+        <div class="bg-white rounded-2xl border border-sky-200 overflow-hidden shadow-sm">
+          <div class="bg-sky-100 px-4 py-2 font-bold text-sky-900 text-xs uppercase tracking-wider">Yang - Check Out List</div>
+          <div id="y-weekly-checkout-grid" class="grid grid-cols-7 divide-x divide-slate-200 text-xs min-h-[120px]"></div>
+        </div>
+        <div class="bg-white rounded-2xl border border-sky-200 overflow-hidden shadow-sm">
+          <div class="bg-sky-200 px-4 py-2 font-bold text-sky-900 text-xs uppercase tracking-wider">Yang - Check In List</div>
+          <div id="y-weekly-checkin-grid" class="grid grid-cols-7 divide-x divide-slate-200 text-xs min-h-[120px]"></div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    const DEFAULT_MASTER = [
+      { code: "AU6514", cleaner: "FLORENCE" },
+      { code: "VP1601S", cleaner: "FLORENCE" },
+      { code: "MN904", cleaner: "FLORENCE" },
+      { code: "SK5013", cleaner: "FLORENCE" },
+      { code: "VT3102", cleaner: "FLORENCE" },
+      { code: "LV2109N", cleaner: "FLORENCE" },
+      { code: "AS204", cleaner: "FLORENCE" },
+      { code: "BB1109W", cleaner: "FLORENCE" },
+      { code: "SL1503S", cleaner: "FLORENCE" },
+      { code: "UW3613", cleaner: "FLORENCE" },
+      { code: "WP1708D", cleaner: "YANG" }
+    ];
+
+    let state = {
+      masterDB: (JSON.parse(localStorage.getItem('masterDB')) && JSON.parse(localStorage.getItem('masterDB')).length > 0) 
+                ? JSON.parse(localStorage.getItem('masterDB')) 
+                : DEFAULT_MASTER,
+      schedules: JSON.parse(localStorage.getItem('schedules')) || {},
+      activeCleanerTab: 'FLORENCE'
+    };
+
+    function saveState() {
+      localStorage.setItem('masterDB', JSON.stringify(state.masterDB));
+      localStorage.setItem('schedules', JSON.stringify(state.schedules));
+      updateMasterCount();
+    }
+
+    function updateMasterCount() {
+      document.getElementById('master-count').innerText = state.masterDB.length;
+    }
+
+    function switchTab(tab) {
+      document.getElementById('view-master').classList.add('hidden');
+      document.getElementById('view-daily').classList.add('hidden');
+      document.getElementById('view-weekly').classList.add('hidden');
+      
+      document.getElementById(`view-${tab}`).classList.remove('hidden');
+      if(tab === 'master') renderMasterDB();
+      if(tab === 'daily') renderDailyView();
+      if(tab === 'weekly') renderWeeklyView();
+    }
+
+    /* MASTER DB ACTIONS */
+    function renderMasterDB() {
+      const florenceList = document.getElementById('florence-master-list');
+      const yangList = document.getElementById('yang-master-list');
+      florenceList.innerHTML = '';
+      yangList.innerHTML = '';
+
+      state.masterDB.forEach((item, idx) => {
+        const li = document.createElement('li');
+        li.className = "flex justify-between items-center bg-slate-50 p-2 rounded-lg border border-slate-100";
+        li.innerHTML = `
+          <span class="${item.cleaner === 'FLORENCE' ? 'unit-florence' : 'unit-yang'}">${item.code}</span>
+          <button onclick="deleteMasterUnit(${idx})" class="text-xs text-rose-500 hover:text-rose-700"><i class="fa-solid fa-xmark"></i> Clear</button>
+        `;
+        if (item.cleaner === 'FLORENCE') florenceList.appendChild(li);
+        else yangList.appendChild(li);
+      });
+      updateMasterCount();
+    }
+
+    function addMasterUnit() {
+      if (state.masterDB.length >= 60) {
+        alert("Master Database max capacity (60 entries) reached!");
+        return;
+      }
+      const codeInput = document.getElementById('new-unit-code');
+      const cleanerInput = document.getElementById('new-unit-cleaner');
+      const code = codeInput.value.trim().toUpperCase();
+
+      if (!code) return;
+
+      state.masterDB.push({ code, cleaner: cleanerInput.value });
+      saveState();
+      codeInput.value = '';
+      renderMasterDB();
+    }
+
+    function deleteMasterUnit(idx) {
+      state.masterDB.splice(idx, 1);
+      saveState();
+      renderMasterDB();
+    }
+
+    function clearMasterDB() {
+      if (confirm("Are you sure you want to clear the entire Master Database?")) {
+        state.masterDB = [];
+        saveState();
+        renderMasterDB();
+      }
+    }
+
+    /* FORMATTER WITH LIVE HIGHLIGHT PARSING */
+    function formatUnitText(rawStr, isCheckIn = false) {
+      let cleanStr = (rawStr || '').replace(/<[^>]*>/g, '').trim();
+      let parts = cleanStr.split(/\s+/);
+      
+      let unit = parts[0] || '';
+      let tag = '';
+      let nights = '';
+
+      for (let i = 1; i < parts.length; i++) {
+        let p = parts[i].toUpperCase();
+        if (['RS', 'LS', 'SU'].includes(p)) {
+          tag = p;
+        } else if (!isNaN(p)) {
+          nights = p;
+        } else if (p.endsWith('N') && !isNaN(p.slice(0, -1))) {
+          nights = p.slice(0, -1);
+        }
+      }
+
+      if (!nights && isCheckIn) {
+        let lastPart = parts[parts.length - 1].toUpperCase();
+        if (lastPart.endsWith('N') && !isNaN(lastPart.slice(0, -1))) {
+          nights = lastPart.slice(0, -1);
+        }
+      }
+
+      let tagHTML = '';
+      if (tag === 'RS') tagHTML = `<span class="tag-rs">RS</span>`;
+      else if (tag === 'LS') tagHTML = `<span class="tag-ls">LS</span>`;
+      else if (tag === 'SU') tagHTML = `<span class="tag-su">SU</span>`;
+
+      let nightsHTML = (isCheckIn && nights) ? `<span class="tag-nights">${nights}N</span>` : '';
+      return { raw: `${unit} ${nights ? nights + 'N' : ''} ${tag}`.trim(), formatted: `${unit} ${nightsHTML} ${tagHTML}`.trim() };
+    }
+
+    function getCleanerForUnit(unitCode) {
+      const match = state.masterDB.find(m => m.code === unitCode);
+      return match ? match.cleaner : 'FLORENCE';
+    }
+
+    /* DAILY LIST ACTIONS */
+    function processDailyInput() {
+      const date = document.getElementById('daily-date-picker').value;
+      const type = document.getElementById('daily-entry-type').value;
+      const text = document.getElementById('daily-input').value;
+
+      if (!date || !text.trim()) return;
+
+      if (!state.schedules[date]) state.schedules[date] = [];
+
+      const lines = text.split('\n').filter(l => l.trim() !== '');
+      lines.forEach(line => {
+        const { raw, formatted } = formatUnitText(line, type === 'CHECKIN');
+        const unitOnly = raw.split(' ')[0];
+        const cleaner = getCleanerForUnit(unitOnly);
+        state.schedules[date].push({
+          id: Date.now() + Math.random(),
+          raw,
+          unit: unitOnly,
+          formatted,
+          cleaner,
+          type
+        });
+      });
+
+      saveState();
+      document.getElementById('daily-input').value = '';
+      renderDailyView();
+    }
+
+    function deleteScheduleItem(date, id) {
+      if (state.schedules[date]) {
+        state.schedules[date] = state.schedules[date].filter(i => i.id !== id);
+        saveState();
+        renderDailyView();
+        renderWeeklyView();
+      }
+    }
+
+    function renderDailyView() {
+      const date = document.getElementById('daily-date-picker').value;
+      document.getElementById('daily-date-label').innerText = date;
+
+      const fCheckout = document.getElementById('daily-florence-checkout');
+      const fCheckin = document.getElementById('daily-florence-checkin');
+      const yCheckout = document.getElementById('daily-yang-checkout');
+      const yCheckin = document.getElementById('daily-yang-checkin');
+
+      [fCheckout, fCheckin, yCheckout, yCheckin].forEach(el => el.innerHTML = '');
+
+      const items = state.schedules[date] || [];
+      items.forEach(item => {
+        const { formatted } = formatUnitText(item.raw || item.formatted || item.unit, item.type === 'CHECKIN');
+        const div = document.createElement('div');
+        div.className = "flex justify-between items-center bg-slate-50 px-2 py-1 rounded border border-slate-100";
+        div.innerHTML = `
+          <span class="${item.cleaner === 'FLORENCE' ? 'unit-florence' : 'unit-yang'}">${formatted}</span>
+          <button onclick="deleteScheduleItem('${date}', ${item.id})" class="text-xs text-rose-500"><i class="fa-solid fa-trash"></i></button>
+        `;
+
+        if (item.cleaner === 'FLORENCE') {
+          if (item.type === 'CHECKOUT') fCheckout.appendChild(div);
+          else fCheckin.appendChild(div);
+        } else {
+          if (item.type === 'CHECKOUT') yCheckout.appendChild(div);
+          else yCheckin.appendChild(div);
+        }
+      });
+    }
+
+    /* WEEKLY LIST ACTIONS */
+    function processWeeklyInput() {
+      const date = document.getElementById('weekly-target-date').value;
+      const type = document.getElementById('weekly-entry-type').value;
+      const text = document.getElementById('weekly-input').value;
+
+      if (!date || !text.trim()) {
+        alert("Please select a target date and enter unit codes.");
+        return;
+      }
+
+      if (!state.schedules[date]) state.schedules[date] = [];
+
+      const lines = text.split('\n').filter(l => l.trim() !== '');
+      lines.forEach(line => {
+        const { raw, formatted } = formatUnitText(line, type === 'CHECKIN');
+        const unitOnly = raw.split(' ')[0];
+        const cleaner = getCleanerForUnit(unitOnly);
+        state.schedules[date].push({
+          id: Date.now() + Math.random(),
+          raw,
+          unit: unitOnly,
+          formatted,
+          cleaner,
+          type
+        });
+      });
+
+      saveState();
+      document.getElementById('weekly-input').value = '';
+      renderWeeklyView();
+    }
+
+    function switchCleanerTab(cleaner) {
+      state.activeCleanerTab = cleaner;
+      document.getElementById('weekly-florence-section').classList.toggle('hidden', cleaner !== 'FLORENCE');
+      document.getElementById('weekly-yang-section').classList.toggle('hidden', cleaner !== 'YANG');
+      
+      document.getElementById('cleaner-tab-florence').className = cleaner === 'FLORENCE' ? 'px-4 py-1.5 text-xs font-bold rounded-lg bg-pink-600 text-white' : 'px-4 py-1.5 text-xs font-bold rounded-lg bg-slate-200 text-slate-700';
+      document.getElementById('cleaner-tab-yang').className = cleaner === 'YANG' ? 'px-4 py-1.5 text-xs font-bold rounded-lg bg-sky-600 text-white' : 'px-4 py-1.5 text-xs font-bold rounded-lg bg-slate-200 text-slate-700';
+    }
+
+    function getWeekDates(anchorDateStr) {
+      const anchor = new Date(anchorDateStr);
+      const day = anchor.getDay();
+      const diff = anchor.getDate() - day + (day === 0 ? -6 : 1);
+      const monday = new Date(anchor.setDate(diff));
+
+      const days = [];
+      for (let i = 0; i < 7; i++) {
+        const d = new Date(monday);
+        d.setDate(monday.getDate() + i);
+        days.push(d.toISOString().split('T')[0]);
+      }
+      return days;
+    }
+
+    function renderWeeklyView() {
+      const anchor = document.getElementById('weekly-picker').value;
+      const weekDates = getWeekDates(anchor);
+
+      const fOutGrid = document.getElementById('f-weekly-checkout-grid');
+      const fInGrid = document.getElementById('f-weekly-checkin-grid');
+      const yOutGrid = document.getElementById('y-weekly-checkout-grid');
+      const yInGrid = document.getElementById('y-weekly-checkin-grid');
+
+      [fOutGrid, fInGrid, yOutGrid, yInGrid].forEach(g => g.innerHTML = '');
+
+      weekDates.forEach((dateStr) => {
+        const dateObj = new Date(dateStr);
+        const dayLabel = dateObj.toLocaleDateString('en-US', { weekday: 'short', month: 'numeric', day: 'numeric' });
+
+        const createCol = (cleaner, type) => {
+          const col = document.createElement('div');
+          col.className = "p-2 space-y-1 border-r last:border-r-0 min-h-[100px]";
+          col.innerHTML = `<div class="font-bold text-[10px] text-slate-400 border-b pb-1 mb-1 text-center">${dayLabel}</div>`;
+
+          const items = (state.schedules[dateStr] || []).filter(i => i.cleaner === cleaner && i.type === type);
+          items.forEach(item => {
+            const { formatted } = formatUnitText(item.raw || item.formatted || item.unit, item.type === 'CHECKIN');
+            const row = document.createElement('div');
+            row.className = "flex justify-between items-center text-[11px] bg-slate-50 p-1 rounded border";
+            row.innerHTML = `
+              <span class="${cleaner === 'FLORENCE' ? 'unit-florence' : 'unit-yang'}">${formatted}</span>
+              <div class="flex gap-1">
+                <button onclick="updateScheduleEntry('${dateStr}', ${item.id})" class="text-[9px] text-blue-600"><i class="fa-solid fa-pen"></i></button>
+                <button onclick="deleteScheduleItem('${dateStr}', ${item.id})" class="text-[9px] text-rose-600"><i class="fa-solid fa-xmark"></i></button>
+              </div>
+            `;
+            col.appendChild(row);
+          });
+
+          const addBtn = document.createElement('button');
+          addBtn.className = "w-full text-[10px] text-indigo-600 border border-dashed border-indigo-300 rounded mt-2 py-0.5 hover:bg-indigo-50";
+          addBtn.innerText = "+ Add";
+          addBtn.onclick = () => addQuickWeeklyEntry(dateStr, cleaner, type);
+          col.appendChild(addBtn);
+
+          return col;
+        };
+
+        fOutGrid.appendChild(createCol('FLORENCE', 'CHECKOUT'));
+        fInGrid.appendChild(createCol('FLORENCE', 'CHECKIN'));
+        yOutGrid.appendChild(createCol('YANG', 'CHECKOUT'));
+        yInGrid.appendChild(createCol('YANG', 'CHECKIN'));
+      });
+    }
+
+    function addQuickWeeklyEntry(date, cleaner, type) {
+      const val = prompt(`Enter unit entry for ${cleaner} (${type}) on ${date}:`);
+      if (!val) return;
+
+      const { raw, formatted } = formatUnitText(val, type === 'CHECKIN');
+      const unitOnly = raw.split(' ')[0];
+      if (!state.schedules[date]) state.schedules[date] = [];
+
+      state.schedules[date].push({
+        id: Date.now(),
+        raw,
+        unit: unitOnly,
+        formatted,
+        cleaner,
+        type
+      });
+
+      saveState();
+      renderWeeklyView();
+    }
+
+    function updateScheduleEntry(date, id) {
+      const item = state.schedules[date].find(i => i.id === id);
+      if (!item) return;
+
+      const currentRaw = item.raw || item.unit;
+      const val = prompt("Update entry:", currentRaw);
+      if (!val) return;
+
+      const { raw, formatted } = formatUnitText(val, item.type === 'CHECKIN');
+      item.raw = raw;
+      item.unit = raw.split(' ')[0];
+      item.formatted = formatted;
+
+      saveState();
+      renderWeeklyView();
+    }
+
+    // Initialize defaults
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('daily-date-picker').value = today;
+    document.getElementById('weekly-picker').value = today;
+    document.getElementById('weekly-target-date').value = today;
+    saveState();
+    renderMasterDB();
+    renderWeeklyView();
+  </script>
+</body>
+</html>
