@@ -251,14 +251,20 @@
             <div>
               <div class="flex justify-between items-center mb-1">
                 <h4 class="text-xs font-bold text-slate-500 flex items-center">Check-Out: <span id="count-daily-f-out" class="count-pill">0</span></h4>
-                <button onclick="copyListFromElement('daily-florence-checkout')" class="text-[10px] px-2 py-0.5 bg-pink-100 hover:bg-pink-200 text-pink-700 rounded border border-pink-200"><i class="fa-regular fa-copy"></i> Copy</button>
+                <div class="flex gap-1.5">
+                  <button onclick="uncheckAllForCategory('FLORENCE', 'CHECKOUT')" class="text-[10px] px-2 py-0.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded border border-slate-200"><i class="fa-solid fa-rotate-left"></i> Uncheck All</button>
+                  <button onclick="copyListFromElement('daily-florence-checkout')" class="text-[10px] px-2 py-0.5 bg-pink-100 hover:bg-pink-200 text-pink-700 rounded border border-pink-200"><i class="fa-regular fa-copy"></i> Copy</button>
+                </div>
               </div>
               <div id="daily-florence-checkout" class="space-y-1 text-sm min-h-[40px]"></div>
             </div>
             <div>
               <div class="flex justify-between items-center mb-1">
                 <h4 class="text-xs font-bold text-slate-500 flex items-center">Check-In: <span id="count-daily-f-in" class="count-pill">0</span></h4>
-                <button onclick="copyListFromElement('daily-florence-checkin')" class="text-[10px] px-2 py-0.5 bg-pink-100 hover:bg-pink-200 text-pink-700 rounded border border-pink-200"><i class="fa-regular fa-copy"></i> Copy</button>
+                <div class="flex gap-1.5">
+                  <button onclick="uncheckAllForCategory('FLORENCE', 'CHECKIN')" class="text-[10px] px-2 py-0.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded border border-slate-200"><i class="fa-solid fa-rotate-left"></i> Uncheck All</button>
+                  <button onclick="copyListFromElement('daily-florence-checkin')" class="text-[10px] px-2 py-0.5 bg-pink-100 hover:bg-pink-200 text-pink-700 rounded border border-pink-200"><i class="fa-regular fa-copy"></i> Copy</button>
+                </div>
               </div>
               <div id="daily-florence-checkin" class="space-y-1 text-sm min-h-[40px]"></div>
             </div>
@@ -271,14 +277,20 @@
             <div>
               <div class="flex justify-between items-center mb-1">
                 <h4 class="text-xs font-bold text-slate-500 flex items-center">Check-Out: <span id="count-daily-y-out" class="count-pill">0</span></h4>
-                <button onclick="copyListFromElement('daily-yang-checkout')" class="text-[10px] px-2 py-0.5 bg-sky-100 hover:bg-sky-200 text-sky-700 rounded border border-sky-200"><i class="fa-regular fa-copy"></i> Copy</button>
+                <div class="flex gap-1.5">
+                  <button onclick="uncheckAllForCategory('YANG', 'CHECKOUT')" class="text-[10px] px-2 py-0.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded border border-slate-200"><i class="fa-solid fa-rotate-left"></i> Uncheck All</button>
+                  <button onclick="copyListFromElement('daily-yang-checkout')" class="text-[10px] px-2 py-0.5 bg-sky-100 hover:bg-sky-200 text-sky-700 rounded border border-sky-200"><i class="fa-regular fa-copy"></i> Copy</button>
+                </div>
               </div>
               <div id="daily-yang-checkout" class="space-y-1 text-sm min-h-[40px]"></div>
             </div>
             <div>
               <div class="flex justify-between items-center mb-1">
                 <h4 class="text-xs font-bold text-slate-500 flex items-center">Check-In: <span id="count-daily-y-in" class="count-pill">0</span></h4>
-                <button onclick="copyListFromElement('daily-yang-checkin')" class="text-[10px] px-2 py-0.5 bg-sky-100 hover:bg-sky-200 text-sky-700 rounded border border-sky-200"><i class="fa-regular fa-copy"></i> Copy</button>
+                <div class="flex gap-1.5">
+                  <button onclick="uncheckAllForCategory('YANG', 'CHECKIN')" class="text-[10px] px-2 py-0.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded border border-slate-200"><i class="fa-solid fa-rotate-left"></i> Uncheck All</button>
+                  <button onclick="copyListFromElement('daily-yang-checkin')" class="text-[10px] px-2 py-0.5 bg-sky-100 hover:bg-sky-200 text-sky-700 rounded border border-sky-200"><i class="fa-regular fa-copy"></i> Copy</button>
+                </div>
               </div>
               <div id="daily-yang-checkin" class="space-y-1 text-sm min-h-[40px]"></div>
             </div>
@@ -833,7 +845,6 @@
         item.checked = checkbox.checked;
         saveState();
         
-        // Dynamic visual update without full re-render for smoothness
         const containerDiv = checkbox.closest('.unit-row-container');
         if (containerDiv) {
           if (checkbox.checked) {
@@ -843,6 +854,20 @@
           }
         }
       }
+    }
+
+    function uncheckAllForCategory(cleaner, type) {
+      const date = document.getElementById('daily-date-picker').value;
+      if (!date || !state.schedules[date]) return;
+
+      state.schedules[date].forEach(item => {
+        if (item.cleaner === cleaner && item.type === type) {
+          item.checked = false;
+        }
+      });
+
+      saveState();
+      renderDailyView();
     }
 
     function renderDailyView() {
