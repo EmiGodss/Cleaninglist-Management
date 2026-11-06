@@ -250,26 +250,24 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <!-- FLORENCE SCHEDULE -->
         <div class="bg-white p-4 rounded-2xl border border-pink-200 shadow-sm">
-          <h3 class="text-sm font-bold text-pink-700 mb-3 border-b pb-2">Florence Schedule</h3>
+          <div class="flex justify-between items-center mb-3 border-b pb-2">
+            <h3 class="text-sm font-bold text-pink-700">Florence Schedule</h3>
+            <div class="flex gap-1.5">
+              <button onclick="uncheckAllForCleaner('FLORENCE')" class="text-[10px] px-2.5 py-1 bg-rose-50 hover:bg-rose-100 text-rose-700 rounded-lg border border-rose-200 font-bold">
+                <i class="fa-solid fa-rotate-left"></i> Checking Done
+              </button>
+              <button onclick="copyListFromCleaner('FLORENCE')" class="text-[10px] px-2.5 py-1 bg-pink-100 hover:bg-pink-200 text-pink-700 rounded-lg border border-pink-200 font-bold">
+                <i class="fa-regular fa-copy"></i> Copy
+              </button>
+            </div>
+          </div>
           <div class="space-y-4">
             <div>
-              <div class="flex justify-between items-center mb-1">
-                <h4 class="text-xs font-bold text-slate-500 flex items-center">Check-Out: <span id="count-daily-f-out" class="count-pill">0</span></h4>
-                <div class="flex gap-1">
-                  <button onclick="uncheckAllForCategory('FLORENCE', 'CHECKOUT')" class="text-[10px] px-2 py-0.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded border border-slate-200 font-bold"><i class="fa-solid fa-rotate-left"></i> Checking Done</button>
-                  <button onclick="copyListFromElement('daily-florence-checkout')" class="text-[10px] px-2 py-0.5 bg-pink-100 hover:bg-pink-200 text-pink-700 rounded border border-pink-200"><i class="fa-regular fa-copy"></i> Copy</button>
-                </div>
-              </div>
+              <h4 class="text-xs font-bold text-slate-500 mb-1 flex items-center">Check-Out: <span id="count-daily-f-out" class="count-pill">0</span></h4>
               <div id="daily-florence-checkout" class="space-y-1 text-sm min-h-[40px]"></div>
             </div>
             <div>
-              <div class="flex justify-between items-center mb-1">
-                <h4 class="text-xs font-bold text-slate-500 flex items-center">Check-In: <span id="count-daily-f-in" class="count-pill">0</span></h4>
-                <div class="flex gap-1">
-                  <button onclick="uncheckAllForCategory('FLORENCE', 'CHECKIN')" class="text-[10px] px-2 py-0.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded border border-slate-200 font-bold"><i class="fa-solid fa-rotate-left"></i> Checking Done</button>
-                  <button onclick="copyListFromElement('daily-florence-checkin')" class="text-[10px] px-2 py-0.5 bg-pink-100 hover:bg-pink-200 text-pink-700 rounded border border-pink-200"><i class="fa-regular fa-copy"></i> Copy</button>
-                </div>
-              </div>
+              <h4 class="text-xs font-bold text-slate-500 mb-1 flex items-center">Check-In: <span id="count-daily-f-in" class="count-pill">0</span></h4>
               <div id="daily-florence-checkin" class="space-y-1 text-sm min-h-[40px]"></div>
             </div>
           </div>
@@ -277,26 +275,24 @@
 
         <!-- YANG SCHEDULE -->
         <div class="bg-white p-4 rounded-2xl border border-sky-200 shadow-sm">
-          <h3 class="text-sm font-bold text-sky-700 mb-3 border-b pb-2">Yang Schedule</h3>
+          <div class="flex justify-between items-center mb-3 border-b pb-2">
+            <h3 class="text-sm font-bold text-sky-700">Yang Schedule</h3>
+            <div class="flex gap-1.5">
+              <button onclick="uncheckAllForCleaner('YANG')" class="text-[10px] px-2.5 py-1 bg-sky-50 hover:bg-sky-100 text-sky-700 rounded-lg border border-sky-200 font-bold">
+                <i class="fa-solid fa-rotate-left"></i> Checking Done
+              </button>
+              <button onclick="copyListFromCleaner('YANG')" class="text-[10px] px-2.5 py-1 bg-sky-100 hover:bg-sky-200 text-sky-700 rounded-lg border border-sky-200 font-bold">
+                <i class="fa-regular fa-copy"></i> Copy
+              </button>
+            </div>
+          </div>
           <div class="space-y-4">
             <div>
-              <div class="flex justify-between items-center mb-1">
-                <h4 class="text-xs font-bold text-slate-500 flex items-center">Check-Out: <span id="count-daily-y-out" class="count-pill">0</span></h4>
-                <div class="flex gap-1">
-                  <button onclick="uncheckAllForCategory('YANG', 'CHECKOUT')" class="text-[10px] px-2 py-0.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded border border-slate-200 font-bold"><i class="fa-solid fa-rotate-left"></i> Checking Done</button>
-                  <button onclick="copyListFromElement('daily-yang-checkout')" class="text-[10px] px-2 py-0.5 bg-sky-100 hover:bg-sky-200 text-sky-700 rounded border border-sky-200"><i class="fa-regular fa-copy"></i> Copy</button>
-                </div>
-              </div>
+              <h4 class="text-xs font-bold text-slate-500 mb-1 flex items-center">Check-Out: <span id="count-daily-y-out" class="count-pill">0</span></h4>
               <div id="daily-yang-checkout" class="space-y-1 text-sm min-h-[40px]"></div>
             </div>
             <div>
-              <div class="flex justify-between items-center mb-1">
-                <h4 class="text-xs font-bold text-slate-500 flex items-center">Check-In: <span id="count-daily-y-in" class="count-pill">0</span></h4>
-                <div class="flex gap-1">
-                  <button onclick="uncheckAllForCategory('YANG', 'CHECKIN')" class="text-[10px] px-2 py-0.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded border border-slate-200 font-bold"><i class="fa-solid fa-rotate-left"></i> Checking Done</button>
-                  <button onclick="copyListFromElement('daily-yang-checkin')" class="text-[10px] px-2 py-0.5 bg-sky-100 hover:bg-sky-200 text-sky-700 rounded border border-sky-200"><i class="fa-regular fa-copy"></i> Copy</button>
-                </div>
-              </div>
+              <h4 class="text-xs font-bold text-slate-500 mb-1 flex items-center">Check-In: <span id="count-daily-y-in" class="count-pill">0</span></h4>
               <div id="daily-yang-checkin" class="space-y-1 text-sm min-h-[40px]"></div>
             </div>
           </div>
@@ -515,6 +511,33 @@
 
       navigator.clipboard.writeText(textToCopy.join('\n')).then(() => {
         alert("Units copied to clipboard!");
+      }).catch(err => {
+        console.error("Copy failed: ", err);
+      });
+    }
+
+    function copyListFromCleaner(cleaner) {
+      const date = document.getElementById('daily-date-picker').value;
+      if (!date || !state.schedules[date]) {
+        alert("No units to copy for this cleaner.");
+        return;
+      }
+
+      const items = state.schedules[date].filter(i => i.cleaner === cleaner);
+      let textToCopy = [];
+
+      items.forEach(item => {
+        const cleanText = (item.raw || item.unit || '').replace(/\s+/g, ' ').trim();
+        if (cleanText) textToCopy.push(cleanText);
+      });
+
+      if (textToCopy.length === 0) {
+        alert("No units to copy for this cleaner.");
+        return;
+      }
+
+      navigator.clipboard.writeText(textToCopy.join('\n')).then(() => {
+        alert("Cleaner units copied to clipboard!");
       }).catch(err => {
         console.error("Copy failed: ", err);
       });
@@ -873,12 +896,12 @@
       }
     }
 
-    function uncheckAllForCategory(cleaner, type) {
+    function uncheckAllForCleaner(cleaner) {
       const date = document.getElementById('daily-date-picker').value;
       if (!date || !state.schedules[date]) return;
 
       state.schedules[date].forEach(item => {
-        if (item.cleaner === cleaner && item.type === type) {
+        if (item.cleaner === cleaner) {
           item.checked = false;
         }
       });
