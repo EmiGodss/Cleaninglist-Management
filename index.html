@@ -706,7 +706,7 @@
       document.getElementById('label-yang-15a').innerText = `${monthName} 1-15 CLEANING (YANG)`;
       document.getElementById('label-yang-15b').innerText = `${monthName} 16-${totalDays} CLEANING (YANG)`;
 
-      // Calculate Special Cleanings for the entire selected month
+      // Calculate Special Cleanings STRICTLY from CHECK-OUT entries for the entire selected month
       let lsCounts = {};
       let rsCounts = {};
       let suCounts = {};
@@ -715,10 +715,13 @@
         const dateStr = `${year}-${month}-${String(d).padStart(2, '0')}`;
         const dayItems = state.schedules[dateStr] || [];
         dayItems.forEach(item => {
-          const parsed = formatUnitText(item.raw || item.formatted || item.unit, item.type === 'CHECKIN');
-          if (parsed.tag === 'LS') lsCounts[item.unit] = (lsCounts[item.unit] || 0) + 1;
-          if (parsed.tag === 'RS') rsCounts[item.unit] = (rsCounts[item.unit] || 0) + 1;
-          if (parsed.tag === 'SU') suCounts[item.unit] = (suCounts[item.unit] || 0) + 1;
+          // Strictly look at CHECKOUT items only
+          if (item.type === 'CHECKOUT') {
+            const parsed = formatUnitText(item.raw || item.formatted || item.unit, false);
+            if (parsed.tag === 'LS') lsCounts[item.unit] = (lsCounts[item.unit] || 0) + 1;
+            if (parsed.tag === 'RS') rsCounts[item.unit] = (rsCounts[item.unit] || 0) + 1;
+            if (parsed.tag === 'SU') suCounts[item.unit] = (suCounts[item.unit] || 0) + 1;
+          }
         });
       }
 
@@ -729,7 +732,7 @@
       summaryRS.innerHTML = '';
       summarySU.innerHTML = '';
 
-      const renderSummaryItems = (countObj, container, tagClass) => {
+      const renderSummaryItems = (countObj, container) => {
         const keys = Object.keys(countObj);
         if (keys.length === 0) {
           container.innerHTML = `<span class="text-slate-400 italic font-normal">None</span>`;
@@ -738,14 +741,15 @@
         keys.forEach(unit => {
           const row = document.createElement('div');
           row.className = "flex items-center gap-1.5";
-          row.innerHTML = `<span>${unit}</span> <span class="${tagClass}">[${unit}]</span> <span>— ${countObj[unit]}X</span>`;
+          // Only show unit and count (no repeating tag/unit code)
+          row.innerHTML = `<span>${unit}</span> <span>— ${countObj[unit]}X</span>`;
           container.appendChild(row);
         });
       };
 
-      renderSummaryItems(lsCounts, summaryLS, 'tag-ls');
-      renderSummaryItems(rsCounts, summaryRS, 'tag-rs');
-      renderSummaryItems(suCounts, summarySU, 'tag-su');
+      renderSummaryItems(lsCounts, summaryLS);
+      renderSummaryItems(rsCounts, summaryRS);
+      renderSummaryItems(suCounts, summarySU);
 
       const fillGrid = (gridId, startDay, endDay, cleaner) => {
         const container = document.getElementById(gridId);
