@@ -729,7 +729,7 @@
       summaryRS.innerHTML = '';
       summarySU.innerHTML = '';
 
-      const renderSummaryItems = (countObj, container) => {
+      const renderSummaryItems = (countObj, container, tagClass) => {
         const keys = Object.keys(countObj);
         if (keys.length === 0) {
           container.innerHTML = `<span class="text-slate-400 italic font-normal">None</span>`;
@@ -738,14 +738,14 @@
         keys.forEach(unit => {
           const row = document.createElement('div');
           row.className = "flex items-center gap-1.5";
-          row.innerHTML = `<span>${unit}</span> <span>— ${countObj[unit]}X</span>`;
+          row.innerHTML = `<span>${unit}</span> <span class="${tagClass}">[${unit}]</span> <span>— ${countObj[unit]}X</span>`;
           container.appendChild(row);
         });
       };
 
-      renderSummaryItems(lsCounts, summaryLS);
-      renderSummaryItems(rsCounts, summaryRS);
-      renderSummaryItems(suCounts, summarySU);
+      renderSummaryItems(lsCounts, summaryLS, 'tag-ls');
+      renderSummaryItems(rsCounts, summaryRS, 'tag-rs');
+      renderSummaryItems(suCounts, summarySU, 'tag-su');
 
       const fillGrid = (gridId, startDay, endDay, cleaner) => {
         const container = document.getElementById(gridId);
@@ -886,7 +886,7 @@
           
           for (let i = 1; i < parts.length; i++) {
             let p = parts[i].toUpperCase();
-            if (!isNaN(p) || (p.endsWith('N'] && !isNaN(p.slice(0, -1)))) {
+            if (!isNaN(p) || (p.endsWith('N') && !isNaN(p.slice(0, -1)))) {
               hasNumber = true;
               break;
             }
