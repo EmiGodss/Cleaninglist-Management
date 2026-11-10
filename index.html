@@ -127,6 +127,33 @@
         </div>
       </div>
 
+      <!-- SPECIAL CLEANING SUMMARY & FILTER SECTION (15-DAY VIEW) -->
+      <div class="bg-white p-5 rounded-2xl border border-indigo-100 shadow-sm space-y-3">
+        <h3 class="text-xs font-bold text-indigo-900 uppercase tracking-wider flex items-center gap-2">
+          <i class="fa-solid fa-filter text-indigo-600"></i> Special Cleaning Summary (<span id="summary-month-label">Selected Month</span>)
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+          <div class="bg-emerald-50/60 p-3 rounded-xl border border-emerald-200">
+            <span class="font-bold text-emerald-800 block mb-1">LANDLORD STAYED CLEANING [LS]:</span>
+            <div id="summary-ls-list" class="space-y-0.5 font-mono text-slate-700 font-semibold">
+              <span class="text-slate-400 italic font-normal">None</span>
+            </div>
+          </div>
+          <div class="bg-pink-50/60 p-3 rounded-xl border border-pink-200">
+            <span class="font-bold text-pink-800 block mb-1">ROOM SERVICE CLEANING [RS]:</span>
+            <div id="summary-rs-list" class="space-y-0.5 font-mono text-slate-700 font-semibold">
+              <span class="text-slate-400 italic font-normal">None</span>
+            </div>
+          </div>
+          <div class="bg-orange-50/60 p-3 rounded-xl border border-orange-200">
+            <span class="font-bold text-orange-800 block mb-1">SET-UP CLEANING [SU]:</span>
+            <div id="summary-su-list" class="space-y-0.5 font-mono text-slate-700 font-semibold">
+              <span class="text-slate-400 italic font-normal">None</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- FLORENCE 15-DAY SECTION -->
       <div id="fifteen-flo-section" class="space-y-6">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -673,10 +700,52 @@
       const monthName = new Date(year, month - 1).toLocaleString('en-US', { month: 'long' }).toUpperCase();
       const totalDays = new Date(year, month, 0).getDate();
 
+      document.getElementById('summary-month-label').innerText = `${monthName} ${year}`;
       document.getElementById('label-flo-15a').innerText = `${monthName} 1-15 CLEANING A (FLO)`;
       document.getElementById('label-flo-15b').innerText = `${monthName} 16-${totalDays} CLEANING A (FLO)`;
       document.getElementById('label-yang-15a').innerText = `${monthName} 1-15 CLEANING (YANG)`;
       document.getElementById('label-yang-15b').innerText = `${monthName} 16-${totalDays} CLEANING (YANG)`;
+
+      // Calculate Special Cleanings for the entire selected month
+      let lsCounts = {};
+      let rsCounts = {};
+      let suCounts = {};
+
+      for (let d = 1; d <= totalDays; d++) {
+        const dateStr = `${year}-${month}-${String(d).padStart(2, '0')}`;
+        const dayItems = state.schedules[dateStr] || [];
+        dayItems.forEach(item => {
+          const parsed = formatUnitText(item.raw || item.formatted || item.unit, item.type === 'CHECKIN');
+          if (parsed.tag === 'LS') lsCounts[item.unit] = (lsCounts[item.unit] || 0) + 1;
+          if (parsed.tag === 'RS') rsCounts[item.unit] = (rsCounts[item.unit] || 0) + 1;
+          if (parsed.tag === 'SU') suCounts[item.unit] = (suCounts[item.unit] || 0) + 1;
+        });
+      }
+
+      const summaryLS = document.getElementById('summary-ls-list');
+      const summaryRS = document.getElementById('summary-rs-list');
+      const summarySU = document.getElementById('summary-su-list');
+      summaryLS.innerHTML = '';
+      summaryRS.innerHTML = '';
+      summarySU.innerHTML = '';
+
+      const renderSummaryItems = (countObj, container, tagClass) => {
+        const keys = Object.keys(countObj);
+        if (keys.length === 0) {
+          container.innerHTML = `<span class="text-slate-400 italic font-normal">None</span>`;
+          return;
+        }
+        keys.forEach(unit => {
+          const row = document.createElement('div');
+          row.className = "flex items-center gap-1.5";
+          row.innerHTML = `<span>${unit}</span> <span class="${tagClass}">[${unit}]</span> <span>— ${countObj[unit]}X</span>`;
+          container.appendChild(row);
+        });
+      };
+
+      renderSummaryItems(lsCounts, summaryLS, 'tag-ls');
+      renderSummaryItems(rsCounts, summaryRS, 'tag-rs');
+      renderSummaryItems(suCounts, summarySU, 'tag-su');
 
       const fillGrid = (gridId, startDay, endDay, cleaner) => {
         const container = document.getElementById(gridId);
@@ -792,7 +861,8 @@
       let nightsHTML = (isCheckIn && nights) ? `<span class="tag-nights">${nights}N</span>` : '';
       return { 
         raw: `${unit} ${nights ? nights + 'N' : ''} ${tag}`.trim(), 
-        formatted: `${unit} ${nightsHTML} ${tagHTML}`.trim() 
+        formatted: `${unit} ${nightsHTML} ${tagHTML}`.trim(),
+        tag: tag 
       };
     }
 
