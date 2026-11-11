@@ -1038,25 +1038,25 @@
         
         if (item.type === 'CHECKOUT') {
           div.innerHTML = `
-            <div class="flex items-center gap-2.5 w-full sm:w-auto shrink-0">
+            <div class="flex items-center gap-2.5 w-full sm:w-[130px] shrink-0">
               <input type="checkbox" ${isChecked ? 'checked' : ''} onchange="toggleCheckStatus('${date}', ${item.id}, this)" class="w-4 h-4 text-indigo-600 rounded border-slate-300 focus:ring-indigo-500 cursor-pointer">
               <div class="unit-text ${item.cleaner === 'FLORENCE' ? 'unit-florence' : 'unit-yang'}" data-unit-clean="${parsed.raw}">${parsed.formatted}</div>
             </div>
-            <div class="flex flex-wrap items-center gap-2 w-full sm:w-auto text-xs flex-1 justify-end">
-              <input type="text" placeholder="Last Code" value="${item.lastCode || ''}" oninput="updateItemField('${date}', ${item.id}, 'lastCode', this.value)" class="px-2.5 py-1.5 border rounded text-xs w-28 font-mono bg-slate-50/50">
-              <input type="text" placeholder="Notes (e.g. Guest Name, Remarks...)" value="${item.notes || ''}" oninput="updateItemField('${date}', ${item.id}, 'notes', this.value)" class="px-3 py-1.5 border rounded text-xs flex-1 min-w-[220px] bg-slate-50/50">
+            <div class="flex flex-wrap items-center gap-2 w-full sm:w-auto text-xs shrink-0">
+              <input type="text" placeholder="Last Code" value="${item.lastCode || ''}" oninput="updateItemField('${date}', ${item.id}, 'lastCode', this.value)" class="px-2.5 py-1.5 border rounded text-xs w-28 font-mono bg-slate-50/55 shrink-0">
+              <input type="text" placeholder="Notes (e.g. Guest Name...)" value="${item.notes || ''}" oninput="updateItemField('${date}', ${item.id}, 'notes', this.value)" class="px-3 py-1.5 border rounded text-xs w-44 sm:w-48 bg-slate-50/55 shrink-0">
               <button onclick="clearItemInputs('${date}', ${item.id}, 'checkout')" title="Clear Code & Notes" class="px-2.5 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded border border-rose-200 font-bold shrink-0"><i class="fa-solid fa-trash-can"></i></button>
             </div>
           `;
         } else {
           div.innerHTML = `
-            <div class="flex items-center gap-2.5 w-full sm:w-auto shrink-0">
+            <div class="flex items-center gap-2.5 w-full sm:w-[130px] shrink-0">
               <input type="checkbox" ${isChecked ? 'checked' : ''} onchange="toggleCheckStatus('${date}', ${item.id}, this)" class="w-4 h-4 text-indigo-600 rounded border-slate-300 focus:ring-indigo-500 cursor-pointer">
               <div class="unit-text ${item.cleaner === 'FLORENCE' ? 'unit-florence' : 'unit-yang'}" data-unit-clean="${parsed.raw}">${parsed.formatted}</div>
             </div>
-            <div class="flex flex-wrap items-center gap-2 w-full sm:w-auto text-xs flex-1 justify-end">
-              <input type="text" placeholder="New Code" value="${item.newCode || ''}" oninput="updateItemField('${date}', ${item.id}, 'newCode', this.value)" class="px-2.5 py-1.5 border rounded text-xs w-28 font-mono bg-slate-50/50">
-              <input type="text" placeholder="Notes (e.g. Guest Name, Remarks...)" value="${item.notes || ''}" oninput="updateItemField('${date}', ${item.id}, 'notes', this.value)" class="px-3 py-1.5 border rounded text-xs flex-1 min-w-[220px] bg-slate-50/50">
+            <div class="flex flex-wrap items-center gap-2 w-full sm:w-auto text-xs shrink-0">
+              <input type="text" placeholder="New Code" value="${item.newCode || ''}" oninput="updateItemField('${date}', ${item.id}, 'newCode', this.value)" class="px-2.5 py-1.5 border rounded text-xs w-28 font-mono bg-slate-50/55 shrink-0">
+              <input type="text" placeholder="Notes (e.g. Guest Name...)" value="${item.notes || ''}" oninput="updateItemField('${date}', ${item.id}, 'notes', this.value)" class="px-3 py-1.5 border rounded text-xs w-44 sm:w-48 bg-slate-50/55 shrink-0">
               <button onclick="clearItemInputs('${date}', ${item.id}, 'checkin')" title="Clear New Code & Notes" class="px-2.5 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded border border-rose-200 font-bold shrink-0"><i class="fa-solid fa-trash-can"></i></button>
             </div>
           `;
