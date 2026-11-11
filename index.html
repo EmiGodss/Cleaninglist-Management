@@ -279,22 +279,23 @@
         <div class="bg-white p-4 rounded-2xl border border-pink-200 shadow-sm">
           <div class="flex justify-between items-center mb-3 border-b pb-2">
             <h3 class="text-sm font-bold text-pink-700">Florence Schedule</h3>
-            <div class="flex gap-1.5">
-              <button onclick="uncheckAllForCleaner('FLORENCE')" class="text-[10px] px-2.5 py-1 bg-rose-50 hover:bg-rose-100 text-rose-700 rounded-lg border border-rose-200 font-bold">
-                <i class="fa-solid fa-rotate-left"></i> Checking Done
-              </button>
-              <button onclick="copyListFromCleaner('FLORENCE')" class="text-[10px] px-2.5 py-1 bg-pink-100 hover:bg-pink-200 text-pink-700 rounded-lg border border-pink-200 font-bold">
-                <i class="fa-regular fa-copy"></i> Copy
-              </button>
-            </div>
+            <button onclick="uncheckAllForCleaner('FLORENCE')" class="text-[10px] px-2.5 py-1 bg-rose-50 hover:bg-rose-100 text-rose-700 rounded-lg border border-rose-200 font-bold">
+              <i class="fa-solid fa-rotate-left"></i> Checking Done
+            </button>
           </div>
           <div class="space-y-4">
             <div>
-              <h4 class="text-xs font-bold text-slate-500 mb-1 flex items-center">Check-Out: <span id="count-daily-f-out" class="count-pill">0</span></h4>
+              <div class="flex justify-between items-center mb-1">
+                <h4 class="text-xs font-bold text-slate-500 flex items-center">Check-Out: <span id="count-daily-f-out" class="count-pill">0</span></h4>
+                <button onclick="copyDailyCleanerSection('FLORENCE', 'CHECKOUT')" class="text-[10px] px-2 py-0.5 bg-pink-100 hover:bg-pink-200 text-pink-700 rounded font-bold"><i class="fa-regular fa-copy"></i> Copy Check-Out</button>
+              </div>
               <div id="daily-florence-checkout" class="space-y-1 text-sm min-h-[40px]"></div>
             </div>
             <div>
-              <h4 class="text-xs font-bold text-slate-500 mb-1 flex items-center">Check-In: <span id="count-daily-f-in" class="count-pill">0</span></h4>
+              <div class="flex justify-between items-center mb-1">
+                <h4 class="text-xs font-bold text-slate-500 flex items-center">Check-In: <span id="count-daily-f-in" class="count-pill">0</span></h4>
+                <button onclick="copyDailyCleanerSection('FLORENCE', 'CHECKIN')" class="text-[10px] px-2 py-0.5 bg-pink-100 hover:bg-pink-200 text-pink-700 rounded font-bold"><i class="fa-regular fa-copy"></i> Copy Check-In</button>
+              </div>
               <div id="daily-florence-checkin" class="space-y-1 text-sm min-h-[40px]"></div>
             </div>
           </div>
@@ -304,22 +305,23 @@
         <div class="bg-white p-4 rounded-2xl border border-sky-200 shadow-sm">
           <div class="flex justify-between items-center mb-3 border-b pb-2">
             <h3 class="text-sm font-bold text-sky-700">Yang Schedule</h3>
-            <div class="flex gap-1.5">
-              <button onclick="uncheckAllForCleaner('YANG')" class="text-[10px] px-2.5 py-1 bg-sky-50 hover:bg-sky-100 text-sky-700 rounded-lg border border-sky-200 font-bold">
-                <i class="fa-solid fa-rotate-left"></i> Checking Done
-              </button>
-              <button onclick="copyListFromCleaner('YANG')" class="text-[10px] px-2.5 py-1 bg-sky-100 hover:bg-sky-200 text-sky-700 rounded-lg border border-sky-200 font-bold">
-                <i class="fa-regular fa-copy"></i> Copy
-              </button>
-            </div>
+            <button onclick="uncheckAllForCleaner('YANG')" class="text-[10px] px-2.5 py-1 bg-sky-50 hover:bg-sky-100 text-sky-700 rounded-lg border border-sky-200 font-bold">
+              <i class="fa-solid fa-rotate-left"></i> Checking Done
+            </button>
           </div>
           <div class="space-y-4">
             <div>
-              <h4 class="text-xs font-bold text-slate-500 mb-1 flex items-center">Check-Out: <span id="count-daily-y-out" class="count-pill">0</span></h4>
+              <div class="flex justify-between items-center mb-1">
+                <h4 class="text-xs font-bold text-slate-500 flex items-center">Check-Out: <span id="count-daily-y-out" class="count-pill">0</span></h4>
+                <button onclick="copyDailyCleanerSection('YANG', 'CHECKOUT')" class="text-[10px] px-2 py-0.5 bg-sky-100 hover:bg-sky-200 text-sky-700 rounded font-bold"><i class="fa-regular fa-copy"></i> Copy Check-Out</button>
+              </div>
               <div id="daily-yang-checkout" class="space-y-1 text-sm min-h-[40px]"></div>
             </div>
             <div>
-              <h4 class="text-xs font-bold text-slate-500 mb-1 flex items-center">Check-In: <span id="count-daily-y-in" class="count-pill">0</span></h4>
+              <div class="flex justify-between items-center mb-1">
+                <h4 class="text-xs font-bold text-slate-500 flex items-center">Check-In: <span id="count-daily-y-in" class="count-pill">0</span></h4>
+                <button onclick="copyDailyCleanerSection('YANG', 'CHECKIN')" class="text-[10px] px-2 py-0.5 bg-sky-100 hover:bg-sky-200 text-sky-700 rounded font-bold"><i class="fa-regular fa-copy"></i> Copy Check-In</button>
+              </div>
               <div id="daily-yang-checkin" class="space-y-1 text-sm min-h-[40px]"></div>
             </div>
           </div>
@@ -523,12 +525,12 @@
       const container = document.getElementById(containerId);
       if (!container) return;
 
-      const unitSpans = container.querySelectorAll('.unit-text');
+      const unitDivs = container.querySelectorAll('.unit-text');
       let textToCopy = [];
 
-      unitSpans.forEach(span => {
-        let cleanText = span.innerText.replace(/\s+/g, ' ').trim();
-        if (cleanText) textToCopy.push(cleanText);
+      unitDivs.forEach(div => {
+        let unitText = div.getAttribute('data-unit-clean') || div.innerText.replace(/\s+/g, ' ').trim();
+        if (unitText) textToCopy.push(unitText);
       });
 
       if (textToCopy.length === 0) {
@@ -543,28 +545,29 @@
       });
     }
 
-    function copyListFromCleaner(cleaner) {
+    function copyDailyCleanerSection(cleaner, type) {
       const date = document.getElementById('daily-date-picker').value;
       if (!date || !state.schedules[date]) {
-        alert("No units to copy for this cleaner.");
+        alert("No units to copy for this section.");
         return;
       }
 
-      const items = state.schedules[date].filter(i => i.cleaner === cleaner);
+      const items = state.schedules[date].filter(i => i.cleaner === cleaner && i.type === type);
       let textToCopy = [];
 
       items.forEach(item => {
-        const cleanText = (item.raw || item.unit || '').replace(/\s+/g, ' ').trim();
+        const parsed = formatUnitText(item.raw || item.formatted || item.unit, item.type === 'CHECKIN');
+        let cleanText = parsed.raw.replace(/\s+/g, ' ').trim();
         if (cleanText) textToCopy.push(cleanText);
       });
 
       if (textToCopy.length === 0) {
-        alert("No units to copy for this cleaner.");
+        alert(`No ${type.toLowerCase()} units to copy for ${cleaner}.`);
         return;
       }
 
       navigator.clipboard.writeText(textToCopy.join('\n')).then(() => {
-        alert("Cleaner units copied to clipboard!");
+        alert(`${cleaner} ${type === 'CHECKOUT' ? 'Check-Out' : 'Check-In'} units copied to clipboard!`);
       }).catch(err => {
         console.error("Copy failed: ", err);
       });
@@ -653,7 +656,10 @@
         formatted,
         cleaner,
         type,
-        checked: false
+        checked: false,
+        lastCode: '',
+        newCode: '',
+        notes: ''
       });
 
       saveState();
@@ -706,7 +712,6 @@
       document.getElementById('label-yang-15a').innerText = `${monthName} 1-15 CLEANING (YANG)`;
       document.getElementById('label-yang-15b').innerText = `${monthName} 16-${totalDays} CLEANING (YANG)`;
 
-      // Calculate Special Cleanings STRICTLY from CHECK-OUT entries for the entire selected month
       let lsCounts = {};
       let rsCounts = {};
       let suCounts = {};
@@ -715,7 +720,6 @@
         const dateStr = `${year}-${month}-${String(d).padStart(2, '0')}`;
         const dayItems = state.schedules[dateStr] || [];
         dayItems.forEach(item => {
-          // Strictly look at CHECKOUT items only
           if (item.type === 'CHECKOUT') {
             const parsed = formatUnitText(item.raw || item.formatted || item.unit, false);
             if (parsed.tag === 'LS') lsCounts[item.unit] = (lsCounts[item.unit] || 0) + 1;
@@ -741,7 +745,6 @@
         keys.forEach(unit => {
           const row = document.createElement('div');
           row.className = "flex items-center gap-1.5";
-          // Only show unit and count (no repeating tag/unit code)
           row.innerHTML = `<span>${unit}</span> <span>— ${countObj[unit]}X</span>`;
           container.appendChild(row);
         });
@@ -769,10 +772,10 @@
           col.innerHTML = `<div class="font-bold text-[8px] sm:text-[8.5px] text-slate-600 border-b border-slate-300 pb-0.5 mb-1 text-center no-copy bg-slate-100/80 rounded py-0.5 uppercase tracking-tighter whitespace-nowrap overflow-hidden flex items-center justify-center">${dayLabel}<span class="${badgeClass}">${count}</span></div>`;
 
           items.forEach(item => {
-            const { formatted } = formatUnitText(item.raw || item.formatted || item.unit, false);
+            const parsed = formatUnitText(item.raw || item.formatted || item.unit, false);
             const row = document.createElement('div');
             row.className = "bg-white px-0.5 py-1 rounded border border-slate-200 shadow-2xs flex justify-center items-center overflow-hidden my-0.5";
-            row.innerHTML = `<div class="unit-text ${cleaner === 'FLORENCE' ? 'unit-florence' : 'unit-yang'}">${formatted}</div>`;
+            row.innerHTML = `<div class="unit-text ${cleaner === 'FLORENCE' ? 'unit-florence' : 'unit-yang'}" data-unit-clean="${parsed.raw}">${parsed.formatted}</div>`;
             col.appendChild(row);
           });
 
@@ -796,7 +799,7 @@
         const li = document.createElement('li');
         li.className = "flex justify-between items-center bg-slate-50 p-2 rounded-lg border border-slate-100";
         li.innerHTML = `
-          <div class="unit-text ${item.cleaner === 'FLORENCE' ? 'unit-florence' : 'unit-yang'}" style="justify-content: flex-start !important;">${item.code}</div>
+          <div class="unit-text ${item.cleaner === 'FLORENCE' ? 'unit-florence' : 'unit-yang'}" style="justify-content: flex-start !important;" data-unit-clean="${item.code}">${item.code}</div>
           <button onclick="deleteMasterUnit(${idx})" class="no-copy text-xs text-rose-500 hover:text-rose-700 flex items-center gap-1 font-semibold">
             <i class="fa-solid fa-xmark"></i> Clear
           </button>
@@ -910,7 +913,10 @@
           formatted,
           cleaner,
           type: actualType,
-          checked: false
+          checked: false,
+          lastCode: '',
+          newCode: '',
+          notes: ''
         });
       });
 
@@ -970,6 +976,31 @@
       }
     }
 
+    function updateItemField(date, id, field, value) {
+      if (!state.schedules[date]) return;
+      const item = state.schedules[date].find(i => i.id === id);
+      if (item) {
+        item[field] = value;
+        saveState();
+      }
+    }
+
+    function clearItemInputs(date, id, type) {
+      if (!state.schedules[date]) return;
+      const item = state.schedules[date].find(i => i.id === id);
+      if (item) {
+        if (type === 'checkout') {
+          item.lastCode = '';
+          item.notes = '';
+        } else if (type === 'checkin') {
+          item.newCode = '';
+          item.notes = '';
+        }
+        saveState();
+        renderDailyView();
+      }
+    }
+
     function uncheckAllForCleaner(cleaner) {
       const date = document.getElementById('daily-date-picker').value;
       if (!date || !state.schedules[date]) return;
@@ -999,15 +1030,37 @@
       let counts = { fOut: 0, fIn: 0, yOut: 0, yIn: 0 };
 
       items.forEach(item => {
-        const { formatted } = formatUnitText(item.raw || item.formatted || item.unit, item.type === 'CHECKIN');
+        const parsed = formatUnitText(item.raw || item.formatted || item.unit, item.type === 'CHECKIN');
         const isChecked = item.checked ? true : false;
         
         const div = document.createElement('div');
-        div.className = `unit-row-container bg-white p-2 rounded-lg border border-slate-200 shadow-sm flex items-center gap-2.5 my-1 transition-all ${isChecked ? 'opacity-40 line-through bg-slate-100' : ''}`;
-        div.innerHTML = `
-          <input type="checkbox" ${isChecked ? 'checked' : ''} onchange="toggleCheckStatus('${date}', ${item.id}, this)" class="w-4 h-4 text-indigo-600 rounded border-slate-300 focus:ring-indigo-500 cursor-pointer">
-          <div class="unit-text ${item.cleaner === 'FLORENCE' ? 'unit-florence' : 'unit-yang'}">${formatted}</div>
-        `;
+        div.className = `unit-row-container bg-white p-2 rounded-lg border border-slate-200 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5 my-1 transition-all ${isChecked ? 'opacity-40 line-through bg-slate-100' : ''}`;
+        
+        if (item.type === 'CHECKOUT') {
+          div.innerHTML = `
+            <div class="flex items-center gap-2.5 w-full sm:w-auto">
+              <input type="checkbox" ${isChecked ? 'checked' : ''} onchange="toggleCheckStatus('${date}', ${item.id}, this)" class="w-4 h-4 text-indigo-600 rounded border-slate-300 focus:ring-indigo-500 cursor-pointer">
+              <div class="unit-text ${item.cleaner === 'FLORENCE' ? 'unit-florence' : 'unit-yang'}" data-unit-clean="${parsed.raw}">${parsed.formatted}</div>
+            </div>
+            <div class="flex flex-wrap items-center gap-2 w-full sm:w-auto text-xs">
+              <input type="text" placeholder="Last Code" value="${item.lastCode || ''}" oninput="updateItemField('${date}', ${item.id}, 'lastCode', this.value)" class="px-2 py-1 border rounded text-xs w-28 font-mono">
+              <input type="text" placeholder="Notes" value="${item.notes || ''}" oninput="updateItemField('${date}', ${item.id}, 'notes', this.value)" class="px-2 py-1 border rounded text-xs flex-1 sm:w-40">
+              <button onclick="clearItemInputs('${date}', ${item.id}, 'checkout')" title="Clear Code & Notes" class="px-2 py-1 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded border border-rose-200 font-bold"><i class="fa-solid fa-trash-can"></i></button>
+            </div>
+          `;
+        } else {
+          div.innerHTML = `
+            <div class="flex items-center gap-2.5 w-full sm:w-auto">
+              <input type="checkbox" ${isChecked ? 'checked' : ''} onchange="toggleCheckStatus('${date}', ${item.id}, this)" class="w-4 h-4 text-indigo-600 rounded border-slate-300 focus:ring-indigo-500 cursor-pointer">
+              <div class="unit-text ${item.cleaner === 'FLORENCE' ? 'unit-florence' : 'unit-yang'}" data-unit-clean="${parsed.raw}">${parsed.formatted}</div>
+            </div>
+            <div class="flex flex-wrap items-center gap-2 w-full sm:w-auto text-xs">
+              <input type="text" placeholder="New Code" value="${item.newCode || ''}" oninput="updateItemField('${date}', ${item.id}, 'newCode', this.value)" class="px-2 py-1 border rounded text-xs w-28 font-mono">
+              <input type="text" placeholder="Notes" value="${item.notes || ''}" oninput="updateItemField('${date}', ${item.id}, 'notes', this.value)" class="px-2 py-1 border rounded text-xs flex-1 sm:w-40">
+              <button onclick="clearItemInputs('${date}', ${item.id}, 'checkin')" title="Clear New Code & Notes" class="px-2 py-1 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded border border-rose-200 font-bold"><i class="fa-solid fa-trash-can"></i></button>
+            </div>
+          `;
+        }
 
         if (item.cleaner === 'FLORENCE') {
           if (item.type === 'CHECKOUT') { fCheckout.appendChild(div); counts.fOut++; }
@@ -1094,10 +1147,10 @@
           col.innerHTML = `<div class="font-bold text-[8.5px] text-slate-600 border-b border-slate-300 pb-0.5 mb-1 text-center no-copy bg-slate-100/80 rounded py-0.5 uppercase tracking-tighter whitespace-nowrap overflow-hidden flex items-center justify-center">${dayLabel}<span class="${badgeClass}">${count}</span></div>`;
 
           items.forEach(item => {
-            const { formatted } = formatUnitText(item.raw || item.formatted || item.unit, type === 'CHECKIN');
+            const parsed = formatUnitText(item.raw || item.formatted || item.unit, type === 'CHECKIN');
             const row = document.createElement('div');
             row.className = "bg-white px-0.5 py-1 rounded border border-slate-200 shadow-2xs flex justify-center items-center overflow-hidden my-0.5";
-            row.innerHTML = `<div class="unit-text ${cleaner === 'FLORENCE' ? 'unit-florence' : 'unit-yang'}">${formatted}</div>`;
+            row.innerHTML = `<div class="unit-text ${cleaner === 'FLORENCE' ? 'unit-florence' : 'unit-yang'}" data-unit-clean="${parsed.raw}">${parsed.formatted}</div>`;
             col.appendChild(row);
           });
 
