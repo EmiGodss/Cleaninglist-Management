@@ -71,6 +71,13 @@
       line-height: 10px;
     }
 
+    .input-none-red {
+      background-color: #fee2e2 !important;
+      border-color: #ef4444 !important;
+      color: #991b1b !important;
+      font-weight: 700;
+    }
+
     .weekly-section-bg { background: linear-gradient(135deg, #eef2ff 0%, #f1f5f9 100%); }
     .no-copy { user-select: none; }
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -224,6 +231,20 @@
         </div>
       </div>
 
+      <!-- MASTER DB SORT & SEARCH BAR -->
+      <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row justify-between items-center gap-3">
+        <div class="flex items-center gap-2 w-full sm:w-auto">
+          <span class="text-xs font-bold text-slate-600"><i class="fa-solid fa-arrow-down-a-z"></i> Sort DB:</span>
+          <select id="master-sort-order" onchange="renderMasterDB()" class="px-3 py-1.5 border rounded-lg text-xs font-bold bg-slate-50">
+            <option value="AZ">Alphabetical (A - Z)</option>
+            <option value="ZA">Alphabetical (Z - A)</option>
+          </select>
+        </div>
+        <div class="text-xs text-slate-500 font-medium">
+          Note: Changes in Address, Bedrooms, and Parking auto-save instantly. Type <b>NONE</b> to flag red.
+        </div>
+      </div>
+
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
           <div class="flex justify-between items-center mb-3 border-b pb-2">
@@ -232,7 +253,7 @@
               <i class="fa-regular fa-copy"></i> Copy Units
             </button>
           </div>
-          <ul id="florence-master-list" class="space-y-2 text-sm custom-scrollbar max-h-96 overflow-y-auto"></ul>
+          <ul id="florence-master-list" class="space-y-3 text-sm custom-scrollbar max-h-[500px] overflow-y-auto pr-1"></ul>
         </div>
         <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
           <div class="flex justify-between items-center mb-3 border-b pb-2">
@@ -241,7 +262,7 @@
               <i class="fa-regular fa-copy"></i> Copy Units
             </button>
           </div>
-          <ul id="yang-master-list" class="space-y-2 text-sm custom-scrollbar max-h-96 overflow-y-auto"></ul>
+          <ul id="yang-master-list" class="space-y-3 text-sm custom-scrollbar max-h-[500px] overflow-y-auto pr-1"></ul>
         </div>
       </div>
     </div>
@@ -461,17 +482,17 @@
 
   <script>
     const DEFAULT_MASTER = [
-      { code: "AU6514", cleaner: "FLORENCE" },
-      { code: "VP1601S", cleaner: "FLORENCE" },
-      { code: "MN904", cleaner: "FLORENCE" },
-      { code: "SK5013", cleaner: "FLORENCE" },
-      { code: "VT3102", cleaner: "FLORENCE" },
-      { code: "LV2109N", cleaner: "FLORENCE" },
-      { code: "AS204", cleaner: "FLORENCE" },
-      { code: "BB1109W", cleaner: "FLORENCE" },
-      { code: "SL1503S", cleaner: "FLORENCE" },
-      { code: "UW3613", cleaner: "FLORENCE" },
-      { code: "WP1708D", cleaner: "YANG" }
+      { code: "AU6514", cleaner: "FLORENCE", address: "", bedrooms: "", parking: "" },
+      { code: "VP1601S", cleaner: "FLORENCE", address: "", bedrooms: "", parking: "" },
+      { code: "MN904", cleaner: "FLORENCE", address: "", bedrooms: "", parking: "" },
+      { code: "SK5013", cleaner: "FLORENCE", address: "", bedrooms: "", parking: "" },
+      { code: "VT3102", cleaner: "FLORENCE", address: "", bedrooms: "", parking: "" },
+      { code: "LV2109N", cleaner: "FLORENCE", address: "", bedrooms: "", parking: "" },
+      { code: "AS204", cleaner: "FLORENCE", address: "", bedrooms: "", parking: "" },
+      { code: "BB1109W", cleaner: "FLORENCE", address: "", bedrooms: "", parking: "" },
+      { code: "SL1503S", cleaner: "FLORENCE", address: "", bedrooms: "", parking: "" },
+      { code: "UW3613", cleaner: "FLORENCE", address: "", bedrooms: "", parking: "" },
+      { code: "WP1708D", cleaner: "YANG", address: "", bedrooms: "", parking: "" }
     ];
 
     let storedMaster = JSON.parse(localStorage.getItem('masterDB'));
@@ -480,6 +501,13 @@
       schedules: JSON.parse(localStorage.getItem('schedules')) || {},
       activeCleanerTab: 'FLORENCE'
     };
+
+    // Ensure older master DB items without new properties have them
+    state.masterDB.forEach(item => {
+      if (item.address === undefined) item.address = "";
+      if (item.bedrooms === undefined) item.bedrooms = "";
+      if (item.parking === undefined) item.parking = "";
+    });
 
     function saveState() {
       localStorage.setItem('masterDB', JSON.stringify(state.masterDB));
@@ -506,6 +534,11 @@
           const imported = JSON.parse(e.target.result);
           if (imported.masterDB && imported.schedules) {
             state = imported;
+            state.masterDB.forEach(item => {
+              if (item.address === undefined) item.address = "";
+              if (item.bedrooms === undefined) item.bedrooms = "";
+              if (item.parking === undefined) item.parking = "";
+            });
             saveState();
             renderMasterDB();
             renderWeeklyView();
@@ -789,20 +822,69 @@
       fillGrid('yang-grid-1b', 16, totalDays, 'YANG');
     }
 
+    function updateMasterField(code, field, value) {
+      const match = state.masterDB.find(m => m.code === code);
+      if (match) {
+        match[field] = value;
+        saveState();
+      }
+    }
+
+    function checkNoneStyle(input) {
+      if (input.value.trim().toUpperCase() === 'NONE') {
+        input.classList.add('input-none-red');
+      } else {
+        input.classList.remove('input-none-red');
+      }
+    }
+
     function renderMasterDB() {
       const florenceList = document.getElementById('florence-master-list');
       const yangList = document.getElementById('yang-master-list');
       florenceList.innerHTML = '';
       yangList.innerHTML = '';
 
-      state.masterDB.forEach((item, idx) => {
+      const sortOrder = document.getElementById('master-sort-order').value;
+      
+      let sortedDB = [...state.masterDB].sort((a, b) => {
+        if (sortOrder === 'AZ') {
+          return a.code.localeCompare(b.code);
+        } else {
+          return b.code.localeCompare(a.code);
+        }
+      });
+
+      sortedDB.forEach((item) => {
+        const originalIndex = state.masterDB.findIndex(m => m.code === item.code);
         const li = document.createElement('li');
-        li.className = "flex justify-between items-center bg-slate-50 p-2 rounded-lg border border-slate-100";
+        li.className = "bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-2 shadow-2xs";
+
+        const isBedroomsNone = item.bedrooms.trim().toUpperCase() === 'NONE' ? 'input-none-red' : '';
+        const isParkingNone = item.parking.trim().toUpperCase() === 'NONE' ? 'input-none-red' : '';
+
         li.innerHTML = `
-          <div class="unit-text ${item.cleaner === 'FLORENCE' ? 'unit-florence' : 'unit-yang'}" style="justify-content: flex-start !important;" data-unit-clean="${item.code}">${item.code}</div>
-          <button onclick="deleteMasterUnit(${idx})" class="no-copy text-xs text-rose-500 hover:text-rose-700 flex items-center gap-1 font-semibold">
-            <i class="fa-solid fa-xmark"></i> Clear
-          </button>
+          <div class="flex justify-between items-center">
+            <div class="unit-text ${item.cleaner === 'FLORENCE' ? 'unit-florence' : 'unit-yang'}" style="justify-content: flex-start !important;" data-unit-clean="${item.code}">${item.code}</div>
+            <button onclick="deleteMasterUnit(${originalIndex})" class="no-copy text-xs text-rose-500 hover:text-rose-700 flex items-center gap-1 font-semibold px-2 py-1 bg-rose-50 rounded border border-rose-100">
+              <i class="fa-solid fa-xmark"></i> Clear
+            </button>
+          </div>
+          <div class="space-y-1.5 text-xs">
+            <div>
+              <label class="block font-bold text-slate-500 text-[10px] uppercase mb-0.5">Full Address:</label>
+              <input type="text" value="${item.address || ''}" oninput="updateMasterField('${item.code}', 'address', this.value)" placeholder="Enter full address..." class="w-full px-2.5 py-1.5 border rounded-lg bg-white text-xs font-medium">
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block font-bold text-slate-500 text-[10px] uppercase mb-0.5">Bedrooms:</label>
+                <input type="text" value="${item.bedrooms || ''}" oninput="updateMasterField('${item.code}', 'bedrooms', this.value); checkNoneStyle(this);" placeholder="e.g. 2 or NONE" class="w-full px-2.5 py-1.5 border rounded-lg bg-white text-xs font-medium ${isBedroomsNone}">
+              </div>
+              <div>
+                <label class="block font-bold text-slate-500 text-[10px] uppercase mb-0.5">Parking:</label>
+                <input type="text" value="${item.parking || ''}" oninput="updateMasterField('${item.code}', 'parking', this.value); checkNoneStyle(this);" placeholder="e.g. Slot 4 or NONE" class="w-full px-2.5 py-1.5 border rounded-lg bg-white text-xs font-medium ${isParkingNone}">
+              </div>
+            </div>
+          </div>
         `;
         if (item.cleaner === 'FLORENCE') florenceList.appendChild(li);
         else yangList.appendChild(li);
@@ -821,7 +903,12 @@
 
       if (!code) return;
 
-      state.masterDB.push({ code, cleaner: cleanerInput.value });
+      if (state.masterDB.some(m => m.code === code)) {
+        alert("Unit code already exists in Master DB!");
+        return;
+      }
+
+      state.masterDB.push({ code, cleaner: cleanerInput.value, address: "", bedrooms: "", parking: "" });
       saveState();
       codeInput.value = '';
       renderMasterDB();
