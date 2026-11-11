@@ -233,15 +233,23 @@
 
       <!-- MASTER DB SORT & SEARCH BAR -->
       <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row justify-between items-center gap-3">
-        <div class="flex items-center gap-2 w-full sm:w-auto">
-          <span class="text-xs font-bold text-slate-600"><i class="fa-solid fa-arrow-down-a-z"></i> Sort DB:</span>
-          <select id="master-sort-order" onchange="renderMasterDB()" class="px-3 py-1.5 border rounded-lg text-xs font-bold bg-slate-50">
-            <option value="AZ">Alphabetical (A - Z)</option>
-            <option value="ZA">Alphabetical (Z - A)</option>
-          </select>
+        <div class="flex flex-wrap items-center gap-3 w-full sm:w-auto">
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-bold text-slate-600"><i class="fa-solid fa-arrow-down-a-z"></i> Sort:</span>
+            <select id="master-sort-order" onchange="renderMasterDB()" class="px-3 py-1.5 border rounded-lg text-xs font-bold bg-slate-50">
+              <option value="AZ">A - Z</option>
+              <option value="ZA">Z - A</option>
+            </select>
+          </div>
+          <div class="flex items-center gap-2 flex-1 sm:w-64">
+            <div class="relative w-full">
+              <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400"><i class="fa-solid fa-magnifying-glass text-xs"></i></span>
+              <input type="text" id="master-search-input" oninput="renderMasterDB()" placeholder="Search unit code..." class="w-full pl-8 pr-3 py-1.5 border rounded-lg text-xs bg-slate-50 font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            </div>
+          </div>
         </div>
-        <div class="text-xs text-slate-500 font-medium">
-          Note: Changes in Address, Bedrooms, and Parking auto-save instantly. Type <b>NONE</b> to flag red.
+        <div class="text-xs text-slate-500 font-medium hidden md:block">
+          Type <b>NONE</b> to flag red. Auto-saves instantly.
         </div>
       </div>
 
@@ -502,7 +510,6 @@
       activeCleanerTab: 'FLORENCE'
     };
 
-    // Ensure older master DB items without new properties have them
     state.masterDB.forEach(item => {
       if (item.address === undefined) item.address = "";
       if (item.bedrooms === undefined) item.bedrooms = "";
@@ -845,8 +852,14 @@
       yangList.innerHTML = '';
 
       const sortOrder = document.getElementById('master-sort-order').value;
+      const searchQuery = document.getElementById('master-search-input').value.trim().toUpperCase();
       
-      let sortedDB = [...state.masterDB].sort((a, b) => {
+      let filteredDB = state.masterDB.filter(item => {
+        if (!searchQuery) return true;
+        return item.code.toUpperCase().includes(searchQuery);
+      });
+
+      let sortedDB = [...filteredDB].sort((a, b) => {
         if (sortOrder === 'AZ') {
           return a.code.localeCompare(b.code);
         } else {
