@@ -4,12 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cleaner Schedule Manager</title>
+  <!-- Sparkles + Clipboard Icon -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📋</text></svg>">
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
     
+    /* DYNAMIC GRADIENT KEYFRAMES */
     @keyframes dynamicGradient {
       0% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
@@ -18,12 +20,14 @@
 
     body { 
       font-family: 'Plus Jakarta Sans', sans-serif; 
-      background: linear-gradient(-45deg, #eef2ff, #f8fafc, #f1f5f9, #e2e8f0);
+      /* IRIDESCENT GRADIENT BACKGROUND */
+      background: linear-gradient(-45deg, #ecfdf5, #f0f9ff, #fefce8, #fce7f3);
       background-size: 400% 400%;
-      animation: dynamicGradient 20s ease infinite;
+      animation: dynamicGradient 18s ease infinite;
       min-height: 100vh;
     }
     
+    /* CUSTOM COLOR CLASSES */
     .unit-florence { color: #dc2626 !important; font-weight: 800; } 
     .unit-yang { color: #2563eb !important; font-weight: 800; } 
 
@@ -37,8 +41,10 @@
       white-space: nowrap !important;
     }
 
+    /* SMALLER GRIDS FORMATTING */
     .fifteen-grid .unit-text, .weekly-grid .unit-text { font-size: 9px; font-weight: 800; justify-content: center !important; }
 
+    /* SPECIAL TAGS */
     .tag-nights, .tag-rs, .tag-ls, .tag-su {
       display: inline-flex !important;
       align-items: center !important;
@@ -56,6 +62,7 @@
     .tag-ls { background-color: #bbf7d0 !important; color: #15803d !important; } 
     .tag-su { background-color: #ffedd5 !important; color: #c2410c !important; } 
 
+    /* COUNT PILLS */
     .count-pill {
       background-color: #e0e7ff;
       color: #3730a3;
@@ -84,6 +91,7 @@
       line-height: 10px;
     }
 
+    /* INPUT "NONE" STYLE */
     .input-none-red {
       background-color: #fee2e2 !important;
       border-color: #ef4444 !important;
@@ -91,19 +99,30 @@
       font-weight: 700;
     }
 
-    .weekly-section-bg { background: rgba(255, 255, 255, 0.7) !important; }
+    /* TAB TRANSPARENCY FIX */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.90) !important;
+      backdrop-filter: blur(10px) !important;
+      -webkit-backdrop-filter: blur(10px) !important;
+      border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    }
+    
+    .weekly-section-bg { background: rgba(248, 250, 252, 0.6) !important; }
+
+    /* UI UTILITIES */
     .no-copy { user-select: none; }
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
-    .custom-scrollbar::-webkit-scrollbar-track { background: rgba(0,0,0,0.03); border-radius: 4px; }
-    .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); border-radius: 4px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
   </style>
 </head>
 <body class="text-slate-800 antialiased min-h-screen flex flex-col">
 
-  <header class="bg-white/70 backdrop-blur-md border-b border-white/40 sticky top-0 z-30 shadow-xs">
+  <header class="glass-card border-b border-slate-200 sticky top-0 z-30 shadow-xs">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between h-16 items-center">
         <div class="flex items-center space-x-3">
+          <!-- CLIPBOARD ICON -->
           <div class="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center text-white text-xl shadow-md">📋</div>
           <div>
             <h1 class="text-lg font-bold text-slate-900 leading-tight">Cleaner Schedule Manager</h1>
@@ -111,7 +130,7 @@
           </div>
         </div>
 
-        <nav class="flex space-x-1 bg-black/5 p-1.5 rounded-xl border border-white/40">
+        <nav class="flex space-x-1 bg-slate-100 p-1.5 rounded-xl border border-slate-200">
           <button onclick="switchTab('fifteen')" id="tab-fifteen" class="px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-white text-indigo-700 shadow-sm">
             <i class="fa-solid fa-calendar-days"></i> 15-Day View
           </button>
@@ -133,10 +152,10 @@
 
     <!-- 15-DAY VIEW -->
     <div id="view-fifteen" class="space-y-6">
-      <div class="bg-white/80 backdrop-blur-md p-4 rounded-2xl border border-white/60 shadow-sm flex flex-col sm:flex-row justify-between items-center gap-3">
+      <div class="glass-card p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row justify-between items-center gap-3">
         <div class="flex items-center gap-3">
           <span class="text-xs font-bold text-slate-600">Select Month:</span>
-          <input type="month" id="fifteen-month-picker" onchange="render15DayView()" class="px-3 py-1.5 border border-slate-200 rounded-lg text-sm font-semibold bg-white/80">
+          <input type="month" id="fifteen-month-picker" onchange="render15DayView()" class="px-3 py-1.5 border rounded-lg text-sm font-semibold bg-white">
         </div>
         <div class="flex items-center gap-2">
           <button onclick="openManageModal()" class="px-3.5 py-1.5 text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg shadow-sm flex items-center gap-1.5">
@@ -148,24 +167,24 @@
       </div>
 
       <!-- SPECIAL CLEANING SUMMARY & FILTER SECTION (15-DAY VIEW) -->
-      <div class="bg-white/80 backdrop-blur-md p-5 rounded-2xl border border-indigo-100 shadow-sm space-y-3">
+      <div class="glass-card p-5 rounded-2xl border border-indigo-100 shadow-sm space-y-3">
         <h3 class="text-xs font-bold text-indigo-900 uppercase tracking-wider flex items-center gap-2">
           <i class="fa-solid fa-filter text-indigo-600"></i> Special Cleaning Summary (<span id="summary-month-label">Selected Month</span>)
         </h3>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
-          <div class="bg-emerald-50/70 p-3 rounded-xl border border-emerald-200">
+          <div class="bg-emerald-50/80 p-3 rounded-xl border border-emerald-200">
             <span class="font-bold text-emerald-800 block mb-1">LANDLORD STAYED CLEANING [LS]:</span>
             <div id="summary-ls-list" class="space-y-0.5 font-mono text-slate-700 font-semibold">
               <span class="text-slate-400 italic font-normal">None</span>
             </div>
           </div>
-          <div class="bg-pink-50/70 p-3 rounded-xl border border-pink-200">
+          <div class="bg-pink-50/80 p-3 rounded-xl border border-pink-200">
             <span class="font-bold text-pink-800 block mb-1">ROOM SERVICE CLEANING [RS]:</span>
             <div id="summary-rs-list" class="space-y-0.5 font-mono text-slate-700 font-semibold">
               <span class="text-slate-400 italic font-normal">None</span>
             </div>
           </div>
-          <div class="bg-orange-50/70 p-3 rounded-xl border border-orange-200">
+          <div class="bg-orange-50/80 p-3 rounded-xl border border-orange-200">
             <span class="font-bold text-orange-800 block mb-1">SET-UP CLEANING [SU]:</span>
             <div id="summary-su-list" class="space-y-0.5 font-mono text-slate-700 font-semibold">
               <span class="text-slate-400 italic font-normal">None</span>
@@ -177,14 +196,14 @@
       <!-- FLORENCE 15-DAY SECTION -->
       <div id="fifteen-flo-section" class="space-y-6">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div id="flo-box-1" class="bg-white/80 backdrop-blur-md rounded-2xl border border-rose-200 overflow-hidden shadow-sm">
+          <div id="flo-box-1" class="glass-card rounded-2xl border border-rose-200 overflow-hidden shadow-sm">
             <div class="bg-gradient-to-r from-rose-500 to-red-600 px-4 py-2.5 font-bold text-white text-xs uppercase tracking-wider flex justify-between items-center">
               <span id="label-flo-15a">OCTOBER 1-15 CLEANING A (FLO)</span>
               <button onclick="copyListFromElement('flo-grid-1a')" class="no-copy px-2 py-0.5 text-[10px] bg-white/20 hover:bg-white/30 text-white font-bold rounded"><i class="fa-regular fa-copy"></i> Copy</button>
             </div>
             <div id="flo-grid-1a" class="weekly-section-bg fifteen-grid grid grid-cols-8 divide-x divide-slate-200 text-xs min-h-[300px] p-0.5 w-full"></div>
           </div>
-          <div id="flo-box-2" class="bg-white/80 backdrop-blur-md rounded-2xl border border-rose-200 overflow-hidden shadow-sm">
+          <div id="flo-box-2" class="glass-card rounded-2xl border border-rose-200 overflow-hidden shadow-sm">
             <div class="bg-gradient-to-r from-rose-600 to-pink-600 px-4 py-2.5 font-bold text-white text-xs uppercase tracking-wider flex justify-between items-center">
               <span id="label-flo-15b">OCTOBER 16-31 CLEANING A (FLO)</span>
               <button onclick="copyListFromElement('flo-grid-1b')" class="no-copy px-2 py-0.5 text-[10px] bg-white/20 hover:bg-white/30 text-white font-bold rounded"><i class="fa-regular fa-copy"></i> Copy</button>
@@ -197,14 +216,14 @@
       <!-- YANG 15-DAY SECTION -->
       <div id="fifteen-yang-section" class="hidden space-y-6">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div id="yang-box-1" class="bg-white/80 backdrop-blur-md rounded-2xl border border-cyan-200 overflow-hidden shadow-sm">
+          <div id="yang-box-1" class="glass-card rounded-2xl border border-cyan-200 overflow-hidden shadow-sm">
             <div class="bg-gradient-to-r from-cyan-600 to-teal-600 px-4 py-2.5 font-bold text-white text-xs uppercase tracking-wider flex justify-between items-center">
               <span id="label-yang-15a">OCTOBER 1-15 CLEANING (YANG)</span>
               <button onclick="copyListFromElement('yang-grid-1a')" class="no-copy px-2 py-0.5 text-[10px] bg-white/20 hover:bg-white/30 text-white font-bold rounded"><i class="fa-regular fa-copy"></i> Copy</button>
             </div>
             <div id="yang-grid-1a" class="weekly-section-bg fifteen-grid grid grid-cols-8 divide-x divide-slate-200 text-xs min-h-[300px] p-0.5 w-full"></div>
           </div>
-          <div id="yang-box-2" class="bg-white/80 backdrop-blur-md rounded-2xl border border-cyan-200 overflow-hidden shadow-sm">
+          <div id="yang-box-2" class="glass-card rounded-2xl border border-cyan-200 overflow-hidden shadow-sm">
             <div class="bg-gradient-to-r from-cyan-700 to-blue-600 px-4 py-2.5 font-bold text-white text-xs uppercase tracking-wider flex justify-between items-center">
               <span id="label-yang-15b">OCTOBER 16-31 CLEANING (YANG)</span>
               <button onclick="copyListFromElement('yang-grid-1b')" class="no-copy px-2 py-0.5 text-[10px] bg-white/20 hover:bg-white/30 text-white font-bold rounded"><i class="fa-regular fa-copy"></i> Copy</button>
@@ -217,7 +236,7 @@
 
     <!-- MASTER DATABASE VIEW -->
     <div id="view-master" class="hidden space-y-6">
-      <div class="bg-white/80 backdrop-blur-md p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+      <div class="glass-card p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
         <div class="flex justify-between items-center">
           <h2 class="text-base font-bold text-slate-900">Master Database Management (Max 60 Units)</h2>
           <div class="flex gap-2">
@@ -235,8 +254,8 @@
         </div>
 
         <div class="flex flex-col sm:flex-row gap-3">
-          <input type="text" id="new-unit-code" placeholder="Enter Unit Code (e.g. AU6514)" class="flex-1 px-4 py-2 border border-slate-200 rounded-xl text-sm bg-white/80 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-          <select id="new-unit-cleaner" class="px-4 py-2 border border-slate-200 rounded-xl text-sm bg-white/80 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          <input type="text" id="new-unit-code" placeholder="Enter Unit Code (e.g. AU6514)" class="flex-1 px-4 py-2 border rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          <select id="new-unit-cleaner" class="px-4 py-2 border rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
             <option value="FLORENCE">Florence (Red Font)</option>
             <option value="YANG">Yang (Blue Font)</option>
           </select>
@@ -245,11 +264,11 @@
       </div>
 
       <!-- MASTER DB SORT & SEARCH BAR -->
-      <div class="bg-white/80 backdrop-blur-md p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row justify-between items-center gap-3">
+      <div class="glass-card p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row justify-between items-center gap-3">
         <div class="flex flex-wrap items-center gap-3 w-full sm:w-auto">
           <div class="flex items-center gap-2">
             <span class="text-xs font-bold text-slate-600"><i class="fa-solid fa-arrow-down-a-z"></i> Sort:</span>
-            <select id="master-sort-order" onchange="renderMasterDB()" class="px-3 py-1.5 border border-slate-200 rounded-lg text-xs font-bold bg-white/80">
+            <select id="master-sort-order" onchange="renderMasterDB()" class="px-3 py-1.5 border rounded-lg text-xs font-bold bg-white">
               <option value="AZ">A - Z</option>
               <option value="ZA">Z - A</option>
             </select>
@@ -257,7 +276,7 @@
           <div class="flex items-center gap-2 flex-1 sm:w-64">
             <div class="relative w-full">
               <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400"><i class="fa-solid fa-magnifying-glass text-xs"></i></span>
-              <input type="text" id="master-search-input" oninput="renderMasterDB()" placeholder="Search unit code..." class="w-full pl-8 pr-3 py-1.5 border border-slate-200 rounded-lg text-xs bg-white/80 font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-500">
+              <input type="text" id="master-search-input" oninput="renderMasterDB()" placeholder="Search unit code..." class="w-full pl-8 pr-3 py-1.5 border rounded-lg text-xs bg-white font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-500">
             </div>
           </div>
         </div>
@@ -267,8 +286,8 @@
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div class="bg-white/80 backdrop-blur-md p-4 rounded-2xl border border-slate-200 shadow-sm">
-          <div class="flex justify-between items-center mb-3 border-b border-slate-200 pb-2">
+        <div class="glass-card p-4 rounded-2xl border border-slate-200 shadow-sm">
+          <div class="flex justify-between items-center mb-3 border-b pb-2">
             <h3 class="text-sm font-bold text-red-600"><i class="fa-solid fa-user"></i> Florence Units (Red)</h3>
             <button onclick="copyListFromElement('florence-master-list')" class="px-2.5 py-1 text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg border border-slate-300">
               <i class="fa-regular fa-copy"></i> Copy Units
@@ -276,8 +295,8 @@
           </div>
           <ul id="florence-master-list" class="space-y-3 text-sm custom-scrollbar max-h-[500px] overflow-y-auto pr-1"></ul>
         </div>
-        <div class="bg-white/80 backdrop-blur-md p-4 rounded-2xl border border-slate-200 shadow-sm">
-          <div class="flex justify-between items-center mb-3 border-b border-slate-200 pb-2">
+        <div class="glass-card p-4 rounded-2xl border border-slate-200 shadow-sm">
+          <div class="flex justify-between items-center mb-3 border-b pb-2">
             <h3 class="text-sm font-bold text-blue-600"><i class="fa-solid fa-user"></i> Yang Units (Blue)</h3>
             <button onclick="copyListFromElement('yang-master-list')" class="px-2.5 py-1 text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg border border-slate-300">
               <i class="fa-regular fa-copy"></i> Copy Units
@@ -290,24 +309,24 @@
 
     <!-- DAILY LIST VIEW -->
     <div id="view-daily" class="hidden space-y-6">
-      <div class="bg-white/80 backdrop-blur-md p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+      <div class="glass-card p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
         <div class="flex flex-col sm:flex-row justify-between items-center gap-3">
           <div class="flex items-center gap-3">
-            <input type="date" id="daily-date-picker" onchange="renderDailyView()" class="px-3 py-1.5 border border-slate-200 rounded-lg text-sm font-semibold bg-white/80">
+            <input type="date" id="daily-date-picker" onchange="renderDailyView()" class="px-3 py-1.5 border rounded-lg text-sm font-semibold bg-white">
             <span id="daily-date-label" class="text-sm font-bold text-slate-700"></span>
           </div>
           <div class="flex items-center gap-2">
             <button onclick="openManageModal()" class="px-3.5 py-1.5 text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg shadow-sm flex items-center gap-1.5">
               <i class="fa-solid fa-pen-to-square"></i> Manage / Edit List
             </button>
-            <select id="daily-entry-type" class="px-3 py-2 border border-slate-200 rounded-xl text-xs font-bold bg-white/80">
+            <select id="daily-entry-type" class="px-3 py-2 border rounded-xl text-xs font-bold bg-white">
               <option value="CHECKOUT">Check-Out</option>
               <option value="CHECKIN">Check-In</option>
               <option value="BOTH">Both (Auto-Sort)</option>
             </select>
           </div>
         </div>
-        <textarea id="daily-input" rows="3" placeholder="Enter units here (e.g. EC1113 | EC1113 2)..." class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm font-mono bg-white/80 focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+        <textarea id="daily-input" rows="3" placeholder="Enter units here (e.g. EC1113 | EC1113 2)..." class="w-full px-4 py-3 border rounded-xl text-sm font-mono bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
         <div class="flex justify-between items-center">
           <button onclick="sortDailyAlphabetical()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold border border-slate-300">
             <i class="fa-solid fa-arrow-down-a-z"></i> Sort A-Z
@@ -318,8 +337,8 @@
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <!-- FLORENCE SCHEDULE -->
-        <div class="bg-white/80 backdrop-blur-md p-4 rounded-2xl border border-pink-200 shadow-sm">
-          <div class="flex justify-between items-center mb-3 border-b border-slate-200 pb-2">
+        <div class="glass-card p-4 rounded-2xl border border-pink-200 shadow-sm">
+          <div class="flex justify-between items-center mb-3 border-b pb-2">
             <h3 class="text-sm font-bold text-pink-700">Florence Schedule</h3>
             <button onclick="uncheckAllForCleaner('FLORENCE')" class="text-[10px] px-2.5 py-1 bg-rose-50 hover:bg-rose-100 text-rose-700 rounded-lg border border-rose-200 font-bold">
               <i class="fa-solid fa-rotate-left"></i> Checking Done
@@ -344,8 +363,8 @@
         </div>
 
         <!-- YANG SCHEDULE -->
-        <div class="bg-white/80 backdrop-blur-md p-4 rounded-2xl border border-sky-200 shadow-sm">
-          <div class="flex justify-between items-center mb-3 border-b border-slate-200 pb-2">
+        <div class="glass-card p-4 rounded-2xl border border-sky-200 shadow-sm">
+          <div class="flex justify-between items-center mb-3 border-b pb-2">
             <h3 class="text-sm font-bold text-sky-700">Yang Schedule</h3>
             <button onclick="uncheckAllForCleaner('YANG')" class="text-[10px] px-2.5 py-1 bg-sky-50 hover:bg-sky-100 text-sky-700 rounded-lg border border-sky-200 font-bold">
               <i class="fa-solid fa-rotate-left"></i> Checking Done
@@ -373,21 +392,21 @@
 
     <!-- WEEKLY LIST VIEW -->
     <div id="view-weekly" class="hidden space-y-6">
-      <div class="bg-white/80 backdrop-blur-md p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+      <div class="glass-card p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
         <div class="flex flex-col sm:flex-row justify-between items-center gap-3">
           <div class="flex items-center gap-3">
             <span class="text-xs font-bold text-slate-600">Select Target Date:</span>
-            <input type="date" id="weekly-target-date" class="px-3 py-1.5 border border-slate-200 rounded-lg text-sm font-semibold bg-white/80">
+            <input type="date" id="weekly-target-date" class="px-3 py-1.5 border border-slate-200 rounded-lg text-sm font-semibold bg-white">
           </div>
           <div class="flex items-center gap-2">
-            <select id="weekly-entry-type" class="px-3 py-2 border border-slate-200 rounded-xl text-xs font-bold bg-white/80">
+            <select id="weekly-entry-type" class="px-3 py-2 border border-slate-200 rounded-xl text-xs font-bold bg-white">
               <option value="CHECKOUT">Check-Out</option>
               <option value="CHECKIN">Check-In</option>
               <option value="BOTH">Both (Auto-Sort)</option>
             </select>
           </div>
         </div>
-        <textarea id="weekly-input" rows="3" placeholder="Enter weekly units here (e.g. EC1113 | EC1113 2)..." class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm font-mono bg-white/80 focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+        <textarea id="weekly-input" rows="3" placeholder="Enter weekly units here (e.g. EC1113 | EC1113 2)..." class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm font-mono bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
         <div class="flex justify-end">
           <button onclick="processWeeklyInput()" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold shadow-md">
             <i class="fa-solid fa-filter"></i> Sort to Weekly List
@@ -395,10 +414,10 @@
         </div>
       </div>
 
-      <div class="bg-white/80 backdrop-blur-md p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row justify-between items-center gap-3">
+      <div class="glass-card p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row justify-between items-center gap-3">
         <div class="flex items-center gap-3">
           <span class="text-xs font-bold text-slate-600">Select Week Anchor:</span>
-          <input type="date" id="weekly-picker" onchange="renderWeeklyView()" class="px-3 py-1.5 border border-slate-200 rounded-lg text-sm font-semibold bg-white/80">
+          <input type="date" id="weekly-picker" onchange="renderWeeklyView()" class="px-3 py-1.5 border border-slate-200 rounded-lg text-sm font-semibold bg-white">
         </div>
         <div class="flex items-center gap-2">
           <button onclick="openManageModal()" class="px-3.5 py-1.5 text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg shadow-sm flex items-center gap-1.5">
@@ -412,7 +431,7 @@
       <!-- FLORENCE WEEKLY TAB -->
       <div id="weekly-florence-section" class="space-y-6">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div class="bg-white/80 backdrop-blur-md rounded-2xl border border-rose-200 overflow-hidden shadow-sm">
+          <div class="glass-card rounded-2xl border border-rose-200 overflow-hidden shadow-sm">
             <div class="bg-gradient-to-r from-rose-500 to-pink-500 px-4 py-2.5 font-bold text-white text-xs uppercase tracking-wider flex justify-between items-center">
               <span>Florence - Check-Out List</span>
               <button onclick="copyListFromElement('f-weekly-checkout-grid')" class="no-copy px-2.5 py-1 text-[10px] bg-white/20 hover:bg-white/30 text-white font-bold rounded"><i class="fa-regular fa-copy"></i> Copy</button>
@@ -420,7 +439,7 @@
             <div id="f-weekly-checkout-grid" class="weekly-section-bg fifteen-grid grid grid-cols-7 divide-x divide-slate-200 text-xs min-h-[300px] p-0.5 w-full"></div>
           </div>
 
-          <div class="bg-white/80 backdrop-blur-md rounded-2xl border border-rose-200 overflow-hidden shadow-sm">
+          <div class="glass-card rounded-2xl border border-rose-200 overflow-hidden shadow-sm">
             <div class="bg-gradient-to-r from-rose-600 to-pink-600 px-4 py-2.5 font-bold text-white text-xs uppercase tracking-wider flex justify-between items-center">
               <span>Florence - Check-In List</span>
               <button onclick="copyListFromElement('f-weekly-checkin-grid')" class="no-copy px-2.5 py-1 text-[10px] bg-white/20 hover:bg-white/30 text-white font-bold rounded"><i class="fa-regular fa-copy"></i> Copy</button>
@@ -433,7 +452,7 @@
       <!-- YANG WEEKLY TAB -->
       <div id="weekly-yang-section" class="hidden space-y-6">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div class="bg-white/80 backdrop-blur-md rounded-2xl border border-cyan-200 overflow-hidden shadow-sm">
+          <div class="glass-card rounded-2xl border border-cyan-200 overflow-hidden shadow-sm">
             <div class="bg-gradient-to-r from-cyan-600 to-teal-600 px-4 py-2.5 font-bold text-white text-xs uppercase tracking-wider flex justify-between items-center">
               <span>Yang - Check-Out List</span>
               <button onclick="copyListFromElement('y-weekly-checkout-grid')" class="no-copy px-2.5 py-1 text-[10px] bg-white/20 hover:bg-white/30 text-white font-bold rounded"><i class="fa-regular fa-copy"></i> Copy</button>
@@ -441,7 +460,7 @@
             <div id="y-weekly-checkout-grid" class="weekly-section-bg fifteen-grid grid grid-cols-7 divide-x divide-slate-200 text-xs min-h-[300px] p-0.5 w-full"></div>
           </div>
 
-          <div class="bg-white/80 backdrop-blur-md rounded-2xl border border-cyan-200 overflow-hidden shadow-sm">
+          <div class="glass-card rounded-2xl border border-cyan-200 overflow-hidden shadow-sm">
             <div class="bg-gradient-to-r from-cyan-700 to-blue-600 px-4 py-2.5 font-bold text-white text-xs uppercase tracking-wider flex justify-between items-center">
               <span>Yang - Check-In List</span>
               <button onclick="copyListFromElement('y-weekly-checkin-grid')" class="no-copy px-2.5 py-1 text-[10px] bg-white/20 hover:bg-white/30 text-white font-bold rounded"><i class="fa-regular fa-copy"></i> Copy</button>
@@ -456,7 +475,7 @@
 
   <!-- MANAGE MODAL -->
   <div id="manage-modal" class="hidden fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl max-w-xl w-full p-6 shadow-2xl space-y-5 border border-slate-100">
+    <div class="glass-card rounded-2xl max-w-xl w-full p-6 shadow-2xl space-y-5 border border-slate-100">
       <div class="flex justify-between items-center border-b pb-3">
         <h3 class="text-base font-bold text-slate-900"><i class="fa-solid fa-pen-to-square text-indigo-600"></i> Manage / Edit Schedule Entries</h3>
         <button onclick="closeManageModal()" class="text-slate-400 hover:text-slate-600 text-lg"><i class="fa-solid fa-xmark"></i></button>
@@ -485,7 +504,7 @@
         </div>
 
         <div class="flex gap-2 bg-slate-50 p-3 rounded-xl border border-slate-200">
-          <input type="text" id="modal-add-input" placeholder="Add unit (e.g. AU6514 RS or AU6514 2 RS)" class="flex-1 px-3 py-1.5 border border-slate-200 rounded-lg text-xs font-mono">
+          <input type="text" id="modal-add-input" placeholder="Add unit (e.g. AU6514 RS or AU6514 2 RS)" class="flex-1 px-3 py-1.5 border rounded-lg text-xs font-mono">
           <button onclick="addModalEntry()" class="px-4 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-lg">+ Add Entry</button>
         </div>
 
@@ -883,7 +902,7 @@
       sortedDB.forEach((item) => {
         const originalIndex = state.masterDB.findIndex(m => m.code === item.code);
         const li = document.createElement('li');
-        li.className = "bg-white/90 backdrop-blur-sm p-3 rounded-xl border border-slate-200 space-y-2 shadow-2xs";
+        li.className = "glass-card p-3 rounded-xl border border-slate-200 space-y-2 shadow-2xs";
 
         const isBedroomsNone = item.bedrooms.trim().toUpperCase() === 'NONE' ? 'input-none-red' : '';
         const isParkingNone = item.parking.trim().toUpperCase() === 'NONE' ? 'input-none-red' : '';
@@ -1147,7 +1166,7 @@
         const isChecked = item.checked ? true : false;
         
         const div = document.createElement('div');
-        div.className = `unit-row-container bg-white/90 backdrop-blur-sm p-2.5 rounded-lg border border-slate-200 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 my-1 transition-all ${isChecked ? 'opacity-40 line-through bg-slate-100' : ''}`;
+        div.className = `unit-row-container glass-card p-2.5 rounded-lg border border-slate-200 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 my-1 transition-all ${isChecked ? 'opacity-40 line-through bg-slate-100' : ''}`;
         
         if (item.type === 'CHECKOUT') {
           div.innerHTML = `
