@@ -15,6 +15,7 @@
       background: #0f172a; 
       color: #f8fafc;
       min-height: 100vh;
+      scroll-behavior: smooth;
     }
     
     .unit-florence { color: #f87171 !important; font-weight: 800; } 
@@ -45,9 +46,9 @@
     }
 
     .tag-nights { background-color: #fef08a !important; color: #854d0e !important; } 
-    .tag-rs { background-color: #f472b6 !important; color: #500724 !important; font-weight: 900 !important; box-shadow: 0 0 8px rgba(244, 114, 182, 0.4); } 
-    .tag-ls { background-color: #4ade80 !important; color: #052e16 !important; font-weight: 900 !important; box-shadow: 0 0 8px rgba(74, 222, 128, 0.4); } 
-    .tag-su { background-color: #fb923c !important; color: #431407 !important; font-weight: 900 !important; box-shadow: 0 0 8px rgba(251, 146, 60, 0.4); } 
+    .tag-rs { background-color: #f472b6 !important; color: #500724 !important; font-weight: 900 !important; } 
+    .tag-ls { background-color: #4ade80 !important; color: #052e16 !important; font-weight: 900 !important; } 
+    .tag-su { background-color: #fb923c !important; color: #431407 !important; font-weight: 900 !important; } 
 
     .count-pill {
       background-color: #312e81;
@@ -86,10 +87,17 @@
 
     .glass-card {
       background: rgba(30, 41, 59, 0.85) !important;
-      backdrop-filter: blur(10px) !important;
-      -webkit-backdrop-filter: blur(10px) !important;
+      backdrop-filter: blur(8px) !important;
+      -webkit-backdrop-filter: blur(8px) !important;
       border: 1px solid rgba(255, 255, 255, 0.1) !important;
       color: #f1f5f9;
+    }
+
+    /* Scroll Optimization */
+    .unit-row-container {
+      content-visibility: auto;
+      contain-intrinsic-size: auto 60px;
+      will-change: transform;
     }
     
     .weekly-section-bg { background: rgba(15, 23, 42, 0.6) !important; }
@@ -806,6 +814,8 @@
         const container = document.getElementById(gridId);
         container.innerHTML = '';
 
+        const frag = document.createDocumentFragment();
+
         for(let d = startDay; d <= endDay; d++) {
           const dateStr = `${year}-${month}-${String(d).padStart(2, '0')}`;
           const dateObj = new Date(year, month - 1, d);
@@ -827,8 +837,9 @@
             col.appendChild(row);
           });
 
-          container.appendChild(col);
+          frag.appendChild(col);
         }
+        container.appendChild(frag);
       };
 
       fillGrid('flo-grid-1a', 1, 15, 'FLORENCE');
@@ -875,10 +886,13 @@
         }
       });
 
+      const floFrag = document.createDocumentFragment();
+      const yangFrag = document.createDocumentFragment();
+
       sortedDB.forEach((item) => {
         const originalIndex = state.masterDB.findIndex(m => m.code === item.code);
         const li = document.createElement('li');
-        li.className = "glass-card p-3 rounded-xl border border-slate-800 space-y-2 shadow-2xs";
+        li.className = "glass-card p-3 rounded-xl border border-slate-800 space-y-2 shadow-2xs unit-row-container";
 
         const isBedroomsNone = item.bedrooms.trim().toUpperCase() === 'NONE' ? 'input-none-red' : '';
         const isParkingNone = item.parking.trim().toUpperCase() === 'NONE' ? 'input-none-red' : '';
@@ -907,9 +921,12 @@
             </div>
           </div>
         `;
-        if (item.cleaner === 'FLORENCE') florenceList.appendChild(li);
-        else yangList.appendChild(li);
+        if (item.cleaner === 'FLORENCE') floFrag.appendChild(li);
+        else yangFrag.appendChild(li);
       });
+
+      florenceList.appendChild(floFrag);
+      yangList.appendChild(yangFrag);
       updateMasterCount();
     }
 
@@ -1089,7 +1106,6 @@
       const item = state.schedules[date].find(i => i.id === id);
       if (item) {
         item[field] = value;
-        // Non-blocking save to prevent typing lag
         setTimeout(saveState, 50);
       }
     }
@@ -1138,7 +1154,6 @@
       const items = state.schedules[date] || [];
       let counts = { fOut: 0, fIn: 0, yOut: 0, yIn: 0 };
 
-      // Batch rendering using DocumentFragment for maximum performance
       const fOutFrag = document.createDocumentFragment();
       const fInFrag = document.createDocumentFragment();
       const yOutFrag = document.createDocumentFragment();
@@ -1253,6 +1268,11 @@
 
       [fOutGrid, fInGrid, yOutGrid, yInGrid].forEach(g => g.innerHTML = '');
 
+      const fOutFrag = document.createDocumentFragment();
+      const fInFrag = document.createDocumentFragment();
+      const yOutFrag = document.createDocumentFragment();
+      const yInFrag = document.createDocumentFragment();
+
       weekDates.forEach((dateStr) => {
         const dateObj = new Date(dateStr);
         const dayLabel = dateObj.toLocaleDateString('en-US', { weekday: 'short', month: 'numeric', day: 'numeric' });
@@ -1269,7 +1289,7 @@
           items.forEach(item => {
             const parsed = formatUnitText(item.raw || item.formatted || item.unit, type === 'CHECKIN');
             const row = document.createElement('div');
-            row.className = "bg-slate-900 px-0.5 py-1 rounded border border-slate-800 shadow-2xs flex justify-center items-center overflow-hidden my-0.5";
+            row.className = "bg-slate-900 px-0.5 py-1 rounded border border-slate-800 shadow-2xs flex justify-center items-center overflow-hidden my-0.5 unit-row-container";
             row.innerHTML = `<div class="unit-text ${cleaner === 'FLORENCE' ? 'unit-florence' : 'unit-yang'}" data-unit-clean="${parsed.raw}">${parsed.formatted}</div>`;
             col.appendChild(row);
           });
@@ -1277,11 +1297,16 @@
           return col;
         };
 
-        fOutGrid.appendChild(createCol('FLORENCE', 'CHECKOUT'));
-        fInGrid.appendChild(createCol('FLORENCE', 'CHECKIN'));
-        yOutGrid.appendChild(createCol('YANG', 'CHECKOUT'));
-        yInGrid.appendChild(createCol('YANG', 'CHECKIN'));
+        fOutFrag.appendChild(createCol('FLORENCE', 'CHECKOUT'));
+        fInFrag.appendChild(createCol('FLORENCE', 'CHECKIN'));
+        yOutFrag.appendChild(createCol('YANG', 'CHECKOUT'));
+        yInFrag.appendChild(createCol('YANG', 'CHECKIN'));
       });
+
+      fOutGrid.appendChild(fOutFrag);
+      fInGrid.appendChild(fInFrag);
+      yOutGrid.appendChild(yOutFrag);
+      yInGrid.appendChild(yInFrag);
     }
 
     const today = new Date().toISOString().split('T')[0];
