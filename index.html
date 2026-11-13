@@ -122,14 +122,17 @@
         </div>
 
         <nav class="flex space-x-1 bg-slate-900/80 p-1.5 rounded-xl border border-slate-700">
-          <button onclick="switchTab('fifteen')" id="tab-fifteen" class="px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-indigo-600 text-white shadow-sm">
-            <i class="fa-solid fa-calendar-days"></i> 15-Day View
+          <button onclick="switchTab('reservations')" id="tab-reservations" class="px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-indigo-600 text-white shadow-sm">
+            <i class="fa-solid fa-file-arrow-down"></i> New Reservation
+          </button>
+          <button onclick="switchTab('daily')" id="tab-daily" class="px-3.5 py-1.5 text-xs font-semibold rounded-lg text-slate-300 hover:text-white">
+            <i class="fa-solid fa-calendar-day"></i> Daily List
           </button>
           <button onclick="switchTab('weekly')" id="tab-weekly" class="px-3.5 py-1.5 text-xs font-semibold rounded-lg text-slate-300 hover:text-white">
             <i class="fa-solid fa-calendar-week"></i> Weekly List
           </button>
-          <button onclick="switchTab('daily')" id="tab-daily" class="px-3.5 py-1.5 text-xs font-semibold rounded-lg text-slate-300 hover:text-white">
-            <i class="fa-solid fa-calendar-day"></i> Daily List
+          <button onclick="switchTab('fifteen')" id="tab-fifteen" class="px-3.5 py-1.5 text-xs font-semibold rounded-lg text-slate-300 hover:text-white">
+            <i class="fa-solid fa-calendar-days"></i> 15-Day View
           </button>
           <button onclick="switchTab('master')" id="tab-master" class="px-3.5 py-1.5 text-xs font-semibold rounded-lg text-slate-300 hover:text-white">
             <i class="fa-solid fa-database"></i> Master DB (<span id="master-count">0</span>/60)
@@ -142,7 +145,7 @@
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full space-y-6">
 
     <!-- 15-DAY VIEW -->
-    <div id="view-fifteen" class="space-y-6">
+    <div id="view-fifteen" class="hidden space-y-6">
       <div class="glass-card p-4 rounded-2xl shadow-sm flex flex-col sm:flex-row justify-between items-center gap-3">
         <div class="flex items-center gap-3">
           <span class="text-xs font-bold text-slate-300">Select Month:</span>
@@ -377,6 +380,80 @@
       </div>
     </div>
 
+    <!-- NEW RESERVATIONS TAB VIEW -->
+    <div id="view-reservations" class="space-y-6">
+      <div class="glass-card p-6 rounded-2xl shadow-sm space-y-4 border border-indigo-900/50">
+        <div class="flex items-center gap-2 border-b border-slate-800 pb-3">
+          <i class="fa-solid fa-file-arrow-down text-indigo-400 text-lg"></i>
+          <div>
+            <h2 class="text-base font-bold text-slate-100">Add New Reservation</h2>
+            <p class="text-xs text-slate-400">Enter the unit code, check-in date, check-out date, and optional tags. Nights are auto-counted and sorted into schedules.</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
+          <div>
+            <label class="block text-xs font-bold text-slate-300 mb-1">Unit Code:</label>
+            <input type="text" id="res-unit-code" maxlength="15" placeholder="e.g. AU6514" class="w-full px-3 py-2 border border-slate-700 rounded-xl text-sm font-mono bg-slate-900 text-white uppercase focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-300 mb-1">Check-In Date:</label>
+            <input type="date" id="res-checkin-date" maxlength="15" class="w-full px-3 py-2 border border-slate-700 rounded-xl text-sm font-semibold bg-slate-900 text-white">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-300 mb-1">Check-Out Date:</label>
+            <input type="date" id="res-checkout-date" maxlength="15" class="w-full px-3 py-2 border border-slate-700 rounded-xl text-sm font-semibold bg-slate-900 text-white">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-300 mb-1">Tag / Note (e.g., RS, LS, SU):</label>
+            <input type="text" id="res-tag-input" maxlength="15" placeholder="e.g. RS" class="w-full px-3 py-2 border border-slate-700 rounded-xl text-sm font-mono bg-slate-900 text-white uppercase focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          </div>
+        </div>
+
+        <div class="flex justify-end gap-3 pt-2">
+          <button onclick="clearReservationForm()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs font-bold">Clear Form</button>
+          <button onclick="processSingleReservation()" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold shadow-md flex items-center gap-2">
+            <i class="fa-solid fa-bolt"></i> Save & Sort Reservation
+          </button>
+        </div>
+      </div>
+
+      <!-- RESERVATIONS QUEUE LIST -->
+      <div class="glass-card p-6 rounded-2xl shadow-sm space-y-4">
+        <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+          <h3 class="text-sm font-bold text-indigo-300 flex items-center gap-2">
+            <i class="fa-solid fa-list-check"></i> Processed Reservations Log (<span id="reservations-count">0</span>)
+          </h3>
+          <div class="flex gap-2">
+            <button onclick="clearReservationsLog()" class="px-3 py-1 bg-rose-950 hover:bg-rose-900 text-rose-300 rounded-lg text-xs font-bold border border-rose-900">
+              <i class="fa-solid fa-trash-can"></i> Clear Queue List
+            </button>
+          </div>
+        </div>
+        
+        <div class="overflow-x-auto custom-scrollbar">
+          <table class="w-full text-left text-xs text-slate-300">
+            <thead class="bg-slate-900/90 text-slate-400 uppercase font-bold border-b border-slate-800">
+              <tr>
+                <th class="p-3">Unit Code</th>
+                <th class="p-3">Cleaner</th>
+                <th class="p-3">Check-In</th>
+                <th class="p-3">Check-Out</th>
+                <th class="p-3">Nights</th>
+                <th class="p-3">Tag</th>
+                <th class="p-3 text-right">Action</th>
+              </tr>
+            </thead>
+            <tbody id="reservations-log-tbody" class="divide-y divide-slate-800 font-mono">
+              <tr>
+                <td colspan="7" class="p-4 text-center text-slate-500 italic font-sans">No reservations added in this queue yet.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
     <!-- WEEKLY LIST VIEW -->
     <div id="view-weekly" class="hidden space-y-6">
       <div class="glass-card p-5 rounded-2xl shadow-sm space-y-4">
@@ -521,9 +598,11 @@
     ];
 
     let storedMaster = JSON.parse(localStorage.getItem('masterDB'));
+    let storedReservationsLog = JSON.parse(localStorage.getItem('reservationsLog'));
     let state = {
       masterDB: (storedMaster && storedMaster.length > 0) ? storedMaster : DEFAULT_MASTER,
       schedules: JSON.parse(localStorage.getItem('schedules')) || {},
+      reservationsLog: (storedReservationsLog && Array.isArray(storedReservationsLog)) ? storedReservationsLog : [],
       activeCleanerTab: 'FLORENCE'
     };
 
@@ -536,6 +615,7 @@
     function saveState() {
       localStorage.setItem('masterDB', JSON.stringify(state.masterDB));
       localStorage.setItem('schedules', JSON.stringify(state.schedules));
+      localStorage.setItem('reservationsLog', JSON.stringify(state.reservationsLog));
       updateMasterCount();
     }
 
@@ -563,10 +643,12 @@
               if (item.bedrooms === undefined) item.bedrooms = "";
               if (item.parking === undefined) item.parking = "";
             });
+            if (!state.reservationsLog) state.reservationsLog = [];
             saveState();
             renderMasterDB();
             renderWeeklyView();
             render15DayView();
+            renderReservationsLog();
             alert("Backup imported successfully!");
           } else {
             alert("Invalid backup file format.");
@@ -635,7 +717,7 @@
     }
 
     function switchTab(tab) {
-      ['master', 'daily', 'weekly', 'fifteen'].forEach(t => {
+      ['master', 'daily', 'weekly', 'fifteen', 'reservations'].forEach(t => {
         const el = document.getElementById(`view-${t}`);
         if(el) el.classList.add('hidden');
         const tabBtn = document.getElementById(`tab-${t}`);
@@ -649,6 +731,7 @@
       if(tab === 'daily') renderDailyView();
       if(tab === 'weekly') renderWeeklyView();
       if(tab === 'fifteen') render15DayView();
+      if(tab === 'reservations') renderReservationsLog();
     }
 
     function openManageModal() {
@@ -1004,6 +1087,132 @@
       return match ? match.cleaner : 'FLORENCE';
     }
 
+    function addScheduleItemDirect(date, unitCode, type, tagStr) {
+      if (!date || !unitCode) return;
+      if (!state.schedules[date]) state.schedules[date] = [];
+
+      const rawInput = `${unitCode} ${tagStr}`.trim();
+      const { raw, formatted } = formatUnitText(rawInput, type === 'CHECKIN');
+      const cleaner = getCleanerForUnit(unitCode);
+
+      state.schedules[date].push({
+        id: Date.now() + Math.random(),
+        raw,
+        unit: unitCode,
+        formatted,
+        cleaner,
+        type,
+        checked: false,
+        lastCode: '',
+        newCode: '',
+        notes: ''
+      });
+      saveState();
+    }
+
+    function processSingleReservation() {
+      const unitCode = document.getElementById('res-unit-code').value.trim().toUpperCase();
+      const checkinDate = document.getElementById('res-checkin-date').value;
+      const checkoutDate = document.getElementById('res-checkout-date').value;
+      const tagStr = document.getElementById('res-tag-input').value.trim().toUpperCase();
+
+      if (!unitCode || !checkinDate || !checkoutDate) {
+        alert("Please fill in the unit code, check-in date, and check-out date.");
+        return;
+      }
+
+      const d1 = new Date(checkinDate);
+      const d2 = new Date(checkoutDate);
+      const diffTime = d2 - d1;
+      const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
+
+      if (diffDays <= 0) {
+        alert("Check-out date must be after check-in date.");
+        return;
+      }
+
+      const nightsTag = `${diffDays}N`;
+      const combinedTag = tagStr ? `${nightsTag} ${tagStr}` : nightsTag;
+      const cleaner = getCleanerForUnit(unitCode);
+
+      // Add Check-In entry on check-in date with counted nights
+      addScheduleItemDirect(checkinDate, unitCode, 'CHECKIN', combinedTag);
+      // Add Check-Out entry on check-out date
+      addScheduleItemDirect(checkoutDate, unitCode, 'CHECKOUT', tagStr);
+
+      // Add to reservations log queue
+      state.reservationsLog.unshift({
+        id: Date.now() + Math.random(),
+        unitCode,
+        checkinDate,
+        checkoutDate,
+        nights: diffDays,
+        tag: tagStr,
+        cleaner
+      });
+
+      saveState();
+      renderDailyView();
+      renderWeeklyView();
+      render15DayView();
+      renderReservationsLog();
+      
+      alert(`Reservation for ${unitCode} successfully sorted!\n- Check-In added to ${checkinDate} (${diffDays}N)\n- Check-Out added to ${checkoutDate}`);
+      clearReservationForm();
+    }
+
+    function renderReservationsLog() {
+      const tbody = document.getElementById('reservations-log-tbody');
+      const countEl = document.getElementById('reservations-count');
+      tbody.innerHTML = '';
+      countEl.innerText = state.reservationsLog.length;
+
+      if (state.reservationsLog.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-slate-500 italic font-sans">No reservations added in this queue yet.</td></tr>`;
+        return;
+      }
+
+      const frag = document.createDocumentFragment();
+      state.reservationsLog.forEach((res) => {
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-slate-900/50 transition-all";
+        tr.innerHTML = `
+          <td class="p-3 font-bold ${res.cleaner === 'FLORENCE' ? 'unit-florence' : 'unit-yang'}">${res.unitCode}</td>
+          <td class="p-3 text-slate-300">${res.cleaner}</td>
+          <td class="p-3 text-slate-300">${res.checkinDate}</td>
+          <td class="p-3 text-slate-300">${res.checkoutDate}</td>
+          <td class="p-3"><span class="tag-nights">${res.nights}N</span></td>
+          <td class="p-3">${res.tag ? `<span class="tag-rs">${res.tag}</span>` : '<span class="text-slate-500">—</span>'}</td>
+          <td class="p-3 text-right">
+            <button onclick="deleteReservationLogItem(${res.id})" class="px-2 py-1 bg-rose-950/60 hover:bg-rose-900 text-rose-300 rounded border border-rose-900 text-[10px] font-sans font-bold">Remove</button>
+          </td>
+        `;
+        frag.appendChild(tr);
+      });
+      tbody.appendChild(frag);
+    }
+
+    function deleteReservationLogItem(id) {
+      state.reservationsLog = state.reservationsLog.filter(r => r.id !== id);
+      saveState();
+      renderReservationsLog();
+    }
+
+    function clearReservationsLog() {
+      if (confirm("Are you sure you want to clear the processed reservations list queue? (Your sorted calendars will remain untouched.)")) {
+        state.reservationsLog = [];
+        saveState();
+        renderReservationsLog();
+      }
+    }
+
+    function clearReservationForm() {
+      document.getElementById('res-unit-code').value = '';
+      document.getElementById('res-checkin-date').value = new Date().toISOString().split('T')[0];
+      document.getElementById('res-checkout-date').value = new Date().toISOString().split('T')[0];
+      document.getElementById('res-tag-input').value = '';
+    }
+
     function processInputLines(date, text, selectedType) {
       if (!date || !text.trim()) return;
       if (!state.schedules[date]) state.schedules[date] = [];
@@ -1315,12 +1524,15 @@
     document.getElementById('daily-date-picker').value = today;
     document.getElementById('weekly-picker').value = today;
     document.getElementById('weekly-target-date').value = today;
+    document.getElementById('res-checkin-date').value = today;
+    document.getElementById('res-checkout-date').value = today;
     document.getElementById('fifteen-month-picker').value = currentMonth;
     
     saveState();
     renderMasterDB();
     renderWeeklyView();
     render15DayView();
+    renderReservationsLog();
   </script>
 </body>
 </html>
