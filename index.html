@@ -12,7 +12,7 @@
     
     body { 
       font-family: 'Plus Jakarta Sans', sans-serif; 
-      background: #0f172a; /* Deep Dark Slate Background */
+      background: #0f172a; 
       color: #f8fafc;
       min-height: 100vh;
     }
@@ -45,8 +45,6 @@
     }
 
     .tag-nights { background-color: #fef08a !important; color: #854d0e !important; } 
-    
-    /* ENHANCED VIBRANT NEON TAGS WITH GLOW */
     .tag-rs { background-color: #f472b6 !important; color: #500724 !important; font-weight: 900 !important; box-shadow: 0 0 8px rgba(244, 114, 182, 0.4); } 
     .tag-ls { background-color: #4ade80 !important; color: #052e16 !important; font-weight: 900 !important; box-shadow: 0 0 8px rgba(74, 222, 128, 0.4); } 
     .tag-su { background-color: #fb923c !important; color: #431407 !important; font-weight: 900 !important; box-shadow: 0 0 8px rgba(251, 146, 60, 0.4); } 
@@ -86,7 +84,6 @@
       font-weight: 700;
     }
 
-    /* DARK GLASS CARDS */
     .glass-card {
       background: rgba(30, 41, 59, 0.85) !important;
       backdrop-filter: blur(10px) !important;
@@ -96,8 +93,6 @@
     }
     
     .weekly-section-bg { background: rgba(15, 23, 42, 0.6) !important; }
-
-    /* UI UTILITIES */
     .no-copy { user-select: none; }
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
     .custom-scrollbar::-webkit-scrollbar-track { background: #1e293b; border-radius: 4px; }
@@ -153,7 +148,6 @@
         </div>
       </div>
 
-      <!-- SPECIAL CLEANING SUMMARY & FILTER SECTION (15-DAY VIEW) -->
       <div class="glass-card p-5 rounded-2xl shadow-sm space-y-3">
         <h3 class="text-xs font-bold text-indigo-300 uppercase tracking-wider flex items-center gap-2">
           <i class="fa-solid fa-filter text-indigo-400"></i> Special Cleaning Summary (<span id="summary-month-label">Selected Month</span>)
@@ -180,40 +174,38 @@
         </div>
       </div>
 
-      <!-- FLORENCE 15-DAY SECTION -->
       <div id="fifteen-flo-section" class="space-y-6">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div id="flo-box-1" class="glass-card rounded-2xl overflow-hidden shadow-sm">
+          <div class="glass-card rounded-2xl overflow-hidden shadow-sm">
             <div class="bg-gradient-to-r from-rose-600 to-red-700 px-4 py-2.5 font-bold text-white text-xs uppercase tracking-wider flex justify-between items-center">
-              <span id="label-flo-15a">OCTOBER 1-15 CLEANING A (FLO)</span>
-              <button onclick="copyListFromElement('flo-grid-1a')" class="no-copy px-2 py-0.5 text-[10px] bg-white/20 hover:bg-white/35 text-white font-bold rounded"><i class="fa-regular fa-copy"></i> Copy</button>
+              <span id="label-flo-15a">CLEANING A (FLO)</span>
+              <button onclick="copyListFromElement('flo-grid-1a')" class="no-copy px-2 py-0.5 text-[10px] bg-white/25 hover:bg-white/40 text-white font-bold rounded"><i class="fa-regular fa-copy"></i> Copy</button>
             </div>
             <div id="flo-grid-1a" class="weekly-section-bg fifteen-grid grid grid-cols-8 divide-x divide-slate-800 text-xs min-h-[300px] p-0.5 w-full"></div>
           </div>
-          <div id="flo-box-2" class="glass-card rounded-2xl overflow-hidden shadow-sm">
+          <div class="glass-card rounded-2xl overflow-hidden shadow-sm">
             <div class="bg-gradient-to-r from-rose-700 to-pink-700 px-4 py-2.5 font-bold text-white text-xs uppercase tracking-wider flex justify-between items-center">
-              <span id="label-flo-15b">OCTOBER 16-31 CLEANING A (FLO)</span>
-              <button onclick="copyListFromElement('flo-grid-1b')" class="no-copy px-2 py-0.5 text-[10px] bg-white/20 hover:bg-white/35 text-white font-bold rounded"><i class="fa-regular fa-copy"></i> Copy</button>
+              <span id="label-flo-15b">CLEANING B (FLO)</span>
+              <button onclick="copyListFromElement('flo-grid-1b')" class="no-copy px-2 py-0.5 text-[10px] bg-white/25 hover:bg-white/40 text-white font-bold rounded"><i class="fa-regular fa-copy"></i> Copy</button>
             </div>
             <div id="flo-grid-1b" class="weekly-section-bg fifteen-grid grid grid-cols-8 divide-x divide-slate-800 text-xs min-h-[300px] p-0.5 w-full"></div>
           </div>
         </div>
       </div>
 
-      <!-- YANG 15-DAY SECTION -->
       <div id="fifteen-yang-section" class="hidden space-y-6">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div id="yang-box-1" class="glass-card rounded-2xl overflow-hidden shadow-sm">
+          <div class="glass-card rounded-2xl overflow-hidden shadow-sm">
             <div class="bg-gradient-to-r from-cyan-700 to-teal-700 px-4 py-2.5 font-bold text-white text-xs uppercase tracking-wider flex justify-between items-center">
-              <span id="label-yang-15a">OCTOBER 1-15 CLEANING (YANG)</span>
-              <button onclick="copyListFromElement('yang-grid-1a')" class="no-copy px-2 py-0.5 text-[10px] bg-white/20 hover:bg-white/35 text-white font-bold rounded"><i class="fa-regular fa-copy"></i> Copy</button>
+              <span id="label-yang-15a">CLEANING A (YANG)</span>
+              <button onclick="copyListFromElement('yang-grid-1a')" class="no-copy px-2 py-0.5 text-[10px] bg-white/25 hover:bg-white/40 text-white font-bold rounded"><i class="fa-regular fa-copy"></i> Copy</button>
             </div>
             <div id="yang-grid-1a" class="weekly-section-bg fifteen-grid grid grid-cols-8 divide-x divide-slate-800 text-xs min-h-[300px] p-0.5 w-full"></div>
           </div>
-          <div id="yang-box-2" class="glass-card rounded-2xl overflow-hidden shadow-sm">
+          <div class="glass-card rounded-2xl overflow-hidden shadow-sm">
             <div class="bg-gradient-to-r from-cyan-800 to-blue-700 px-4 py-2.5 font-bold text-white text-xs uppercase tracking-wider flex justify-between items-center">
-              <span id="label-yang-15b">OCTOBER 16-31 CLEANING (YANG)</span>
-              <button onclick="copyListFromElement('yang-grid-1b')" class="no-copy px-2 py-0.5 text-[10px] bg-white/20 hover:bg-white/35 text-white font-bold rounded"><i class="fa-regular fa-copy"></i> Copy</button>
+              <span id="label-yang-15b">CLEANING B (YANG)</span>
+              <button onclick="copyListFromElement('yang-grid-1b')" class="no-copy px-2 py-0.5 text-[10px] bg-white/25 hover:bg-white/40 text-white font-bold rounded"><i class="fa-regular fa-copy"></i> Copy</button>
             </div>
             <div id="yang-grid-1b" class="weekly-section-bg fifteen-grid grid grid-cols-8 divide-x divide-slate-800 text-xs min-h-[300px] p-0.5 w-full"></div>
           </div>
@@ -250,7 +242,6 @@
         </div>
       </div>
 
-      <!-- MASTER DB SORT & SEARCH BAR -->
       <div class="glass-card p-4 rounded-2xl shadow-sm flex flex-col sm:flex-row justify-between items-center gap-3">
         <div class="flex flex-wrap items-center gap-3 w-full sm:w-auto">
           <div class="flex items-center gap-2">
@@ -415,13 +406,12 @@
         </div>
       </div>
 
-      <!-- FLORENCE WEEKLY TAB -->
       <div id="weekly-florence-section" class="space-y-6">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div class="glass-card rounded-2xl overflow-hidden shadow-sm">
             <div class="bg-gradient-to-r from-rose-600 to-pink-600 px-4 py-2.5 font-bold text-white text-xs uppercase tracking-wider flex justify-between items-center">
               <span>Florence - Check-Out List</span>
-              <button onclick="copyListFromElement('f-weekly-checkout-grid')" class="no-copy px-2.5 py-1 text-[10px] bg-white/20 hover:bg-white/35 text-white font-bold rounded"><i class="fa-regular fa-copy"></i> Copy</button>
+              <button onclick="copyListFromElement('f-weekly-checkout-grid')" class="no-copy px-2.5 py-1 text-[10px] bg-white/25 hover:bg-white/40 text-white font-bold rounded"><i class="fa-regular fa-copy"></i> Copy</button>
             </div>
             <div id="f-weekly-checkout-grid" class="weekly-section-bg fifteen-grid grid grid-cols-7 divide-x divide-slate-800 text-xs min-h-[300px] p-0.5 w-full"></div>
           </div>
@@ -429,20 +419,19 @@
           <div class="glass-card rounded-2xl overflow-hidden shadow-sm">
             <div class="bg-gradient-to-r from-rose-700 to-pink-700 px-4 py-2.5 font-bold text-white text-xs uppercase tracking-wider flex justify-between items-center">
               <span>Florence - Check-In List</span>
-              <button onclick="copyListFromElement('f-weekly-checkin-grid')" class="no-copy px-2.5 py-1 text-[10px] bg-white/20 hover:bg-white/35 text-white font-bold rounded"><i class="fa-regular fa-copy"></i> Copy</button>
+              <button onclick="copyListFromElement('f-weekly-checkin-grid')" class="no-copy px-2.5 py-1 text-[10px] bg-white/25 hover:bg-white/40 text-white font-bold rounded"><i class="fa-regular fa-copy"></i> Copy</button>
             </div>
             <div id="f-weekly-checkin-grid" class="weekly-section-bg fifteen-grid grid grid-cols-7 divide-x divide-slate-800 text-xs min-h-[300px] p-0.5 w-full"></div>
           </div>
         </div>
       </div>
 
-      <!-- YANG WEEKLY TAB -->
       <div id="weekly-yang-section" class="hidden space-y-6">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div class="glass-card rounded-2xl overflow-hidden shadow-sm">
             <div class="bg-gradient-to-r from-cyan-700 to-teal-700 px-4 py-2.5 font-bold text-white text-xs uppercase tracking-wider flex justify-between items-center">
               <span>Yang - Check-Out List</span>
-              <button onclick="copyListFromElement('y-weekly-checkout-grid')" class="no-copy px-2.5 py-1 text-[10px] bg-white/20 hover:bg-white/35 text-white font-bold rounded"><i class="fa-regular fa-copy"></i> Copy</button>
+              <button onclick="copyListFromElement('y-weekly-checkout-grid')" class="no-copy px-2.5 py-1 text-[10px] bg-white/25 hover:bg-white/40 text-white font-bold rounded"><i class="fa-regular fa-copy"></i> Copy</button>
             </div>
             <div id="y-weekly-checkout-grid" class="weekly-section-bg fifteen-grid grid grid-cols-7 divide-x divide-slate-800 text-xs min-h-[300px] p-0.5 w-full"></div>
           </div>
@@ -450,7 +439,7 @@
           <div class="glass-card rounded-2xl overflow-hidden shadow-sm">
             <div class="bg-gradient-to-r from-cyan-800 to-blue-700 px-4 py-2.5 font-bold text-white text-xs uppercase tracking-wider flex justify-between items-center">
               <span>Yang - Check-In List</span>
-              <button onclick="copyListFromElement('y-weekly-checkin-grid')" class="no-copy px-2.5 py-1 text-[10px] bg-white/20 hover:bg-white/35 text-white font-bold rounded"><i class="fa-regular fa-copy"></i> Copy</button>
+              <button onclick="copyListFromElement('y-weekly-checkin-grid')" class="no-copy px-2.5 py-1 text-[10px] bg-white/25 hover:bg-white/40 text-white font-bold rounded"><i class="fa-regular fa-copy"></i> Copy</button>
             </div>
             <div id="y-weekly-checkin-grid" class="weekly-section-bg fifteen-grid grid grid-cols-7 divide-x divide-slate-800 text-xs min-h-[300px] p-0.5 w-full"></div>
           </div>
@@ -767,9 +756,9 @@
 
       document.getElementById('summary-month-label').innerText = `${monthName} ${year}`;
       document.getElementById('label-flo-15a').innerText = `${monthName} 1-15 CLEANING A (FLO)`;
-      document.getElementById('label-flo-15b').innerText = `${monthName} 16-${totalDays} CLEANING A (FLO)`;
-      document.getElementById('label-yang-15a').innerText = `${monthName} 1-15 CLEANING (YANG)`;
-      document.getElementById('label-yang-15b').innerText = `${monthName} 16-${totalDays} CLEANING (YANG)`;
+      document.getElementById('label-flo-15b').innerText = `${monthName} 16-${totalDays} CLEANING B (FLO)`;
+      document.getElementById('label-yang-15a').innerText = `${monthName} 1-15 CLEANING A (YANG)`;
+      document.getElementById('label-yang-15b').innerText = `${monthName} 16-${totalDays} CLEANING B (YANG)`;
 
       let lsCounts = {};
       let rsCounts = {};
@@ -1100,7 +1089,8 @@
       const item = state.schedules[date].find(i => i.id === id);
       if (item) {
         item[field] = value;
-        saveState();
+        // Non-blocking save to prevent typing lag
+        setTimeout(saveState, 50);
       }
     }
 
@@ -1148,6 +1138,12 @@
       const items = state.schedules[date] || [];
       let counts = { fOut: 0, fIn: 0, yOut: 0, yIn: 0 };
 
+      // Batch rendering using DocumentFragment for maximum performance
+      const fOutFrag = document.createDocumentFragment();
+      const fInFrag = document.createDocumentFragment();
+      const yOutFrag = document.createDocumentFragment();
+      const yInFrag = document.createDocumentFragment();
+
       items.forEach(item => {
         const parsed = formatUnitText(item.raw || item.formatted || item.unit, item.type === 'CHECKIN');
         const isChecked = item.checked ? true : false;
@@ -1182,13 +1178,18 @@
         }
 
         if (item.cleaner === 'FLORENCE') {
-          if (item.type === 'CHECKOUT') { fCheckout.appendChild(div); counts.fOut++; }
-          else { fCheckin.appendChild(div); counts.fIn++; }
+          if (item.type === 'CHECKOUT') { fOutFrag.appendChild(div); counts.fOut++; }
+          else { fInFrag.appendChild(div); counts.fIn++; }
         } else {
-          if (item.type === 'CHECKOUT') { yCheckout.appendChild(div); counts.yOut++; }
-          else { yCheckin.appendChild(div); counts.yIn++; }
+          if (item.type === 'CHECKOUT') { yOutFrag.appendChild(div); counts.yOut++; }
+          else { yInFrag.appendChild(div); counts.yIn++; }
         }
       });
+
+      fCheckout.appendChild(fOutFrag);
+      fCheckin.appendChild(fInFrag);
+      yCheckout.appendChild(yOutFrag);
+      yCheckin.appendChild(yInFrag);
 
       document.getElementById('count-daily-f-out').innerText = counts.fOut;
       document.getElementById('count-daily-f-in').innerText = counts.fIn;
