@@ -12,14 +12,18 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/dark.css">
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
     
     body { 
-      font-family: 'Plus Jakarta Sans', sans-serif; 
+      font-family: 'Outfit', sans-serif !important; 
       background: #0f172a; 
       color: #f8fafc;
       min-height: 100vh;
       scroll-behavior: smooth;
+    }
+
+    *, button, input, select, textarea, table, th, td {
+      font-family: 'Outfit', sans-serif !important;
     }
     
     .unit-florence { color: #f87171 !important; font-weight: 800; } 
@@ -35,18 +39,18 @@
       white-space: nowrap !important;
     }
 
-    .fifteen-grid .unit-text, .weekly-grid .unit-text { font-size: 9px; font-weight: 800; justify-content: center !important; }
+    .fifteen-grid .unit-text, .weekly-grid .unit-text { font-size: 10px; font-weight: 800; justify-content: center !important; }
 
     .tag-nights, .tag-rs, .tag-ls, .tag-su, .tag-booking, .tag-airbnb {
       display: inline-flex !important;
       align-items: center !important;
       justify-content: center !important;
       font-weight: 800 !important;
-      border-radius: 3px;
+      border-radius: 4px;
       white-space: nowrap !important;
       text-align: center;
-      font-size: 7.5px !important;
-      padding: 0px 2.5px !important;
+      font-size: 8px !important;
+      padding: 0.5px 3px !important;
     }
 
     .tag-nights { background-color: #fef08a !important; color: #854d0e !important; } 
@@ -60,6 +64,20 @@
       background-color: #312e81;
       color: #e0e7ff;
       font-weight: 800;
+      font-size: 9px;
+      padding: 1px 6px;
+      border-radius: 9999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: 3px;
+      line-height: 12px;
+    }
+
+    .count-pill-zero {
+      background-color: #1e293b;
+      color: #64748b;
+      font-weight: 700;
       font-size: 8.5px;
       padding: 1px 5px;
       border-radius: 9999px;
@@ -67,21 +85,7 @@
       align-items: center;
       justify-content: center;
       margin-left: 3px;
-      line-height: 10px;
-    }
-
-    .count-pill-zero {
-      background-color: #1e293b;
-      color: #64748b;
-      font-weight: 700;
-      font-size: 8px;
-      padding: 1px 4px;
-      border-radius: 9999px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      margin-left: 3px;
-      line-height: 10px;
+      line-height: 12px;
     }
 
     .input-none-red {
@@ -117,7 +121,7 @@
       background: #1e293b !important;
       border: 1px solid rgba(255, 255, 255, 0.15) !important;
       box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5) !important;
-      font-family: 'Plus Jakarta Sans', sans-serif !important;
+      font-family: 'Outfit', sans-serif !important;
       border-radius: 1rem !important;
       color: #f8fafc !important;
     }
@@ -126,7 +130,7 @@
     .flatpickr-day:hover { background: #334155 !important; }
     .flatpickr-months { background: #0f172a !important; border-top-left-radius: 1rem; border-top-right-radius: 1rem; }
     .flatpickr-current-month, .flatpickr-weekday { color: #f8fafc !important; font-weight: 700 !important; }
-    .flatpickr-input { background-color: #0f172a !important; color: #ffffff !important; }
+    .flatpickr-input { background-color: #0f172a !important; color: #ffffff !important; font-family: 'Outfit', sans-serif !important; }
   </style>
 </head>
 <body class="antialiased min-h-screen flex flex-col">
@@ -189,19 +193,19 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
           <div class="bg-emerald-950/40 p-3 rounded-xl border border-emerald-900/50">
             <span class="font-bold text-emerald-400 block mb-1">LANDLORD STAYED CLEANING [LS]:</span>
-            <div id="summary-ls-list" class="space-y-0.5 font-mono text-slate-300 font-semibold">
+            <div id="summary-ls-list" class="space-y-0.5 text-slate-300 font-semibold">
               <span class="text-slate-500 italic font-normal">None</span>
             </div>
           </div>
           <div class="bg-pink-950/40 p-3 rounded-xl border border-pink-900/50">
             <span class="font-bold text-pink-400 block mb-1">ROOM SERVICE CLEANING [RS]:</span>
-            <div id="summary-rs-list" class="space-y-0.5 font-mono text-slate-300 font-semibold">
+            <div id="summary-rs-list" class="space-y-0.5 text-slate-300 font-semibold">
               <span class="text-slate-500 italic font-normal">None</span>
             </div>
           </div>
           <div class="bg-orange-950/40 p-3 rounded-xl border border-orange-900/50">
             <span class="font-bold text-orange-400 block mb-1">SET-UP CLEANING [SU]:</span>
-            <div id="summary-su-list" class="space-y-0.5 font-mono text-slate-300 font-semibold">
+            <div id="summary-su-list" class="space-y-0.5 text-slate-300 font-semibold">
               <span class="text-slate-500 italic font-normal">None</span>
             </div>
           </div>
@@ -416,7 +420,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
           <div>
             <label class="block text-xs font-bold text-slate-300 mb-1">Unit Code:</label>
-            <input type="text" id="res-unit-code" maxlength="15" placeholder="e.g. AU6514" class="w-full px-3 py-2 border border-slate-700 rounded-xl text-sm font-mono bg-slate-900 text-white uppercase focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <input type="text" id="res-unit-code" maxlength="15" placeholder="e.g. AU6514" class="w-full px-3 py-2 border border-slate-700 rounded-xl text-sm font-semibold bg-slate-900 text-white uppercase focus:outline-none focus:ring-2 focus:ring-indigo-500">
           </div>
           <div>
             <label class="block text-xs font-bold text-slate-300 mb-1">Check-In Date:</label>
@@ -469,7 +473,7 @@
                 <th class="p-3 text-right">Action</th>
               </tr>
             </thead>
-            <tbody id="reservations-log-tbody" class="divide-y divide-slate-800 font-mono text-sm font-semibold">
+            <tbody id="reservations-log-tbody" class="divide-y divide-slate-800 text-sm font-semibold">
               <tr>
                 <td colspan="7" class="p-4 text-center text-slate-500 italic font-sans">No reservations added in this queue yet.</td>
               </tr>
@@ -495,7 +499,7 @@
             </select>
           </div>
         </div>
-        <textarea id="weekly-input" rows="3" placeholder="Enter weekly units here (e.g. EC1113 | EC1113 2)..." class="w-full px-4 py-3 border border-slate-700 rounded-xl text-sm font-mono bg-slate-900 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+        <textarea id="weekly-input" rows="3" placeholder="Enter weekly units here (e.g. EC1113 | EC1113 2)..." class="w-full px-4 py-3 border border-slate-700 rounded-xl text-sm bg-slate-900 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
         <div class="flex justify-end">
           <button onclick="processWeeklyInput()" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold shadow-md">
             <i class="fa-solid fa-filter"></i> Sort to Weekly List
@@ -591,7 +595,7 @@
         </div>
 
         <div class="flex gap-2 bg-slate-900 p-3 rounded-xl border border-slate-700">
-          <input type="text" id="modal-add-input" placeholder="Add unit (e.g. AU6514 RS or BOOKING.COM)" class="flex-1 px-3 py-1.5 border border-slate-700 rounded-lg text-xs font-mono bg-slate-800 text-white">
+          <input type="text" id="modal-add-input" placeholder="Add unit (e.g. AU6514 BOOKING.COM)" class="flex-1 px-3 py-1.5 border border-slate-700 rounded-lg text-xs bg-slate-800 text-white">
           <button onclick="addModalEntry()" class="px-4 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-lg">+ Add Entry</button>
         </div>
 
@@ -703,7 +707,7 @@
 
     function copyDailyCleanerSection(cleaner, type) {
       const picker = document.getElementById('daily-date-picker')._flatpickr;
-      const date = picker && picker.selectedDates.length > 0 ? picker.altVBDate || picker.selectedDates[0].toISOString().split('T')[0] : document.getElementById('daily-date-picker').value;
+      const date = picker && picker.selectedDates.length > 0 ? picker.selectedDates[0].toISOString().split('T')[0] : document.getElementById('daily-date-picker').value;
       if (!date || !state.schedules[date]) return;
 
       const items = state.schedules[date].filter(i => i.cleaner === cleaner && i.type === type);
@@ -778,7 +782,7 @@
         const div = document.createElement('div');
         div.className = "flex justify-between items-center bg-slate-900 p-2 rounded-lg border border-slate-700 text-xs";
         div.innerHTML = `
-          <span class="font-mono font-bold text-slate-200">${item.raw || item.unit}</span>
+          <span class="font-bold text-slate-200">${item.raw || item.unit}</span>
           <div class="flex gap-2">
             <button onclick="editModalItem('${date}', ${item.id})" class="px-2 py-1 bg-indigo-950 text-indigo-300 hover:bg-indigo-900 rounded font-semibold border border-indigo-800"><i class="fa-solid fa-pen"></i> Edit / Tag</button>
             <button onclick="deleteScheduleItem('${date}', ${item.id}); loadModalDateEntries();" class="px-2 py-1 bg-rose-950 text-rose-300 hover:bg-rose-900 rounded font-semibold border border-rose-800"><i class="fa-solid fa-trash"></i> Delete</button>
@@ -921,13 +925,13 @@
           const badgeClass = count > 0 ? 'count-pill' : 'count-pill-zero';
 
           const col = document.createElement('div');
-          col.className = "p-0.5 space-y-1 border-r border-b border-slate-800 min-h-[120px] w-full overflow-hidden min-w-0";
-          col.innerHTML = `<div class="font-bold text-[8px] sm:text-[8.5px] text-slate-300 border-b border-slate-700 pb-0.5 mb-1 text-center no-copy bg-slate-900/80 rounded py-0.5 uppercase tracking-tighter whitespace-nowrap overflow-hidden flex items-center justify-center">${dayLabel}<span class="${badgeClass}">${count}</span></div>`;
+          col.className = "p-0.5 space-y-0.5 border-r border-b border-slate-800 min-h-[120px] w-full overflow-hidden min-w-0";
+          col.innerHTML = `<div class="font-bold text-[8.5px] text-slate-300 border-b border-slate-700 pb-0.5 mb-0.5 text-center no-copy bg-slate-900/80 rounded py-0.5 uppercase tracking-tighter whitespace-nowrap overflow-hidden flex items-center justify-center">${dayLabel}<span class="${badgeClass}">${count}</span></div>`;
 
           items.forEach(item => {
             const parsed = formatUnitText(item.raw || item.formatted || item.unit, false);
             const row = document.createElement('div');
-            row.className = "bg-slate-900 px-0.5 py-1 rounded border border-slate-800 shadow-2xs flex justify-center items-center overflow-hidden my-0.5";
+            row.className = "bg-slate-900 px-0.5 py-0.5 rounded border border-slate-800 shadow-2xs flex justify-center items-center overflow-hidden my-0";
             row.innerHTML = `<div class="unit-text ${cleaner === 'FLORENCE' ? 'unit-florence' : 'unit-yang'}" data-unit-clean="${parsed.raw}">${parsed.formatted}</div>`;
             col.appendChild(row);
           });
@@ -1138,10 +1142,6 @@
 
     function processSingleReservation() {
       const unitCode = document.getElementById('res-unit-code').value.trim().toUpperCase();
-      const checkinDate = dailyPicker.selectedDates.length > 0 ? dailyPicker.selectedDates[0].toISOString().split('T')[0] : document.getElementById('res-checkin-date').value;
-      const checkoutDate = weeklyPicker.selectedDates.length > 0 ? weeklyPicker.selectedDates[0].toISOString().split('T')[0] : document.getElementById('res-checkout-date').value;
-      
-      // Let's grab exact values using dedicated picker instance dates
       const checkinInputStr = resCheckinPicker.selectedDates.length > 0 ? resCheckinPicker.selectedDates[0].toISOString().split('T')[0] : document.getElementById('res-checkin-date').value;
       const checkoutInputStr = resCheckoutPicker.selectedDates.length > 0 ? resCheckoutPicker.selectedDates[0].toISOString().split('T')[0] : document.getElementById('res-checkout-date').value;
       const platformStr = document.getElementById('res-tag-input').value.trim().toUpperCase();
@@ -1217,14 +1217,14 @@
         };
 
         tr.innerHTML = `
-          <td class="p-3 font-bold ${res.cleaner === 'FLORENCE' ? 'unit-florence' : 'unit-yang'}">${res.unitCode}</td>
-          <td class="p-3 text-slate-300">${res.cleaner}</td>
-          <td class="p-3 text-slate-300">${formatLogDate(res.checkinDate)}</td>
-          <td class="p-3 text-slate-300">${formatLogDate(res.checkoutDate)}</td>
-          <td class="p-3"><span class="tag-nights">${res.nights}N</span></td>
-          <td class="p-3">${platformBadge}</td>
-          <td class="p-3 text-right">
-            <button onclick="deleteReservationLogItem(${res.id})" class="px-2 py-1 bg-rose-950/60 hover:bg-rose-900 text-rose-300 rounded border border-rose-900 text-[10px] font-sans font-bold">Remove</button>
+          <td class="p-2 font-extrabold text-sm ${res.cleaner === 'FLORENCE' ? 'unit-florence' : 'unit-yang'}">${res.unitCode}</td>
+          <td class="p-2 text-slate-300 text-sm font-bold">${res.cleaner}</td>
+          <td class="p-2 text-slate-300 text-sm font-semibold">${formatLogDate(res.checkinDate)}</td>
+          <td class="p-2 text-slate-300 text-sm font-semibold">${formatLogDate(res.checkoutDate)}</td>
+          <td class="p-2"><span class="tag-nights text-xs px-1.5 py-0.5">${res.nights}N</span></td>
+          <td class="p-2">${platformBadge}</td>
+          <td class="p-2 text-right">
+            <button onclick="deleteReservationLogItem(${res.id})" class="px-2 py-1 bg-rose-950/60 hover:bg-rose-900 text-rose-300 rounded border border-rose-900 text-[10px] font-bold">Remove</button>
           </td>
         `;
         frag.appendChild(tr);
@@ -1423,30 +1423,30 @@
         const isChecked = item.checked ? true : false;
         
         const div = document.createElement('div');
-        div.className = `unit-row-container glass-card p-2 rounded-lg border border-slate-800 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 my-0.5 transition-all ${isChecked ? 'opacity-40 line-through bg-slate-900/50' : ''}`;
+        div.className = `unit-row-container glass-card p-1.5 rounded-lg border border-slate-800 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-1.5 my-0.5 transition-all ${isChecked ? 'opacity-40 line-through bg-slate-900/50' : ''}`;
         
         if (item.type === 'CHECKOUT') {
           div.innerHTML = `
-            <div class="flex items-center gap-2.5 w-full sm:w-[140px] shrink-0">
+            <div class="flex items-center gap-2.5 w-full sm:w-[150px] shrink-0">
               <input type="checkbox" ${isChecked ? 'checked' : ''} onchange="toggleCheckStatus('${date}', ${item.id}, this)" class="w-4 h-4 text-indigo-600 rounded border-slate-700 bg-slate-900 focus:ring-indigo-500 cursor-pointer">
-              <div class="unit-text text-base font-bold ${item.cleaner === 'FLORENCE' ? 'unit-florence' : 'unit-yang'}" data-unit-clean="${parsed.raw}">${parsed.formatted}</div>
+              <div class="unit-text text-lg font-extrabold ${item.cleaner === 'FLORENCE' ? 'unit-florence' : 'unit-yang'}" data-unit-clean="${parsed.raw}">${parsed.formatted}</div>
             </div>
-            <div class="flex flex-wrap items-center gap-2 w-full sm:w-auto text-xs shrink-0 flex-1 justify-end">
-              <input type="text" value="${item.lastCode || ''}" oninput="updateItemField('${date}', ${item.id}, 'lastCode', this.value)" class="px-2 py-1 border border-slate-700 rounded text-xs w-24 font-mono bg-slate-900 text-white shrink-0">
-              <input type="text" value="${item.notes || ''}" oninput="updateItemField('${date}', ${item.id}, 'notes', this.value)" class="px-3 py-1 border border-slate-700 rounded text-xs flex-1 min-w-[210px] bg-slate-900 text-white shrink-0">
+            <div class="flex flex-wrap items-center gap-1.5 w-full sm:w-auto text-xs shrink-0 flex-1 justify-end">
+              <input type="text" value="${item.lastCode || ''}" oninput="updateItemField('${date}', ${item.id}, 'lastCode', this.value)" class="px-2.5 py-1 border border-slate-700 rounded text-sm font-semibold w-24 font-mono bg-slate-900 text-white shrink-0">
+              <input type="text" value="${item.notes || ''}" oninput="updateItemField('${date}', ${item.id}, 'notes', this.value)" class="px-3 py-1 border border-slate-700 rounded text-sm font-semibold flex-1 min-w-[210px] bg-slate-900 text-white shrink-0">
               <button onclick="clearItemInputs('${date}', ${item.id}, 'checkout')" title="Clear Code & Notes" class="px-2 py-1 bg-rose-950/60 hover:bg-rose-900/60 text-rose-400 rounded border border-rose-900 font-bold shrink-0"><i class="fa-solid fa-trash-can"></i></button>
             </div>
           `;
         } else {
           div.innerHTML = `
-            <div class="flex items-center gap-2.5 w-full sm:w-[140px] shrink-0">
+            <div class="flex items-center gap-2.5 w-full sm:w-[150px] shrink-0">
               <input type="checkbox" ${isChecked ? 'checked' : ''} onchange="toggleCheckStatus('${date}', ${item.id}, this)" class="w-4 h-4 text-indigo-600 rounded border-slate-700 bg-slate-900 focus:ring-indigo-500 cursor-pointer">
-              <div class="unit-text text-base font-bold ${item.cleaner === 'FLORENCE' ? 'unit-florence' : 'unit-yang'}" data-unit-clean="${parsed.raw}">${parsed.formatted}</div>
+              <div class="unit-text text-lg font-extrabold ${item.cleaner === 'FLORENCE' ? 'unit-florence' : 'unit-yang'}" data-unit-clean="${parsed.raw}">${parsed.formatted}</div>
             </div>
-            <div class="flex flex-wrap items-center gap-2 w-full sm:w-auto text-xs shrink-0 flex-1 justify-end">
-              <input type="text" value="${item.newCode || ''}" oninput="updateItemField('${date}', ${item.id}, 'newCode', this.value)" class="px-2 py-1 border border-slate-700 rounded text-xs w-24 font-mono bg-slate-900 text-white shrink-0">
-              <input type="text" value="${item.notes || ''}" oninput="updateItemField('${date}', ${item.id}, 'notes', this.value)" class="px-3 py-1 border border-slate-700 rounded text-xs flex-1 min-w-[210px] bg-slate-900 text-white shrink-0">
-              <button onclick="clearItemInputs('${date}', ${item.id}, 'checkin')" title="Clear New Code & Notes" class="px-2.5 py-1 bg-rose-950/60 hover:bg-rose-900/60 text-rose-400 rounded border border-rose-900 font-bold shrink-0"><i class="fa-solid fa-trash-can"></i></button>
+            <div class="flex flex-wrap items-center gap-1.5 w-full sm:w-auto text-xs shrink-0 flex-1 justify-end">
+              <input type="text" value="${item.newCode || ''}" oninput="updateItemField('${date}', ${item.id}, 'newCode', this.value)" class="px-2.5 py-1 border border-slate-700 rounded text-sm font-semibold w-24 font-mono bg-slate-900 text-white shrink-0">
+              <input type="text" value="${item.notes || ''}" oninput="updateItemField('${date}', ${item.id}, 'notes', this.value)" class="px-3 py-1 border border-slate-700 rounded text-sm font-semibold flex-1 min-w-[210px] bg-slate-900 text-white shrink-0">
+              <button onclick="clearItemInputs('${date}', ${item.id}, 'checkin')" title="Clear New Code & Notes" class="px-2 py-1 bg-rose-950/60 hover:bg-rose-900/60 text-rose-400 rounded border border-rose-900 font-bold shrink-0"><i class="fa-solid fa-trash-can"></i></button>
             </div>
           `;
         }
@@ -1463,7 +1463,7 @@
       fCheckout.appendChild(fOutFrag);
       fCheckin.appendChild(fInFrag);
       yCheckout.appendChild(yOutFrag);
-      yCheckin.appendChild(yInFrag);
+      yInFrag.appendChild(yInFrag);
 
       document.getElementById('count-daily-f-out').innerText = counts.fOut;
       document.getElementById('count-daily-f-in').innerText = counts.fIn;
@@ -1541,13 +1541,13 @@
           const badgeClass = count > 0 ? 'count-pill' : 'count-pill-zero';
 
           const col = document.createElement('div');
-          col.className = "p-0.5 space-y-1 border-r border-slate-800 min-h-[250px] w-full overflow-hidden min-w-0";
-          col.innerHTML = `<div class="font-bold text-[8.5px] text-slate-300 border-b border-slate-700 pb-0.5 mb-1 text-center no-copy bg-slate-900/80 rounded py-0.5 uppercase tracking-tighter whitespace-nowrap overflow-hidden flex items-center justify-center">${dayLabel}<span class="${badgeClass}">${count}</span></div>`;
+          col.className = "p-0.5 space-y-0.5 border-r border-slate-800 min-h-[250px] w-full overflow-hidden min-w-0";
+          col.innerHTML = `<div class="font-bold text-[8.5px] text-slate-300 border-b border-slate-700 pb-0.5 mb-0.5 text-center no-copy bg-slate-900/80 rounded py-0.5 uppercase tracking-tighter whitespace-nowrap overflow-hidden flex items-center justify-center">${dayLabel}<span class="${badgeClass}">${count}</span></div>`;
 
           items.forEach(item => {
             const parsed = formatUnitText(item.raw || item.formatted || item.unit, type === 'CHECKIN');
             const row = document.createElement('div');
-            row.className = "bg-slate-900 px-0.5 py-1 rounded border border-slate-800 shadow-2xs flex justify-center items-center overflow-hidden my-0.5 unit-row-container";
+            row.className = "bg-slate-900 px-0.5 py-0.5 rounded border border-slate-800 shadow-2xs flex justify-center items-center overflow-hidden my-0 unit-row-container";
             row.innerHTML = `<div class="unit-text text-xs font-bold ${cleaner === 'FLORENCE' ? 'unit-florence' : 'unit-yang'}" data-unit-clean="${parsed.raw}">${parsed.formatted}</div>`;
             col.appendChild(row);
           });
