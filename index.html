@@ -40,7 +40,7 @@
 
     .fifteen-grid .unit-text, .weekly-grid .unit-text { font-size: 11.5px !important; font-weight: 800; justify-content: center !important; }
 
-    .tag-nights, .tag-rs, .tag-ls, .tag-su, .tag-booking, .tag-airbnb {
+    .tag-nights, .tag-booking, .tag-airbnb {
       display: inline-flex !important;
       align-items: center !important;
       justify-content: center !important;
@@ -53,9 +53,6 @@
     }
 
     .tag-nights { background-color: #fef08a !important; color: #854d0e !important; } 
-    .tag-rs { background-color: #f472b6 !important; color: #500724 !important; font-weight: 900 !important; } 
-    .tag-ls { background-color: #4ade80 !important; color: #052e16 !important; font-weight: 900 !important; } 
-    .tag-su { background-color: #fb923c !important; color: #431407 !important; font-weight: 900 !important; } 
     .tag-booking { background-color: #38bdf8 !important; color: #082f49 !important; font-weight: 900 !important; }
     .tag-airbnb { background-color: #f43f5e !important; color: #ffe4e6 !important; font-weight: 900 !important; }
 
@@ -133,6 +130,17 @@
   </style>
 </head>
 <body class="antialiased min-h-screen flex flex-col">
+
+  <!-- NOTIFICATION TOAST POPUP -->
+  <div id="notification-toast" class="fixed top-6 right-6 z-50 transform translate-y-[-200%] opacity-0 transition-all duration-300 ease-in-out pointer-events-none">
+    <div class="glass-card bg-indigo-950/90 border border-indigo-500/50 px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3">
+      <div class="w-8 h-8 rounded-full bg-indigo-600/30 flex items-center justify-center text-indigo-400 font-bold text-sm">🐝</div>
+      <div>
+        <h4 id="toast-title" class="text-xs font-bold text-white uppercase tracking-wider">New Reservation Added</h4>
+        <p id="toast-message" class="text-xs text-indigo-200">Successfully processed and synced across schedules.</p>
+      </div>
+    </div>
+  </div>
 
   <header class="glass-card border-b border-slate-800 sticky top-0 z-30 shadow-md">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -410,11 +418,11 @@
         <div class="flex items-center gap-2 border-b border-slate-800 pb-3">
           <div>
             <h2 class="text-base font-bold text-slate-100">Add New Reservation</h2>
-            <p class="text-xs text-slate-400">Enter the unit code, check-in date, check-out date, and platform. Nights are auto-counted and sorted into schedules.</p>
+            <p class="text-xs text-slate-400">Enter the unit code, check-in date, and check-out date. Nights are auto-counted and sorted into schedules.</p>
           </div>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div>
             <label class="block text-xs font-bold text-slate-300 mb-1">Unit Code:</label>
             <input type="text" id="res-unit-code" maxlength="15" placeholder="e.g. AU6514" class="w-full px-3 py-2 border border-slate-700 rounded-xl text-sm font-semibold bg-slate-900 text-white uppercase focus:outline-none focus:ring-2 focus:ring-indigo-500">
@@ -426,13 +434,6 @@
           <div>
             <label class="block text-xs font-bold text-slate-300 mb-1">Check-Out Date:</label>
             <input type="text" id="res-checkout-date" class="w-full px-3 py-2 border border-slate-700 rounded-xl text-sm font-semibold bg-slate-900 text-white">
-          </div>
-          <div>
-            <label class="block text-xs font-bold text-slate-300 mb-1">Platform:</label>
-            <select id="res-tag-input" class="w-full px-3 py-2 border border-slate-700 rounded-xl text-sm font-semibold bg-slate-900 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
-              <option value="BOOKING.COM">BOOKING.COM</option>
-              <option value="AIRBNB">AIRBNB</option>
-            </select>
           </div>
         </div>
 
@@ -466,13 +467,12 @@
                 <th class="p-3">Check-In</th>
                 <th class="p-3">Check-Out</th>
                 <th class="p-3">Nights</th>
-                <th class="p-3">Platform</th>
                 <th class="p-3 text-right">Action</th>
               </tr>
             </thead>
             <tbody id="reservations-log-tbody" class="divide-y divide-slate-800 text-sm font-semibold">
               <tr>
-                <td colspan="7" class="p-4 text-center text-slate-500 italic font-sans">No reservations added in this queue yet.</td>
+                <td colspan="6" class="p-4 text-center text-slate-500 italic font-sans">No reservations added in this queue yet.</td>
               </tr>
             </tbody>
           </table>
@@ -592,7 +592,7 @@
         </div>
 
         <div class="flex gap-2 bg-slate-900 p-3 rounded-xl border border-slate-700">
-          <input type="text" id="modal-add-input" placeholder="Add unit (e.g. AU6514 BOOKING.COM)" class="flex-1 px-3 py-1.5 border border-slate-700 rounded-lg text-xs bg-slate-800 text-white">
+          <input type="text" id="modal-add-input" placeholder="Add unit (e.g. AU6514)" class="flex-1 px-3 py-1.5 border border-slate-700 rounded-lg text-xs bg-slate-800 text-white">
           <button onclick="addModalEntry()" class="px-4 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-lg">Add Entry</button>
         </div>
 
@@ -643,6 +643,18 @@
       localStorage.setItem('schedules', JSON.stringify(state.schedules));
       localStorage.setItem('reservationsLog', JSON.stringify(state.reservationsLog));
       updateMasterCount();
+    }
+
+    function showToast(title, message) {
+      const toast = document.getElementById('notification-toast');
+      document.getElementById('toast-title').innerText = title;
+      document.getElementById('toast-message').innerText = message;
+      toast.classList.remove('translate-y-[-200%]', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+      setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-[-200%]', 'opacity-0');
+      }, 3500);
     }
 
     function exportBackupData() {
@@ -827,7 +839,7 @@
       if (!item) return;
 
       const currentRaw = item.raw || item.unit;
-      const val = prompt("Update unit entry / add platform (e.g. AU6514 BOOKING.COM):", currentRaw);
+      const val = prompt("Update unit entry:", currentRaw);
       if (!val) return;
 
       const { raw, formatted } = formatUnitText(val, item.type === 'CHECKIN');
@@ -1088,15 +1100,6 @@
       } else if (remainderText === 'AIRBNB') {
         rawTagString = 'AIRBNB';
         tagHTML = `<span class="tag-airbnb">AIRBNB</span>`;
-      } else if (remainderText === 'RS') {
-        rawTagString = 'RS';
-        tagHTML = `<span class="tag-rs">RS</span>`;
-      } else if (remainderText === 'LS') {
-        rawTagString = 'LS';
-        tagHTML = `<span class="tag-ls">LS</span>`;
-      } else if (remainderText === 'SU') {
-        rawTagString = 'SU';
-        tagHTML = `<span class="tag-su">SU</span>`;
       } else if (remainderText) {
         rawTagString = remainderText;
         tagHTML = `<span class="text-indigo-300 font-semibold text-[10px] px-1 bg-indigo-950/60 rounded border border-indigo-900/50">${remainderText}</span>`;
@@ -1142,7 +1145,6 @@
       const unitCode = document.getElementById('res-unit-code').value.trim().toUpperCase();
       const checkinInputStr = resCheckinPicker.selectedDates.length > 0 ? resCheckinPicker.selectedDates[0].toISOString().split('T')[0] : document.getElementById('res-checkin-date').value;
       const checkoutInputStr = resCheckoutPicker.selectedDates.length > 0 ? resCheckoutPicker.selectedDates[0].toISOString().split('T')[0] : document.getElementById('res-checkout-date').value;
-      const platformStr = document.getElementById('res-tag-input').value.trim().toUpperCase();
 
       if (!unitCode || !checkinInputStr || !checkoutInputStr) return;
 
@@ -1154,11 +1156,10 @@
       if (diffDays <= 0) return;
 
       const nightsTag = `${diffDays}N`;
-      const combinedTag = platformStr ? `${nightsTag} ${platformStr}` : nightsTag;
       const cleaner = getCleanerForUnit(unitCode);
 
-      addScheduleItemDirect(checkinInputStr, unitCode, 'CHECKIN', combinedTag, platformStr);
-      addScheduleItemDirect(checkoutInputStr, unitCode, 'CHECKOUT', platformStr, platformStr);
+      addScheduleItemDirect(checkinInputStr, unitCode, 'CHECKIN', nightsTag, '');
+      addScheduleItemDirect(checkoutInputStr, unitCode, 'CHECKOUT', '', '');
 
       state.reservationsLog.unshift({
         id: Date.now() + Math.random(),
@@ -1166,7 +1167,6 @@
         checkinDate: checkinInputStr,
         checkoutDate: checkoutInputStr,
         nights: diffDays,
-        tag: platformStr,
         cleaner
       });
 
@@ -1180,6 +1180,9 @@
       
       // Clear inputs automatically
       clearReservationForm();
+
+      // Show notification toast popup
+      showToast("New Reservation Added", `Unit ${unitCode} (${diffDays}N) successfully synced!`);
     }
 
     function renderReservationsLog() {
@@ -1189,7 +1192,7 @@
       countEl.innerText = state.reservationsLog.length;
 
       if (state.reservationsLog.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-slate-500 italic font-sans">No reservations added in this queue yet.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-500 italic font-sans">No reservations added in this queue yet.</td></tr>`;
         return;
       }
 
@@ -1197,15 +1200,6 @@
       state.reservationsLog.forEach((res) => {
         const tr = document.createElement('tr');
         tr.className = "hover:bg-slate-900/50 transition-all";
-        
-        let platformBadge = '<span class="text-slate-500">—</span>';
-        if (res.tag === 'BOOKING.COM') {
-          platformBadge = `<span class="tag-booking">BOOKING.COM</span>`;
-        } else if (res.tag === 'AIRBNB') {
-          platformBadge = `<span class="tag-airbnb">AIRBNB</span>`;
-        } else if (res.tag) {
-          platformBadge = `<span class="text-indigo-300 font-semibold">${res.tag}</span>`;
-        }
 
         const formatLogDate = (dateStr) => {
           if (!dateStr) return '';
@@ -1219,7 +1213,6 @@
           <td class="p-2 text-slate-300 text-sm font-semibold">${formatLogDate(res.checkinDate)}</td>
           <td class="p-2 text-slate-300 text-sm font-semibold">${formatLogDate(res.checkoutDate)}</td>
           <td class="p-2"><span class="tag-nights text-xs px-1.5 py-0.5">${res.nights}N</span></td>
-          <td class="p-2">${platformBadge}</td>
           <td class="p-2 text-right space-x-1 flex justify-end items-center">
             <button onclick="editReservationLogItem(${res.id})" class="px-2 py-1 bg-indigo-950 hover:bg-indigo-900 text-indigo-300 rounded border border-indigo-800 text-[10px] font-bold">Edit</button>
             <button onclick="deleteReservationLogItem(${res.id})" class="px-2 py-1 bg-rose-950/60 hover:bg-rose-900 text-rose-300 rounded border border-rose-900 text-[10px] font-bold">Remove</button>
@@ -1240,12 +1233,10 @@
       if (!newCheckin) return;
       const newCheckout = prompt("Edit Check-Out Date (YYYY-MM-DD):", res.checkoutDate);
       if (!newCheckout) return;
-      const newTag = prompt("Edit Platform (BOOKING.COM or AIRBNB):", res.tag);
 
       res.unitCode = newUnit.trim().toUpperCase();
       res.checkinDate = newCheckin.trim();
       res.checkoutDate = newCheckout.trim();
-      res.tag = (newTag || '').trim().toUpperCase();
       res.cleaner = getCleanerForUnit(res.unitCode);
 
       const d1 = new Date(res.checkinDate);
@@ -1278,7 +1269,6 @@
       const today = new Date().toISOString().split('T')[0];
       resCheckinPicker.setDate(today, true);
       resCheckoutPicker.setDate(today, true);
-      document.getElementById('res-tag-input').value = 'BOOKING.COM';
     }
 
     function processInputLines(date, text, selectedType) {
@@ -1494,7 +1484,7 @@
       fCheckout.appendChild(fOutFrag);
       fCheckin.appendChild(fInFrag);
       yCheckout.appendChild(yOutFrag);
-      yInFrag.appendChild(yInFrag);
+      yCheckin.appendChild(yInFrag);
 
       document.getElementById('count-daily-f-out').innerText = counts.fOut;
       document.getElementById('count-daily-f-in').innerText = counts.fIn;
@@ -1536,15 +1526,15 @@
     }
 
     function getWeekDates(anchorDateStr) {
-      const anchor = new Date(anchorDateStr);
+      const [year, month, dayNum] = anchorDateStr.split('-').map(Number);
+      const anchor = new Date(year, month - 1, dayNum);
       const day = anchor.getDay();
       const diff = anchor.getDate() - day + (day === 0 ? -6 : 1);
-      const monday = new Date(anchor.setDate(diff));
+      const monday = new Date(anchor.getFullYear(), anchor.getMonth(), diff);
 
       const days = [];
       for (let i = 0; i < 7; i++) {
-        const d = new Date(monday);
-        d.setDate(monday.getDate() + i);
+        const d = new Date(monday.getFullYear(), monday.getMonth(), monday.getDate() + i);
         days.push(d.toISOString().split('T')[0]);
       }
       return days;
@@ -1568,7 +1558,8 @@
       const yInFrag = document.createDocumentFragment();
 
       weekDates.forEach((dateStr) => {
-        const dateObj = new Date(dateStr);
+        const [y, m, d] = dateStr.split('-').map(Number);
+        const dateObj = new Date(y, m - 1, d);
         const dayLabel = dateObj.toLocaleDateString('en-US', { weekday: 'short', month: 'numeric', day: 'numeric' }).toUpperCase();
 
         const createCol = (cleaner, type) => {
@@ -1603,7 +1594,6 @@
       yInGrid.appendChild(yInFrag);
     }
 
-    // Initialize Flatpickr Enhanced Date Pickers with Format "DAY, MON DAY, YEAR"
     const dateFormatConfig = {
       altInput: true,
       altFormat: "D, M j, Y",
@@ -1646,7 +1636,6 @@
     });
 
     const fifteenMonthPicker = flatpickr("#fifteen-month-picker", {
-      plugins: [],
       altInput: true,
       altFormat: "F Y",
       dateFormat: "Y-m",
