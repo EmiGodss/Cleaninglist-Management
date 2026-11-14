@@ -1171,11 +1171,14 @@
       });
 
       saveState();
+      
+      // Auto-render everything so the new entry shows up instantly
       renderDailyView();
       renderWeeklyView();
       render15DayView();
       renderReservationsLog();
       
+      // Clear inputs automatically
       clearReservationForm();
     }
 
@@ -1217,13 +1220,43 @@
           <td class="p-2 text-slate-300 text-sm font-semibold">${formatLogDate(res.checkoutDate)}</td>
           <td class="p-2"><span class="tag-nights text-xs px-1.5 py-0.5">${res.nights}N</span></td>
           <td class="p-2">${platformBadge}</td>
-          <td class="p-2 text-right">
-            <button onclick="deleteReservationLogItem(${res.id})" class="px-2 py-1 bg-rose-950/60 hover:bg-rose-900 text-rose-300 rounded border border-rose-900 text-[10px] font-bold ml-auto">Remove</button>
+          <td class="p-2 text-right space-x-1 flex justify-end items-center">
+            <button onclick="editReservationLogItem(${res.id})" class="px-2 py-1 bg-indigo-950 hover:bg-indigo-900 text-indigo-300 rounded border border-indigo-800 text-[10px] font-bold">Edit</button>
+            <button onclick="deleteReservationLogItem(${res.id})" class="px-2 py-1 bg-rose-950/60 hover:bg-rose-900 text-rose-300 rounded border border-rose-900 text-[10px] font-bold">Remove</button>
           </td>
         `;
         frag.appendChild(tr);
       });
       tbody.appendChild(frag);
+    }
+
+    function editReservationLogItem(id) {
+      const res = state.reservationsLog.find(r => r.id === id);
+      if (!res) return;
+
+      const newUnit = prompt("Edit Unit Code:", res.unitCode);
+      if (!newUnit) return;
+      const newCheckin = prompt("Edit Check-In Date (YYYY-MM-DD):", res.checkinDate);
+      if (!newCheckin) return;
+      const newCheckout = prompt("Edit Check-Out Date (YYYY-MM-DD):", res.checkoutDate);
+      if (!newCheckout) return;
+      const newTag = prompt("Edit Platform (BOOKING.COM or AIRBNB):", res.tag);
+
+      res.unitCode = newUnit.trim().toUpperCase();
+      res.checkinDate = newCheckin.trim();
+      res.checkoutDate = newCheckout.trim();
+      res.tag = (newTag || '').trim().toUpperCase();
+      res.cleaner = getCleanerForUnit(res.unitCode);
+
+      const d1 = new Date(res.checkinDate);
+      const d2 = new Date(res.checkoutDate);
+      res.nights = Math.max(1, Math.round((d2 - d1) / (1000 * 60 * 60 * 24)));
+
+      saveState();
+      renderReservationsLog();
+      renderDailyView();
+      renderWeeklyView();
+      render15DayView();
     }
 
     function deleteReservationLogItem(id) {
