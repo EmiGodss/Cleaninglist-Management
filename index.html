@@ -39,7 +39,7 @@
       white-space: nowrap !important;
     }
 
-    .fifteen-grid .unit-text, .weekly-grid .unit-text { font-size: 10px; font-weight: 800; justify-content: center !important; }
+    .fifteen-grid .unit-text, .weekly-grid .unit-text { font-size: 11.5px !important; font-weight: 800; justify-content: center !important; }
 
     .tag-nights, .tag-rs, .tag-ls, .tag-su, .tag-booking, .tag-airbnb {
       display: inline-flex !important;
@@ -49,8 +49,8 @@
       border-radius: 4px;
       white-space: nowrap !important;
       text-align: center;
-      font-size: 8px !important;
-      padding: 0.5px 3px !important;
+      font-size: 8.5px !important;
+      padding: 0.5px 3.5px !important;
     }
 
     .tag-nights { background-color: #fef08a !important; color: #854d0e !important; } 
@@ -64,7 +64,7 @@
       background-color: #312e81;
       color: #e0e7ff;
       font-weight: 800;
-      font-size: 9px;
+      font-size: 9.5px;
       padding: 1px 6px;
       border-radius: 9999px;
       display: inline-flex;
@@ -78,7 +78,7 @@
       background-color: #1e293b;
       color: #64748b;
       font-weight: 700;
-      font-size: 8.5px;
+      font-size: 9px;
       padding: 1px 5px;
       border-radius: 9999px;
       display: inline-flex;
@@ -137,30 +137,30 @@
 
   <header class="glass-card border-b border-slate-800 sticky top-0 z-30 shadow-md">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex justify-between h-20 items-center">
+      <div class="flex justify-between h-24 items-center">
         <!-- Logo connected to logo.jpg from your repository -->
-        <div class="flex items-center space-x-3 py-2">
-          <img src="logo.jpg" alt="EMIJRD Online Services Logo" class="h-12 w-auto object-contain rounded-lg shadow-md border border-indigo-500/30">
+        <div class="flex items-center space-x-3.5 py-2">
+          <img src="logo.jpg" alt="EMIJRD Online Services Logo" class="h-16 w-auto object-contain rounded-xl shadow-md border border-indigo-500/30">
           <div>
-            <h1 class="text-sm font-bold text-slate-100 leading-tight">Cleaner Schedule Manager</h1>
-            <p class="text-[10px] text-indigo-300 font-semibold uppercase tracking-wider">EMIJRD Online Services</p>
+            <h1 class="text-xl sm:text-2xl font-extrabold text-slate-100 leading-tight tracking-wide">Cleaner Schedule Manager</h1>
+            <p class="text-xs text-indigo-300 font-bold uppercase tracking-widest mt-0.5">EMIJRD Online Services</p>
           </div>
         </div>
 
         <nav class="flex space-x-1 bg-slate-900/80 p-1.5 rounded-xl border border-slate-700">
-          <button onclick="switchTab('reservations')" id="tab-reservations" class="px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-indigo-600 text-white shadow-sm">
+          <button onclick="switchTab('reservations')" id="tab-reservations" class="px-3.5 py-2 text-xs font-bold rounded-lg bg-indigo-600 text-white shadow-sm flex items-center gap-1.5">
             <i class="fa-solid fa-file-arrow-down"></i> New Reservation
           </button>
-          <button onclick="switchTab('daily')" id="tab-daily" class="px-3.5 py-1.5 text-xs font-semibold rounded-lg text-slate-300 hover:text-white">
+          <button onclick="switchTab('daily')" id="tab-daily" class="px-3.5 py-2 text-xs font-bold rounded-lg text-slate-300 hover:text-white flex items-center gap-1.5">
             <i class="fa-solid fa-calendar-day"></i> Daily List
           </button>
-          <button onclick="switchTab('weekly')" id="tab-weekly" class="px-3.5 py-1.5 text-xs font-semibold rounded-lg text-slate-300 hover:text-white">
+          <button onclick="switchTab('weekly')" id="tab-weekly" class="px-3.5 py-2 text-xs font-bold rounded-lg text-slate-300 hover:text-white flex items-center gap-1.5">
             <i class="fa-solid fa-calendar-week"></i> Weekly List
           </button>
-          <button onclick="switchTab('fifteen')" id="tab-fifteen" class="px-3.5 py-1.5 text-xs font-semibold rounded-lg text-slate-300 hover:text-white">
+          <button onclick="switchTab('fifteen')" id="tab-fifteen" class="px-3.5 py-2 text-xs font-bold rounded-lg text-slate-300 hover:text-white flex items-center gap-1.5">
             <i class="fa-solid fa-calendar-days"></i> 15-Day View
           </button>
-          <button onclick="switchTab('master')" id="tab-master" class="px-3.5 py-1.5 text-xs font-semibold rounded-lg text-slate-300 hover:text-white">
+          <button onclick="switchTab('master')" id="tab-master" class="px-3.5 py-2 text-xs font-bold rounded-lg text-slate-300 hover:text-white flex items-center gap-1.5">
             <i class="fa-solid fa-database"></i> Master DB (<span id="master-count">0</span>/60)
           </button>
         </nav>
@@ -735,11 +735,11 @@
         const el = document.getElementById(`view-${t}`);
         if(el) el.classList.add('hidden');
         const tabBtn = document.getElementById(`tab-${t}`);
-        if(tabBtn) tabBtn.className = "px-3.5 py-1.5 text-xs font-semibold rounded-lg text-slate-300 hover:text-white";
+        if(tabBtn) tabBtn.className = "px-3.5 py-2 text-xs font-bold rounded-lg text-slate-300 hover:text-white flex items-center gap-1.5";
       });
       
       document.getElementById(`view-${tab}`).classList.remove('hidden');
-      document.getElementById(`tab-${tab}`).className = "px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-indigo-600 text-white shadow-sm";
+      document.getElementById(`tab-${tab}`).className = "px-3.5 py-2 text-xs font-bold rounded-lg bg-indigo-600 text-white shadow-sm flex items-center gap-1.5";
 
       if(tab === 'master') renderMasterDB();
       if(tab === 'daily') renderDailyView();
@@ -926,7 +926,7 @@
 
           const col = document.createElement('div');
           col.className = "p-0.5 space-y-0.5 border-r border-b border-slate-800 min-h-[120px] w-full overflow-hidden min-w-0";
-          col.innerHTML = `<div class="font-bold text-[8.5px] text-slate-300 border-b border-slate-700 pb-0.5 mb-0.5 text-center no-copy bg-slate-900/80 rounded py-0.5 uppercase tracking-tighter whitespace-nowrap overflow-hidden flex items-center justify-center">${dayLabel}<span class="${badgeClass}">${count}</span></div>`;
+          col.innerHTML = `<div class="font-bold text-[9px] text-slate-300 border-b border-slate-700 pb-0.5 mb-0.5 text-center no-copy bg-slate-900/80 rounded py-0.5 uppercase tracking-tighter whitespace-nowrap overflow-hidden flex items-center justify-center">${dayLabel}<span class="${badgeClass}">${count}</span></div>`;
 
           items.forEach(item => {
             const parsed = formatUnitText(item.raw || item.formatted || item.unit, false);
@@ -1101,7 +1101,7 @@
         tagHTML = `<span class="tag-su">SU</span>`;
       } else if (remainderText) {
         rawTagString = remainderText;
-        tagHTML = `<span class="text-indigo-300 font-semibold text-[9px] px-1 bg-indigo-950/60 rounded border border-indigo-900/50">${remainderText}</span>`;
+        tagHTML = `<span class="text-indigo-300 font-semibold text-[10px] px-1 bg-indigo-950/60 rounded border border-indigo-900/50">${remainderText}</span>`;
       }
 
       let nightsHTML = (isCheckIn && nights) ? `<span class="tag-nights">${nights}N</span>` : '';
@@ -1542,7 +1542,7 @@
 
           const col = document.createElement('div');
           col.className = "p-0.5 space-y-0.5 border-r border-slate-800 min-h-[250px] w-full overflow-hidden min-w-0";
-          col.innerHTML = `<div class="font-bold text-[8.5px] text-slate-300 border-b border-slate-700 pb-0.5 mb-0.5 text-center no-copy bg-slate-900/80 rounded py-0.5 uppercase tracking-tighter whitespace-nowrap overflow-hidden flex items-center justify-center">${dayLabel}<span class="${badgeClass}">${count}</span></div>`;
+          col.innerHTML = `<div class="font-bold text-[9px] text-slate-300 border-b border-slate-700 pb-0.5 mb-0.5 text-center no-copy bg-slate-900/80 rounded py-0.5 uppercase tracking-tighter whitespace-nowrap overflow-hidden flex items-center justify-center">${dayLabel}<span class="${badgeClass}">${count}</span></div>`;
 
           items.forEach(item => {
             const parsed = formatUnitText(item.raw || item.formatted || item.unit, type === 'CHECKIN');
