@@ -181,8 +181,8 @@
           <button onclick="openManageModal()" class="px-3.5 py-1.5 text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg shadow-sm flex items-center gap-1.5">
             <i class="fa-solid fa-pen-to-square"></i> Manage / Edit List
           </button>
-          <button onclick="switch15Cleaner('FLORENCE')" id="fifteen-tab-flo" class="px-4 py-1.5 text-xs font-bold rounded-lg bg-rose-600 text-white shadow-sm">Florence (Flo)</button>
-          <button onclick="switch15Cleaner('YANG')" id="fifteen-tab-yang" class="px-4 py-1.5 text-xs font-bold rounded-lg bg-slate-800 text-slate-300">Yang</button>
+          <button onclick="switch15Cleaner('FLORENCE')" id="fifteen-tab-flo" class="px-4 py-1.5 text-xs font-bold rounded-lg bg-rose-600 text-white shadow-sm flex items-center gap-1.5"><i class="fa-solid fa-user-gear"></i> Florence (Flo)</button>
+          <button onclick="switch15Cleaner('YANG')" id="fifteen-tab-yang" class="px-4 py-1.5 text-xs font-bold rounded-lg bg-slate-800 text-slate-300 flex items-center gap-1.5"><i class="fa-solid fa-user"></i> Yang</button>
         </div>
       </div>
 
@@ -217,14 +217,14 @@
           <div class="glass-card rounded-2xl overflow-hidden shadow-sm">
             <div class="bg-gradient-to-r from-rose-600 to-red-700 px-4 py-2.5 font-bold text-white text-xs uppercase tracking-wider flex justify-between items-center">
               <span id="label-flo-15a">CLEANING A (FLO)</span>
-              <button onclick="copyListFromElement('flo-grid-1a')" class="no-copy px-2 py-0.5 text-[10px] bg-white/25 hover:bg-white/40 text-white font-bold rounded"><i class="fa-regular fa-copy"></i> Copy</button>
+              <button onclick="copyListFromElement('flo-grid-1a')" class="no-copy px-2.5 py-1 text-[11px] bg-white/25 hover:bg-white/40 text-white font-bold rounded flex items-center gap-1.5"><i class="fa-regular fa-copy"></i> Copy</button>
             </div>
             <div id="flo-grid-1a" class="weekly-section-bg fifteen-grid grid grid-cols-8 divide-x divide-slate-800 text-xs min-h-[300px] p-0.5 w-full"></div>
           </div>
           <div class="glass-card rounded-2xl overflow-hidden shadow-sm">
             <div class="bg-gradient-to-r from-rose-700 to-pink-700 px-4 py-2.5 font-bold text-white text-xs uppercase tracking-wider flex justify-between items-center">
               <span id="label-flo-15b">CLEANING B (FLO)</span>
-              <button onclick="copyListFromElement('flo-grid-1b')" class="no-copy px-2 py-0.5 text-[10px] bg-white/25 hover:bg-white/40 text-white font-bold rounded"><i class="fa-regular fa-copy"></i> Copy</button>
+              <button onclick="copyListFromElement('flo-grid-1b')" class="no-copy px-2.5 py-1 text-[11px] bg-white/25 hover:bg-white/40 text-white font-bold rounded flex items-center gap-1.5"><i class="fa-regular fa-copy"></i> Copy</button>
             </div>
             <div id="flo-grid-1b" class="weekly-section-bg fifteen-grid grid grid-cols-8 divide-x divide-slate-800 text-xs min-h-[300px] p-0.5 w-full"></div>
           </div>
@@ -236,14 +236,14 @@
           <div class="glass-card rounded-2xl overflow-hidden shadow-sm">
             <div class="bg-gradient-to-r from-cyan-700 to-teal-700 px-4 py-2.5 font-bold text-white text-xs uppercase tracking-wider flex justify-between items-center">
               <span id="label-yang-15a">CLEANING A (YANG)</span>
-              <button onclick="copyListFromElement('yang-grid-1a')" class="no-copy px-2 py-0.5 text-[10px] bg-white/25 hover:bg-white/40 text-white font-bold rounded"><i class="fa-regular fa-copy"></i> Copy</button>
+              <button onclick="copyListFromElement('yang-grid-1a')" class="no-copy px-2.5 py-1 text-[11px] bg-white/25 hover:bg-white/40 text-white font-bold rounded flex items-center gap-1.5"><i class="fa-regular fa-copy"></i> Copy</button>
             </div>
             <div id="yang-grid-1a" class="weekly-section-bg fifteen-grid grid grid-cols-8 divide-x divide-slate-800 text-xs min-h-[300px] p-0.5 w-full"></div>
           </div>
           <div class="glass-card rounded-2xl overflow-hidden shadow-sm">
             <div class="bg-gradient-to-r from-cyan-800 to-blue-700 px-4 py-2.5 font-bold text-white text-xs uppercase tracking-wider flex justify-between items-center">
               <span id="label-yang-15b">CLEANING B (YANG)</span>
-              <button onclick="copyListFromElement('yang-grid-1b')" class="no-copy px-2 py-0.5 text-[10px] bg-white/25 hover:bg-white/40 text-white font-bold rounded"><i class="fa-regular fa-copy"></i> Copy</button>
+              <button onclick="copyListFromElement('yang-grid-1b')" class="no-copy px-2.5 py-1 text-[11px] bg-white/25 hover:bg-white/40 text-white font-bold rounded flex items-center gap-1.5"><i class="fa-regular fa-copy"></i> Copy</button>
             </div>
             <div id="yang-grid-1b" class="weekly-section-bg fifteen-grid grid grid-cols-8 divide-x divide-slate-800 text-xs min-h-[300px] p-0.5 w-full"></div>
           </div>
@@ -255,16 +255,16 @@
     <div id="view-master" class="hidden space-y-6">
       <div class="glass-card p-5 rounded-2xl shadow-sm space-y-4">
         <div class="flex justify-between items-center">
-          <h2 class="text-base font-bold text-slate-100">Master Database Management (Max 60 Units)</h2>
+          <h2 class="text-base font-bold text-slate-100 flex items-center gap-2"><i class="fa-solid fa-database text-indigo-400"></i> Master Database Management (Max 60 Units)</h2>
           <div class="flex gap-2">
-            <button onclick="exportBackupData()" class="px-3 py-1.5 text-xs font-semibold bg-indigo-950 text-indigo-300 hover:bg-indigo-900 rounded-lg border border-indigo-800">
+            <button onclick="exportBackupData()" class="px-3 py-1.5 text-xs font-semibold bg-indigo-950 text-indigo-300 hover:bg-indigo-900 rounded-lg border border-indigo-800 flex items-center gap-1.5">
               <i class="fa-solid fa-download"></i> Export Backup
             </button>
-            <button onclick="document.getElementById('import-file-input').click()" class="px-3 py-1.5 text-xs font-semibold bg-emerald-950 text-emerald-300 hover:bg-emerald-900 rounded-lg border border-emerald-800">
+            <button onclick="document.getElementById('import-file-input').click()" class="px-3 py-1.5 text-xs font-semibold bg-emerald-950 text-emerald-300 hover:bg-emerald-900 rounded-lg border border-emerald-800 flex items-center gap-1.5">
               <i class="fa-solid fa-upload"></i> Import Backup
             </button>
             <input type="file" id="import-file-input" class="hidden" accept=".json" onchange="importBackupData(event)">
-            <button onclick="clearMasterDB()" class="px-3 py-1.5 text-xs font-semibold bg-rose-700 hover:bg-rose-600 text-white rounded-lg shadow-sm">
+            <button onclick="clearMasterDB()" class="px-3 py-1.5 text-xs font-semibold bg-rose-700 hover:bg-rose-600 text-white rounded-lg shadow-sm flex items-center gap-1.5">
               <i class="fa-solid fa-trash-can"></i> Clear All Units
             </button>
           </div>
@@ -276,14 +276,14 @@
             <option value="FLORENCE">Florence (Red Font)</option>
             <option value="YANG">Yang (Blue Font)</option>
           </select>
-          <button onclick="addMasterUnit()" class="px-5 py-2 bg-indigo-600 text-white rounded-xl text-xs font-bold hover:bg-indigo-700">Add Unit</button>
+          <button onclick="addMasterUnit()" class="px-5 py-2 bg-indigo-600 text-white rounded-xl text-xs font-bold hover:bg-indigo-700 flex items-center justify-center gap-1.5"><i class="fa-solid fa-plus"></i> Add Unit</button>
         </div>
       </div>
 
       <div class="glass-card p-4 rounded-2xl shadow-sm flex flex-col sm:flex-row justify-between items-center gap-3">
         <div class="flex flex-wrap items-center gap-3 w-full sm:w-auto">
           <div class="flex items-center gap-2">
-            <span class="text-xs font-bold text-slate-300"><i class="fa-solid fa-arrow-down-a-z"></i> Sort:</span>
+            <span class="text-xs font-bold text-slate-300 flex items-center gap-1"><i class="fa-solid fa-arrow-down-a-z"></i> Sort:</span>
             <select id="master-sort-order" onchange="renderMasterDB()" class="px-3 py-1.5 border border-slate-700 rounded-lg text-xs font-bold bg-slate-900 text-white">
               <option value="AZ">A - Z</option>
               <option value="ZA">Z - A</option>
@@ -304,8 +304,8 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div class="glass-card p-4 rounded-2xl shadow-sm">
           <div class="flex justify-between items-center mb-3 border-b border-slate-800 pb-2">
-            <h3 class="text-sm font-bold text-rose-400"><i class="fa-solid fa-user"></i> Florence Units (Red)</h3>
-            <button onclick="copyListFromElement('florence-master-list')" class="px-2.5 py-1 text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg border border-slate-700">
+            <h3 class="text-sm font-bold text-rose-400 flex items-center gap-1.5"><i class="fa-solid fa-user"></i> Florence Units (Red)</h3>
+            <button onclick="copyListFromElement('florence-master-list')" class="px-2.5 py-1 text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg border border-slate-700 flex items-center gap-1.5">
               <i class="fa-regular fa-copy"></i> Copy Units
             </button>
           </div>
@@ -313,8 +313,8 @@
         </div>
         <div class="glass-card p-4 rounded-2xl shadow-sm">
           <div class="flex justify-between items-center mb-3 border-b border-slate-800 pb-2">
-            <h3 class="text-sm font-bold text-sky-400"><i class="fa-solid fa-user"></i> Yang Units (Blue)</h3>
-            <button onclick="copyListFromElement('yang-master-list')" class="px-2.5 py-1 text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg border border-slate-700">
+            <h3 class="text-sm font-bold text-sky-400 flex items-center gap-1.5"><i class="fa-solid fa-user"></i> Yang Units (Blue)</h3>
+            <button onclick="copyListFromElement('yang-master-list')" class="px-2.5 py-1 text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg border border-slate-700 flex items-center gap-1.5">
               <i class="fa-regular fa-copy"></i> Copy Units
             </button>
           </div>
@@ -344,10 +344,10 @@
         </div>
         <textarea id="daily-input" rows="3" placeholder="Enter units here (e.g. EC1113 | EC1113 2)..." class="w-full px-4 py-3 border border-slate-700 rounded-xl text-sm font-mono bg-slate-900 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
         <div class="flex justify-between items-center">
-          <button onclick="sortDailyAlphabetical()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl text-xs font-bold border border-slate-700">
+          <button onclick="sortDailyAlphabetical()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl text-xs font-bold border border-slate-700 flex items-center gap-1.5">
             <i class="fa-solid fa-arrow-down-a-z"></i> Sort A-Z
           </button>
-          <button onclick="processDailyInput()" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold shadow-md">Enter & Sort Daily List</button>
+          <button onclick="processDailyInput()" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold shadow-md flex items-center gap-1.5"><i class="fa-solid fa-list-check"></i> Enter & Sort Daily List</button>
         </div>
       </div>
 
@@ -355,8 +355,8 @@
         <!-- FLORENCE SCHEDULE -->
         <div class="glass-card p-4 rounded-2xl shadow-sm border border-rose-950/50">
           <div class="flex justify-between items-center mb-3 border-b border-slate-800 pb-2">
-            <h3 class="text-sm font-bold text-rose-400">Florence Schedule</h3>
-            <button onclick="uncheckAllForCleaner('FLORENCE')" class="text-[10px] px-2.5 py-1 bg-rose-950/60 hover:bg-rose-900/60 text-rose-300 rounded-lg border border-rose-900 font-bold">
+            <h3 class="text-sm font-bold text-rose-400 flex items-center gap-1.5"><i class="fa-solid fa-user"></i> Florence Schedule</h3>
+            <button onclick="uncheckAllForCleaner('FLORENCE')" class="text-[10px] px-2.5 py-1 bg-rose-950/60 hover:bg-rose-900/60 text-rose-300 rounded-lg border border-rose-900 font-bold flex items-center gap-1">
               <i class="fa-solid fa-rotate-left"></i> Checking Done
             </button>
           </div>
@@ -364,14 +364,14 @@
             <div>
               <div class="flex justify-between items-center mb-1">
                 <h4 class="text-xs font-bold text-slate-400 flex items-center">Check-Out: <span id="count-daily-f-out" class="count-pill">0</span></h4>
-                <button onclick="copyDailyCleanerSection('FLORENCE', 'CHECKOUT')" class="text-[10px] px-2 py-0.5 bg-rose-950/60 hover:bg-rose-900/60 text-rose-300 rounded font-bold"><i class="fa-regular fa-copy"></i> Copy Check-Out</button>
+                <button onclick="copyDailyCleanerSection('FLORENCE', 'CHECKOUT')" class="text-[10px] px-2 py-0.5 bg-rose-950/60 hover:bg-rose-900/60 text-rose-300 rounded font-bold flex items-center gap-1"><i class="fa-regular fa-copy"></i> Copy Check-Out</button>
               </div>
               <div id="daily-florence-checkout" class="space-y-0.5 text-base font-semibold min-h-[40px]"></div>
             </div>
             <div>
               <div class="flex justify-between items-center mb-1">
                 <h4 class="text-xs font-bold text-slate-400 flex items-center">Check-In: <span id="count-daily-f-in" class="count-pill">0</span></h4>
-                <button onclick="copyDailyCleanerSection('FLORENCE', 'CHECKIN')" class="text-[10px] px-2 py-0.5 bg-rose-950/60 hover:bg-rose-900/60 text-rose-300 rounded font-bold"><i class="fa-regular fa-copy"></i> Copy Check-In</button>
+                <button onclick="copyDailyCleanerSection('FLORENCE', 'CHECKIN')" class="text-[10px] px-2 py-0.5 bg-rose-950/60 hover:bg-rose-900/60 text-rose-300 rounded font-bold flex items-center gap-1"><i class="fa-regular fa-copy"></i> Copy Check-In</button>
               </div>
               <div id="daily-florence-checkin" class="space-y-0.5 text-base font-semibold min-h-[40px]"></div>
             </div>
@@ -381,8 +381,8 @@
         <!-- YANG SCHEDULE -->
         <div class="glass-card p-4 rounded-2xl shadow-sm border border-sky-950/50">
           <div class="flex justify-between items-center mb-3 border-b border-slate-800 pb-2">
-            <h3 class="text-sm font-bold text-sky-400">Yang Schedule</h3>
-            <button onclick="uncheckAllForCleaner('YANG')" class="text-[10px] px-2.5 py-1 bg-sky-950/60 hover:bg-sky-900/60 text-sky-300 rounded-lg border border-sky-900 font-bold">
+            <h3 class="text-sm font-bold text-sky-400 flex items-center gap-1.5"><i class="fa-solid fa-user"></i> Yang Schedule</h3>
+            <button onclick="uncheckAllForCleaner('YANG')" class="text-[10px] px-2.5 py-1 bg-sky-950/60 hover:bg-sky-900/60 text-sky-300 rounded-lg border border-sky-900 font-bold flex items-center gap-1">
               <i class="fa-solid fa-rotate-left"></i> Checking Done
             </button>
           </div>
@@ -390,14 +390,14 @@
             <div>
               <div class="flex justify-between items-center mb-1">
                 <h4 class="text-xs font-bold text-slate-400 flex items-center">Check-Out: <span id="count-daily-y-out" class="count-pill">0</span></h4>
-                <button onclick="copyDailyCleanerSection('YANG', 'CHECKOUT')" class="text-[10px] px-2 py-0.5 bg-sky-950/60 hover:bg-sky-900/60 text-sky-300 rounded font-bold"><i class="fa-regular fa-copy"></i> Copy Check-Out</button>
+                <button onclick="copyDailyCleanerSection('YANG', 'CHECKOUT')" class="text-[10px] px-2 py-0.5 bg-sky-950/60 hover:bg-sky-900/60 text-sky-300 rounded font-bold flex items-center gap-1"><i class="fa-regular fa-copy"></i> Copy Check-Out</button>
               </div>
               <div id="daily-yang-checkout" class="space-y-0.5 text-base font-semibold min-h-[40px]"></div>
             </div>
             <div>
               <div class="flex justify-between items-center mb-1">
                 <h4 class="text-xs font-bold text-slate-400 flex items-center">Check-In: <span id="count-daily-y-in" class="count-pill">0</span></h4>
-                <button onclick="copyDailyCleanerSection('YANG', 'CHECKIN')" class="text-[10px] px-2 py-0.5 bg-sky-950/60 hover:bg-sky-900/60 text-sky-300 rounded font-bold"><i class="fa-regular fa-copy"></i> Copy Check-In</button>
+                <button onclick="copyDailyCleanerSection('YANG', 'CHECKIN')" class="text-[10px] px-2 py-0.5 bg-sky-950/60 hover:bg-sky-900/60 text-sky-300 rounded font-bold flex items-center gap-1"><i class="fa-regular fa-copy"></i> Copy Check-In</button>
               </div>
               <div id="daily-yang-checkin" class="space-y-0.5 text-base font-semibold min-h-[40px]"></div>
             </div>
@@ -440,7 +440,7 @@
         </div>
 
         <div class="flex justify-end gap-3 pt-2">
-          <button onclick="clearReservationForm()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs font-bold">Clear Form</button>
+          <button onclick="clearReservationForm()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs font-bold flex items-center gap-1.5"><i class="fa-solid fa-rotate-right"></i> Clear Form</button>
           <button onclick="processSingleReservation()" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold shadow-md flex items-center gap-2">
             <i class="fa-solid fa-bolt"></i> Save & Sort Reservation
           </button>
@@ -454,7 +454,7 @@
             <i class="fa-solid fa-list-check"></i> Processed Reservations Log (<span id="reservations-count">0</span>)
           </h3>
           <div class="flex gap-2">
-            <button onclick="clearReservationsLog()" class="px-3 py-1 bg-rose-950 hover:bg-rose-900 text-rose-300 rounded-lg text-xs font-bold border border-rose-900">
+            <button onclick="clearReservationsLog()" class="px-3 py-1 bg-rose-950 hover:bg-rose-900 text-rose-300 rounded-lg text-xs font-bold border border-rose-900 flex items-center gap-1.5">
               <i class="fa-solid fa-trash-can"></i> Clear Queue List
             </button>
           </div>
@@ -501,7 +501,7 @@
         </div>
         <textarea id="weekly-input" rows="3" placeholder="Enter weekly units here (e.g. EC1113 | EC1113 2)..." class="w-full px-4 py-3 border border-slate-700 rounded-xl text-sm bg-slate-900 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
         <div class="flex justify-end">
-          <button onclick="processWeeklyInput()" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold shadow-md">
+          <button onclick="processWeeklyInput()" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold shadow-md flex items-center gap-1.5">
             <i class="fa-solid fa-filter"></i> Sort to Weekly List
           </button>
         </div>
@@ -516,8 +516,8 @@
           <button onclick="openManageModal()" class="px-3.5 py-1.5 text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg shadow-sm flex items-center gap-1.5">
             <i class="fa-solid fa-pen-to-square"></i> Manage / Edit List
           </button>
-          <button onclick="switchCleanerTab('FLORENCE')" id="cleaner-tab-florence" class="px-4 py-1.5 text-xs font-bold rounded-lg bg-rose-600 text-white shadow-sm">Florence</button>
-          <button onclick="switchCleanerTab('YANG')" id="cleaner-tab-yang" class="px-4 py-1.5 text-xs font-bold rounded-lg bg-slate-800 text-slate-300">Yang</button>
+          <button onclick="switchCleanerTab('FLORENCE')" id="cleaner-tab-florence" class="px-4 py-1.5 text-xs font-bold rounded-lg bg-rose-600 text-white shadow-sm flex items-center gap-1.5"><i class="fa-solid fa-user-gear"></i> Florence</button>
+          <button onclick="switchCleanerTab('YANG')" id="cleaner-tab-yang" class="px-4 py-1.5 text-xs font-bold rounded-lg bg-slate-800 text-slate-300 flex items-center gap-1.5"><i class="fa-solid fa-user"></i> Yang</button>
         </div>
       </div>
 
@@ -526,7 +526,7 @@
           <div class="glass-card rounded-2xl overflow-hidden shadow-sm">
             <div class="bg-gradient-to-r from-rose-600 to-pink-600 px-4 py-2.5 font-bold text-white text-xs uppercase tracking-wider flex justify-between items-center">
               <span>Florence - Check-Out List</span>
-              <button onclick="copyListFromElement('f-weekly-checkout-grid')" class="no-copy px-2.5 py-1 text-[10px] bg-white/25 hover:bg-white/40 text-white font-bold rounded"><i class="fa-regular fa-copy"></i> Copy</button>
+              <button onclick="copyListFromElement('f-weekly-checkout-grid')" class="no-copy px-2.5 py-1 text-[11px] bg-white/25 hover:bg-white/40 text-white font-bold rounded flex items-center gap-1.5"><i class="fa-regular fa-copy"></i> Copy</button>
             </div>
             <div id="f-weekly-checkout-grid" class="weekly-section-bg fifteen-grid grid grid-cols-7 divide-x divide-slate-800 text-xs min-h-[300px] p-0.5 w-full"></div>
           </div>
@@ -534,7 +534,7 @@
           <div class="glass-card rounded-2xl overflow-hidden shadow-sm">
             <div class="bg-gradient-to-r from-rose-700 to-pink-700 px-4 py-2.5 font-bold text-white text-xs uppercase tracking-wider flex justify-between items-center">
               <span>Florence - Check-In List</span>
-              <button onclick="copyListFromElement('f-weekly-checkin-grid')" class="no-copy px-2.5 py-1 text-[10px] bg-white/25 hover:bg-white/40 text-white font-bold rounded"><i class="fa-regular fa-copy"></i> Copy</button>
+              <button onclick="copyListFromElement('f-weekly-checkin-grid')" class="no-copy px-2.5 py-1 text-[11px] bg-white/25 hover:bg-white/40 text-white font-bold rounded flex items-center gap-1.5"><i class="fa-regular fa-copy"></i> Copy</button>
             </div>
             <div id="f-weekly-checkin-grid" class="weekly-section-bg fifteen-grid grid grid-cols-7 divide-x divide-slate-800 text-xs min-h-[300px] p-0.5 w-full"></div>
           </div>
@@ -546,7 +546,7 @@
           <div class="glass-card rounded-2xl overflow-hidden shadow-sm">
             <div class="bg-gradient-to-r from-cyan-700 to-teal-700 px-4 py-2.5 font-bold text-white text-xs uppercase tracking-wider flex justify-between items-center">
               <span>Yang - Check-Out List</span>
-              <button onclick="copyListFromElement('y-weekly-checkout-grid')" class="no-copy px-2.5 py-1 text-[10px] bg-white/25 hover:bg-white/40 text-white font-bold rounded"><i class="fa-regular fa-copy"></i> Copy</button>
+              <button onclick="copyListFromElement('y-weekly-checkout-grid')" class="no-copy px-2.5 py-1 text-[11px] bg-white/25 hover:bg-white/40 text-white font-bold rounded flex items-center gap-1.5"><i class="fa-regular fa-copy"></i> Copy</button>
             </div>
             <div id="y-weekly-checkout-grid" class="weekly-section-bg fifteen-grid grid grid-cols-7 divide-x divide-slate-800 text-xs min-h-[300px] p-0.5 w-full"></div>
           </div>
@@ -554,7 +554,7 @@
           <div class="glass-card rounded-2xl overflow-hidden shadow-sm">
             <div class="bg-gradient-to-r from-cyan-800 to-blue-700 px-4 py-2.5 font-bold text-white text-xs uppercase tracking-wider flex justify-between items-center">
               <span>Yang - Check-In List</span>
-              <button onclick="copyListFromElement('y-weekly-checkin-grid')" class="no-copy px-2.5 py-1 text-[10px] bg-white/25 hover:bg-white/40 text-white font-bold rounded"><i class="fa-regular fa-copy"></i> Copy</button>
+              <button onclick="copyListFromElement('y-weekly-checkin-grid')" class="no-copy px-2.5 py-1 text-[11px] bg-white/25 hover:bg-white/40 text-white font-bold rounded flex items-center gap-1.5"><i class="fa-regular fa-copy"></i> Copy</button>
             </div>
             <div id="y-weekly-checkin-grid" class="weekly-section-bg fifteen-grid grid grid-cols-7 divide-x divide-slate-800 text-xs min-h-[300px] p-0.5 w-full"></div>
           </div>
@@ -568,7 +568,7 @@
   <div id="manage-modal" class="hidden fixed inset-0 bg-slate-950/70 backdrop-blur-xs z-50 flex items-center justify-center p-4">
     <div class="glass-card rounded-2xl max-w-xl w-full p-6 shadow-2xl space-y-5 border border-slate-700">
       <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-        <h3 class="text-base font-bold text-slate-100"><i class="fa-solid fa-pen-to-square text-indigo-400"></i> Manage / Edit Schedule Entries</h3>
+        <h3 class="text-base font-bold text-slate-100 flex items-center gap-2"><i class="fa-solid fa-pen-to-square text-indigo-400"></i> Manage / Edit Schedule Entries</h3>
         <button onclick="closeManageModal()" class="text-slate-400 hover:text-white text-lg"><i class="fa-solid fa-xmark"></i></button>
       </div>
 
@@ -596,7 +596,7 @@
 
         <div class="flex gap-2 bg-slate-900 p-3 rounded-xl border border-slate-700">
           <input type="text" id="modal-add-input" placeholder="Add unit (e.g. AU6514 BOOKING.COM)" class="flex-1 px-3 py-1.5 border border-slate-700 rounded-lg text-xs bg-slate-800 text-white">
-          <button onclick="addModalEntry()" class="px-4 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-lg">+ Add Entry</button>
+          <button onclick="addModalEntry()" class="px-4 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-lg flex items-center gap-1.5"><i class="fa-solid fa-plus"></i> Add Entry</button>
         </div>
 
         <div>
@@ -606,7 +606,7 @@
       </div>
 
       <div class="flex justify-end pt-2 border-t border-slate-800">
-        <button onclick="closeManageModal()" class="px-5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold rounded-xl">Close</button>
+        <button onclick="closeManageModal()" class="px-5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold rounded-xl flex items-center gap-1.5"><i class="fa-solid fa-xmark"></i> Close</button>
       </div>
     </div>
   </div>
@@ -784,8 +784,8 @@
         div.innerHTML = `
           <span class="font-bold text-slate-200">${item.raw || item.unit}</span>
           <div class="flex gap-2">
-            <button onclick="editModalItem('${date}', ${item.id})" class="px-2 py-1 bg-indigo-950 text-indigo-300 hover:bg-indigo-900 rounded font-semibold border border-indigo-800"><i class="fa-solid fa-pen"></i> Edit / Tag</button>
-            <button onclick="deleteScheduleItem('${date}', ${item.id}); loadModalDateEntries();" class="px-2 py-1 bg-rose-950 text-rose-300 hover:bg-rose-900 rounded font-semibold border border-rose-800"><i class="fa-solid fa-trash"></i> Delete</button>
+            <button onclick="editModalItem('${date}', ${item.id})" class="px-2 py-1 bg-indigo-950 text-indigo-300 hover:bg-indigo-900 rounded font-semibold border border-indigo-800 flex items-center gap-1"><i class="fa-solid fa-pen"></i> Edit / Tag</button>
+            <button onclick="deleteScheduleItem('${date}', ${item.id}); loadModalDateEntries();" class="px-2 py-1 bg-rose-950 text-rose-300 hover:bg-rose-900 rounded font-semibold border border-rose-800 flex items-center gap-1"><i class="fa-solid fa-trash"></i> Delete</button>
           </div>
         `;
         container.appendChild(div);
@@ -849,8 +849,8 @@
       document.getElementById('fifteen-flo-section').classList.toggle('hidden', cleaner !== 'FLORENCE');
       document.getElementById('fifteen-yang-section').classList.toggle('hidden', cleaner !== 'YANG');
       
-      document.getElementById('fifteen-tab-flo').className = cleaner === 'FLORENCE' ? 'px-4 py-1.5 text-xs font-bold rounded-lg bg-rose-600 text-white shadow-sm' : 'px-4 py-1.5 text-xs font-bold rounded-lg bg-slate-800 text-slate-300';
-      document.getElementById('fifteen-tab-yang').className = cleaner === 'YANG' ? 'px-4 py-1.5 text-xs font-bold rounded-lg bg-cyan-600 text-white shadow-sm' : 'px-4 py-1.5 text-xs font-bold rounded-lg bg-slate-800 text-slate-300';
+      document.getElementById('fifteen-tab-flo').className = cleaner === 'FLORENCE' ? 'px-4 py-1.5 text-xs font-bold rounded-lg bg-rose-600 text-white shadow-sm flex items-center gap-1.5' : 'px-4 py-1.5 text-xs font-bold rounded-lg bg-slate-800 text-slate-300 flex items-center gap-1.5';
+      document.getElementById('fifteen-tab-yang').className = cleaner === 'YANG' ? 'px-4 py-1.5 text-xs font-bold rounded-lg bg-cyan-600 text-white shadow-sm flex items-center gap-1.5' : 'px-4 py-1.5 text-xs font-bold rounded-lg bg-slate-800 text-slate-300 flex items-center gap-1.5';
     }
 
     function render15DayView() {
@@ -918,7 +918,8 @@
         for(let d = startDay; d <= endDay; d++) {
           const dateStr = `${year}-${month}-${String(d).padStart(2, '0')}`;
           const dateObj = new Date(year, month - 1, d);
-          const dayLabel = dateObj.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: '2-digit' });
+          const shortMon = dateObj.toLocaleDateString('en-US', { month: 'short' }).toUpperCase();
+          const dayLabel = `${shortMon} ${String(d).padStart(2, '0')}`;
 
           const items = (state.schedules[dateStr] || []).filter(i => i.cleaner === cleaner && i.type === 'CHECKOUT');
           const count = items.length;
@@ -1495,8 +1496,8 @@
       document.getElementById('weekly-florence-section').classList.toggle('hidden', cleaner !== 'FLORENCE');
       document.getElementById('weekly-yang-section').classList.toggle('hidden', cleaner !== 'YANG');
       
-      document.getElementById('cleaner-tab-florence').className = cleaner === 'FLORENCE' ? 'px-4 py-1.5 text-xs font-bold rounded-lg bg-rose-600 text-white shadow-sm' : 'px-4 py-1.5 text-xs font-bold rounded-lg bg-slate-800 text-slate-300';
-      document.getElementById('cleaner-tab-yang').className = cleaner === 'YANG' ? 'px-4 py-1.5 text-xs font-bold rounded-lg bg-cyan-600 text-white shadow-sm' : 'px-4 py-1.5 text-xs font-bold rounded-lg bg-slate-800 text-slate-300';
+      document.getElementById('cleaner-tab-florence').className = cleaner === 'FLORENCE' ? 'px-4 py-1.5 text-xs font-bold rounded-lg bg-rose-600 text-white shadow-sm flex items-center gap-1.5' : 'px-4 py-1.5 text-xs font-bold rounded-lg bg-slate-800 text-slate-300 flex items-center gap-1.5';
+      document.getElementById('cleaner-tab-yang').className = cleaner === 'YANG' ? 'px-4 py-1.5 text-xs font-bold rounded-lg bg-cyan-600 text-white shadow-sm flex items-center gap-1.5' : 'px-4 py-1.5 text-xs font-bold rounded-lg bg-slate-800 text-slate-300 flex items-center gap-1.5';
     }
 
     function getWeekDates(anchorDateStr) {
@@ -1533,7 +1534,7 @@
 
       weekDates.forEach((dateStr) => {
         const dateObj = new Date(dateStr);
-        const dayLabel = dateObj.toLocaleDateString('en-US', { weekday: 'short', month: 'numeric', day: 'numeric' });
+        const dayLabel = dateObj.toLocaleDateString('en-US', { weekday: 'short', month: 'numeric', day: 'numeric' }).toUpperCase();
 
         const createCol = (cleaner, type) => {
           const items = (state.schedules[dateStr] || []).filter(i => i.cleaner === cleaner && i.type === type);
