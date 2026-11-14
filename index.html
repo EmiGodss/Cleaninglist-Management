@@ -40,7 +40,7 @@
 
     .fifteen-grid .unit-text, .weekly-grid .unit-text { font-size: 11.5px !important; font-weight: 800; justify-content: center !important; }
 
-    .tag-nights, .tag-booking, .tag-airbnb {
+    .tag-nights, .tag-booking, .tag-airbnb, .tag-ls, .tag-rs, .tag-su {
       display: inline-flex !important;
       align-items: center !important;
       justify-content: center !important;
@@ -55,6 +55,9 @@
     .tag-nights { background-color: #fef08a !important; color: #854d0e !important; } 
     .tag-booking { background-color: #38bdf8 !important; color: #082f49 !important; font-weight: 900 !important; }
     .tag-airbnb { background-color: #f43f5e !important; color: #ffe4e6 !important; font-weight: 900 !important; }
+    .tag-ls { background-color: #10b981 !important; color: #022c22 !important; font-weight: 900 !important; }
+    .tag-rs { background-color: #ec4899 !important; color: #500724 !important; font-weight: 900 !important; }
+    .tag-su { background-color: #f97316 !important; color: #431407 !important; font-weight: 900 !important; }
 
     .count-pill {
       background-color: #312e81;
@@ -348,7 +351,7 @@
             </select>
           </div>
         </div>
-        <textarea id="daily-input" rows="3" placeholder="Enter units here (e.g. EC1113 | EC1113 2)..." class="w-full px-4 py-3 border border-slate-700 rounded-xl text-sm font-mono bg-slate-900 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+        <textarea id="daily-input" rows="3" placeholder="Enter units here (e.g. EC1113 | EC1113 LS)..." class="w-full px-4 py-3 border border-slate-700 rounded-xl text-sm font-mono bg-slate-900 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
         <div class="flex justify-between items-center">
           <button onclick="sortDailyAlphabetical()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl text-xs font-bold border border-slate-700">
             Sort A-Z
@@ -496,7 +499,7 @@
             </select>
           </div>
         </div>
-        <textarea id="weekly-input" rows="3" placeholder="Enter weekly units here (e.g. EC1113 | EC1113 2)..." class="w-full px-4 py-3 border border-slate-700 rounded-xl text-sm bg-slate-900 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+        <textarea id="weekly-input" rows="3" placeholder="Enter weekly units here (e.g. EC1113 | EC1113 LS)..." class="w-full px-4 py-3 border border-slate-700 rounded-xl text-sm bg-slate-900 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
         <div class="flex justify-end">
           <button onclick="processWeeklyInput()" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold shadow-md">
             Sort to Weekly List
@@ -1107,6 +1110,15 @@
       } else if (remainderText === 'AIRBNB') {
         rawTagString = 'AIRBNB';
         tagHTML = `<span class="tag-airbnb">AIRBNB</span>`;
+      } else if (remainderText === 'LS') {
+        rawTagString = 'LS';
+        tagHTML = `<span class="tag-ls">LS</span>`;
+      } else if (remainderText === 'RS') {
+        rawTagString = 'RS';
+        tagHTML = `<span class="tag-rs">RS</span>`;
+      } else if (remainderText === 'SU') {
+        rawTagString = 'SU';
+        tagHTML = `<span class="tag-su">SU</span>`;
       } else if (remainderText) {
         rawTagString = remainderText;
         tagHTML = `<span class="text-indigo-300 font-semibold text-[10px] px-1 bg-indigo-950/60 rounded border border-indigo-900/50">${remainderText}</span>`;
