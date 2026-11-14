@@ -1160,12 +1160,9 @@
       const combinedTag = platformStr ? `${nightsTag} ${platformStr}` : nightsTag;
       const cleaner = getCleanerForUnit(unitCode);
 
-      // Add Check-In entry on check-in date with counted nights & platform tag
       addScheduleItemDirect(checkinInputStr, unitCode, 'CHECKIN', combinedTag, platformStr);
-      // Add Check-Out entry on check-out date with platform tag
       addScheduleItemDirect(checkoutInputStr, unitCode, 'CHECKOUT', platformStr, platformStr);
 
-      // Add to reservations log queue
       state.reservationsLog.unshift({
         id: Date.now() + Math.random(),
         unitCode,
@@ -1210,7 +1207,6 @@
           platformBadge = `<span class="text-indigo-300 font-semibold">${res.tag}</span>`;
         }
 
-        // Format dates to "DAY, MON DAY, YEAR"
         const formatLogDate = (dateStr) => {
           if (!dateStr) return '';
           const d = new Date(dateStr);
