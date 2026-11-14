@@ -29,61 +29,71 @@
     .unit-yang { color: #60a5fa !important; font-weight: 800; } 
 
     .unit-text {
-      display: flex !important;
+      display: inline-flex !important;
       align-items: center !important;
-      justify-content: flex-start !important;
-      text-align: left !important;
-      gap: 6px !important;
+      justify-content: center !important;
+      text-align: center !important;
+      gap: 2px !important;
       width: 100%;
       white-space: nowrap !important;
+      overflow: hidden !important;
+    }
+
+    /* Daily List specific unit text left alignment override */
+    .daily-unit-container .unit-text {
+      justify-content: flex-start !important;
+      text-align: left !important;
     }
 
     /* 15-Day and Weekly View specific unit text sizing */
     .fifteen-grid .unit-text, .weekly-grid .unit-text { 
-      font-size: 10px !important; 
+      font-size: 11px !important; 
       font-weight: 800; 
       justify-content: center !important; 
       letter-spacing: -0.3px;
     }
 
-    /* Enhanced Night & Platform Tags */
+    /* Enhanced Night & Platform Tags - Clear and Readable */
     .tag-nights, .tag-booking, .tag-airbnb, .tag-ls, .tag-rs, .tag-su {
       display: inline-flex !important;
       align-items: center !important;
       justify-content: center !important;
       font-weight: 900 !important;
-      border-radius: 5px;
+      border-radius: 3px;
       white-space: nowrap !important;
       text-align: center;
+      line-height: 1;
+      flex-shrink: 0;
     }
 
     .tag-nights { 
       background-color: #fef08a !important; 
       color: #713f12 !important; 
-      font-size: 11px !important; 
-      padding: 1px 6px !important; 
+      font-size: 10px !important; 
+      padding: 1px 3px !important; 
       letter-spacing: -0.2px;
       box-shadow: 0 1px 2px rgba(0,0,0,0.2);
     } 
 
-    .tag-booking { background-color: #38bdf8 !important; color: #082f49 !important; font-size: 10px !important; padding: 1px 5px !important; }
-    .tag-airbnb { background-color: #f43f5e !important; color: #ffe4e6 !important; font-size: 10px !important; padding: 1px 5px !important; }
-    .tag-ls { background-color: #10b981 !important; color: #022c22 !important; font-size: 10.5px !important; padding: 1px 6px !important; }
-    .tag-rs { background-color: #ec4899 !important; color: #500724 !important; font-size: 10.5px !important; padding: 1px 6px !important; }
-    .tag-su { background-color: #f97316 !important; color: #431407 !important; font-size: 10.5px !important; padding: 1px 6px !important; }
+    .tag-booking { background-color: #38bdf8 !important; color: #082f49 !important; font-size: 9.5px !important; padding: 1px 2.5px !important; }
+    .tag-airbnb { background-color: #f43f5e !important; color: #ffe4e6 !important; font-size: 9.5px !important; padding: 1px 2.5px !important; }
+    .tag-ls { background-color: #10b981 !important; color: #022c22 !important; font-size: 10px !important; padding: 1px 3px !important; }
+    .tag-rs { background-color: #ec4899 !important; color: #500724 !important; font-size: 10px !important; padding: 1px 3px !important; }
+    .tag-su { background-color: #f97316 !important; color: #431407 !important; font-size: 10px !important; padding: 1px 3px !important; }
 
     .count-pill {
       background-color: #312e81;
       color: #e0e7ff;
       font-weight: 800;
       font-size: 10px;
-      padding: 1px 6px;
+      padding: 1px 4px;
       border-radius: 9999px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      margin-left: 4px;
+      margin-left: 3px;
       line-height: 12px;
+      flex-shrink: 0;
     }
 
     .count-pill-zero {
@@ -91,13 +101,14 @@
       color: #64748b;
       font-weight: 700;
       font-size: 9.5px;
-      padding: 1px 5px;
+      padding: 1px 4px;
       border-radius: 9999px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      margin-left: 4px;
+      margin-left: 3px;
       line-height: 12px;
+      flex-shrink: 0;
     }
 
     .input-none-red {
@@ -150,14 +161,14 @@
     <div class="glass-card bg-indigo-950/90 border border-indigo-500/50 px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3">
       <div class="w-8 h-8 rounded-full bg-indigo-600/30 flex items-center justify-center text-indigo-400 font-bold text-sm">🐝</div>
       <div>
-        <h4 id="toast-title" class="text-xs font-bold text-white uppercase tracking-wider">New Reservation Added</h4>
-        <p id="toast-message" class="text-xs text-indigo-200">Successfully processed and synced across schedules.</p>
+        <h4 id="toast-title" class="text-xs font-bold text-white uppercase tracking-wider">Notification</h4>
+        <p id="toast-message" class="text-xs text-indigo-200">Successfully processed.</p>
       </div>
     </div>
   </div>
 
   <header class="glass-card border-b border-slate-800 sticky top-0 z-30 shadow-md">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="w-full px-4 sm:px-6 lg:px-8 max-w-[98%] xl:max-w-[95%] mx-auto">
       <div class="flex justify-between h-24 items-center">
         <div class="flex items-center space-x-3.5 py-2">
           <img src="logo.jpg" alt="EMIJRD Online Services Logo" class="h-16 w-auto object-contain rounded-xl shadow-md border border-indigo-500/30">
@@ -168,10 +179,7 @@
         </div>
 
         <nav class="flex space-x-1 bg-slate-900/80 p-1.5 rounded-xl border border-slate-700">
-          <button onclick="switchTab('reservations')" id="tab-reservations" class="px-3.5 py-2 text-xs font-bold rounded-lg bg-indigo-600 text-white shadow-sm flex items-center gap-1.5">
-            New Reservation
-          </button>
-          <button onclick="switchTab('daily')" id="tab-daily" class="px-3.5 py-2 text-xs font-bold rounded-lg text-slate-300 hover:text-white flex items-center gap-1.5">
+          <button onclick="switchTab('daily')" id="tab-daily" class="px-3.5 py-2 text-xs font-bold rounded-lg bg-indigo-600 text-white shadow-sm flex items-center gap-1.5">
             Daily List
           </button>
           <button onclick="switchTab('weekly')" id="tab-weekly" class="px-3.5 py-2 text-xs font-bold rounded-lg text-slate-300 hover:text-white flex items-center gap-1.5">
@@ -188,162 +196,10 @@
     </div>
   </header>
 
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full space-y-6">
+  <main class="w-full px-3 sm:px-6 lg:px-8 max-w-[98%] xl:max-w-[95%] mx-auto py-6 flex-1 space-y-6">
 
-    <!-- 15-DAY VIEW -->
-    <div id="view-fifteen" class="hidden space-y-6">
-      <div class="glass-card p-4 rounded-2xl shadow-sm flex flex-col sm:flex-row justify-between items-center gap-3">
-        <div class="flex items-center gap-3">
-          <span class="text-xs font-bold text-slate-300">Select Month:</span>
-          <input type="text" id="fifteen-month-picker" onchange="render15DayView()" class="px-3 py-1.5 border border-slate-700 rounded-lg text-sm font-semibold bg-slate-900 text-white">
-        </div>
-        <div class="flex items-center gap-2">
-          <button onclick="openManageModal()" class="px-3.5 py-1.5 text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg shadow-sm">
-            Manage / Edit List
-          </button>
-          <button onclick="switch15Cleaner('FLORENCE')" id="fifteen-tab-flo" class="px-4 py-1.5 text-xs font-bold rounded-lg bg-rose-600 text-white shadow-sm">Florence (Flo)</button>
-          <button onclick="switch15Cleaner('YANG')" id="fifteen-tab-yang" class="px-4 py-1.5 text-xs font-bold rounded-lg bg-slate-800 text-slate-300">Yang</button>
-        </div>
-      </div>
-
-      <div class="glass-card p-5 rounded-2xl shadow-sm space-y-3">
-        <h3 class="text-xs font-bold text-indigo-300 uppercase tracking-wider">
-          Special Cleaning Summary (<span id="summary-month-label">Selected Month</span>)
-        </h3>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
-          <div class="bg-emerald-950/40 p-3 rounded-xl border border-emerald-900/50">
-            <span class="font-bold text-emerald-400 block mb-1">LANDLORD STAYED CLEANING [LS]:</span>
-            <div id="summary-ls-list" class="space-y-0.5 text-slate-300 font-semibold">
-              <span class="text-slate-500 italic font-normal">None</span>
-            </div>
-          </div>
-          <div class="bg-pink-950/40 p-3 rounded-xl border border-pink-900/50">
-            <span class="font-bold text-pink-400 block mb-1">ROOM SERVICE CLEANING [RS]:</span>
-            <div id="summary-rs-list" class="space-y-0.5 text-slate-300 font-semibold">
-              <span class="text-slate-500 italic font-normal">None</span>
-            </div>
-          </div>
-          <div class="bg-orange-950/40 p-3 rounded-xl border border-orange-900/50">
-            <span class="font-bold text-orange-400 block mb-1">SET-UP CLEANING [SU]:</span>
-            <div id="summary-su-list" class="space-y-0.5 text-slate-300 font-semibold">
-              <span class="text-slate-500 italic font-normal">None</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div id="fifteen-flo-section" class="space-y-6">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div class="glass-card rounded-2xl overflow-hidden shadow-sm">
-            <div class="bg-gradient-to-r from-rose-600 to-red-700 px-4 py-2.5 font-bold text-white text-xs uppercase tracking-wider flex justify-between items-center">
-              <span id="label-flo-15a">CLEANING A (FLO)</span>
-              <button onclick="copyListFromElement('flo-grid-1a')" class="no-copy px-2.5 py-1 text-[11px] bg-white/25 hover:bg-white/40 text-white font-bold rounded">Copy</button>
-            </div>
-            <div id="flo-grid-1a" class="weekly-section-bg fifteen-grid grid grid-cols-8 divide-x divide-slate-800 text-xs min-h-[300px] p-1 w-full"></div>
-          </div>
-          <div class="glass-card rounded-2xl overflow-hidden shadow-sm">
-            <div class="bg-gradient-to-r from-rose-700 to-pink-700 px-4 py-2.5 font-bold text-white text-xs uppercase tracking-wider flex justify-between items-center">
-              <span id="label-flo-15b">CLEANING B (FLO)</span>
-              <button onclick="copyListFromElement('flo-grid-1b')" class="no-copy px-2.5 py-1 text-[11px] bg-white/25 hover:bg-white/40 text-white font-bold rounded">Copy</button>
-            </div>
-            <div id="flo-grid-1b" class="weekly-section-bg fifteen-grid grid grid-cols-8 divide-x divide-slate-800 text-xs min-h-[300px] p-1 w-full"></div>
-          </div>
-        </div>
-      </div>
-
-      <div id="fifteen-yang-section" class="hidden space-y-6">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div class="glass-card rounded-2xl overflow-hidden shadow-sm">
-            <div class="bg-gradient-to-r from-cyan-700 to-teal-700 px-4 py-2.5 font-bold text-white text-xs uppercase tracking-wider flex justify-between items-center">
-              <span id="label-yang-15a">CLEANING A (YANG)</span>
-              <button onclick="copyListFromElement('yang-grid-1a')" class="no-copy px-2.5 py-1 text-[11px] bg-white/25 hover:bg-white/40 text-white font-bold rounded">Copy</button>
-            </div>
-            <div id="yang-grid-1a" class="weekly-section-bg fifteen-grid grid grid-cols-8 divide-x divide-slate-800 text-xs min-h-[300px] p-1 w-full"></div>
-          </div>
-          <div class="glass-card rounded-2xl overflow-hidden shadow-sm">
-            <div class="bg-gradient-to-r from-cyan-800 to-blue-700 px-4 py-2.5 font-bold text-white text-xs uppercase tracking-wider flex justify-between items-center">
-              <span id="label-yang-15b">CLEANING B (YANG)</span>
-              <button onclick="copyListFromElement('yang-grid-1b')" class="no-copy px-2.5 py-1 text-[11px] bg-white/25 hover:bg-white/40 text-white font-bold rounded">Copy</button>
-            </div>
-            <div id="yang-grid-1b" class="weekly-section-bg fifteen-grid grid grid-cols-8 divide-x divide-slate-800 text-xs min-h-[300px] p-1 w-full"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- MASTER DATABASE VIEW -->
-    <div id="view-master" class="hidden space-y-6">
-      <div class="glass-card p-5 rounded-2xl shadow-sm space-y-4">
-        <div class="flex justify-between items-center">
-          <h2 class="text-base font-bold text-slate-100">Master Database Management (Max 60 Units)</h2>
-          <div class="flex gap-2">
-            <button onclick="exportBackupData()" class="px-3 py-1.5 text-xs font-semibold bg-indigo-950 text-indigo-300 hover:bg-indigo-900 rounded-lg border border-indigo-800">
-              Export Backup
-            </button>
-            <button onclick="document.getElementById('import-file-input').click()" class="px-3 py-1.5 text-xs font-semibold bg-emerald-950 text-emerald-300 hover:bg-emerald-900 rounded-lg border border-emerald-800">
-              Import Backup
-            </button>
-            <input type="file" id="import-file-input" class="hidden" accept=".json" onchange="importBackupData(event)">
-            <button onclick="clearMasterDB()" class="px-3 py-1.5 text-xs font-semibold bg-rose-700 hover:bg-rose-600 text-white rounded-lg shadow-sm">
-              Clear All Units
-            </button>
-          </div>
-        </div>
-
-        <div class="flex flex-col sm:flex-row gap-3">
-          <input type="text" id="new-unit-code" placeholder="Enter Unit Code (e.g. AU6514)" class="flex-1 px-4 py-2 border border-slate-700 rounded-xl text-sm bg-slate-900 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
-          <select id="new-unit-cleaner" class="px-4 py-2 border border-slate-700 rounded-xl text-sm bg-slate-900 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
-            <option value="FLORENCE">Florence (Red Font)</option>
-            <option value="YANG">Yang (Blue Font)</option>
-          </select>
-          <button onclick="addMasterUnit()" class="px-5 py-2 bg-indigo-600 text-white rounded-xl text-xs font-bold hover:bg-indigo-700">Add Unit</button>
-        </div>
-      </div>
-
-      <div class="glass-card p-4 rounded-2xl shadow-sm flex flex-col sm:flex-row justify-between items-center gap-3">
-        <div class="flex flex-wrap items-center gap-3 w-full sm:w-auto">
-          <div class="flex items-center gap-2">
-            <span class="text-xs font-bold text-slate-300">Sort:</span>
-            <select id="master-sort-order" onchange="renderMasterDB()" class="px-3 py-1.5 border border-slate-700 rounded-lg text-xs font-bold bg-slate-900 text-white">
-              <option value="AZ">A - Z</option>
-              <option value="ZA">Z - A</option>
-            </select>
-          </div>
-          <div class="flex items-center gap-2 flex-1 sm:w-64">
-            <div class="relative w-full">
-              <input type="text" id="master-search-input" oninput="renderMasterDB()" placeholder="Search unit code..." class="w-full px-3 py-1.5 border border-slate-700 rounded-lg text-xs bg-slate-900 text-white font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-500">
-            </div>
-          </div>
-        </div>
-        <div class="text-xs text-slate-400 font-medium hidden md:block">
-          Type <b>NONE</b> to flag red. Auto-saves instantly.
-        </div>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div class="glass-card p-4 rounded-2xl shadow-sm">
-          <div class="flex justify-between items-center mb-3 border-b border-slate-800 pb-2">
-            <h3 class="text-sm font-bold text-rose-400">Florence Units (Red)</h3>
-            <button onclick="copyListFromElement('florence-master-list')" class="px-2.5 py-1 text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg border border-slate-700">
-              Copy Units
-            </button>
-          </div>
-          <ul id="florence-master-list" class="space-y-3 text-sm custom-scrollbar max-h-[500px] overflow-y-auto pr-1"></ul>
-        </div>
-        <div class="glass-card p-4 rounded-2xl shadow-sm">
-          <div class="flex justify-between items-center mb-3 border-b border-slate-800 pb-2">
-            <h3 class="text-sm font-bold text-sky-400">Yang Units (Blue)</h3>
-            <button onclick="copyListFromElement('yang-master-list')" class="px-2.5 py-1 text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg border border-slate-700">
-              Copy Units
-            </button>
-          </div>
-          <ul id="yang-master-list" class="space-y-3 text-sm custom-scrollbar max-h-[500px] overflow-y-auto pr-1"></ul>
-        </div>
-      </div>
-    </div>
-
-    <!-- DAILY LIST VIEW -->
-    <div id="view-daily" class="hidden space-y-6">
+    <!-- DAILY LIST VIEW (DEFAULT) -->
+    <div id="view-daily" class="space-y-6">
       <div class="glass-card p-5 rounded-2xl shadow-sm space-y-4">
         <div class="flex flex-col sm:flex-row justify-between items-center gap-3">
           <div class="flex items-center gap-3">
@@ -425,74 +281,6 @@
       </div>
     </div>
 
-    <!-- NEW RESERVATIONS TAB VIEW -->
-    <div id="view-reservations" class="space-y-6">
-      <div class="glass-card p-6 rounded-2xl shadow-sm space-y-4 border border-indigo-900/50">
-        <div class="flex items-center gap-2 border-b border-slate-800 pb-3">
-          <div>
-            <h2 class="text-base font-bold text-slate-100">Add New Reservation</h2>
-            <p class="text-xs text-slate-400">Enter the unit code, check-in date, and check-out date. Nights are auto-counted and sorted into schedules.</p>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div>
-            <label class="block text-xs font-bold text-slate-300 mb-1">Unit Code:</label>
-            <input type="text" id="res-unit-code" maxlength="15" placeholder="e.g. AU6514" class="w-full px-3 py-2 border border-slate-700 rounded-xl text-sm font-semibold bg-slate-900 text-white uppercase focus:outline-none focus:ring-2 focus:ring-indigo-500">
-          </div>
-          <div>
-            <label class="block text-xs font-bold text-slate-300 mb-1">Check-In Date:</label>
-            <input type="text" id="res-checkin-date" class="w-full px-3 py-2 border border-slate-700 rounded-xl text-sm font-semibold bg-slate-900 text-white">
-          </div>
-          <div>
-            <label class="block text-xs font-bold text-slate-300 mb-1">Check-Out Date:</label>
-            <input type="text" id="res-checkout-date" class="w-full px-3 py-2 border border-slate-700 rounded-xl text-sm font-semibold bg-slate-900 text-white">
-          </div>
-        </div>
-
-        <div class="flex justify-end gap-3 pt-2">
-          <button onclick="clearReservationForm()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs font-bold">Clear Form</button>
-          <button onclick="processSingleReservation()" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold shadow-md">
-            Save & Sort Reservation
-          </button>
-        </div>
-      </div>
-
-      <!-- RESERVATIONS QUEUE LIST -->
-      <div class="glass-card p-6 rounded-2xl shadow-sm space-y-4">
-        <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-          <h3 class="text-sm font-bold text-indigo-300">
-            Processed Reservations Log (<span id="reservations-count">0</span>)
-          </h3>
-          <div class="flex gap-2">
-            <button onclick="clearReservationsLog()" class="px-3 py-1 bg-rose-950 hover:bg-rose-900 text-rose-300 rounded-lg text-xs font-bold border border-rose-900">
-              Clear Queue List
-            </button>
-          </div>
-        </div>
-        
-        <div class="overflow-x-auto custom-scrollbar">
-          <table class="w-full text-left text-xs text-slate-300">
-            <thead class="bg-slate-900/90 text-slate-400 uppercase font-bold border-b border-slate-800">
-              <tr>
-                <th class="p-3">Unit Code</th>
-                <th class="p-3">Cleaner</th>
-                <th class="p-3">Check-In</th>
-                <th class="p-3">Check-Out</th>
-                <th class="p-3">Nights</th>
-                <th class="p-3 text-right">Action</th>
-              </tr>
-            </thead>
-            <tbody id="reservations-log-tbody" class="divide-y divide-slate-800 text-sm font-semibold">
-              <tr>
-                <td colspan="6" class="p-4 text-center text-slate-500 italic font-sans">No reservations added in this queue yet.</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
     <!-- WEEKLY LIST VIEW -->
     <div id="view-weekly" class="hidden space-y-6">
       <div class="glass-card p-5 rounded-2xl shadow-sm space-y-4">
@@ -533,13 +321,13 @@
       </div>
 
       <div id="weekly-florence-section" class="space-y-6">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <div class="glass-card rounded-2xl overflow-hidden shadow-sm">
             <div class="bg-gradient-to-r from-rose-600 to-pink-600 px-4 py-2.5 font-bold text-white text-xs uppercase tracking-wider flex justify-between items-center">
               <span>Florence - Check-Out List</span>
               <button onclick="copyListFromElement('f-weekly-checkout-grid')" class="no-copy px-2.5 py-1 text-[11px] bg-white/25 hover:bg-white/40 text-white font-bold rounded">Copy</button>
             </div>
-            <div id="f-weekly-checkout-grid" class="weekly-section-bg fifteen-grid grid grid-cols-7 divide-x divide-slate-800 text-xs min-h-[300px] p-1 w-full"></div>
+            <div id="f-weekly-checkout-grid" class="weekly-section-bg fifteen-grid grid grid-cols-7 divide-x divide-slate-800 text-xs p-1 w-full"></div>
           </div>
 
           <div class="glass-card rounded-2xl overflow-hidden shadow-sm">
@@ -547,19 +335,19 @@
               <span>Florence - Check-In List</span>
               <button onclick="copyListFromElement('f-weekly-checkin-grid')" class="no-copy px-2.5 py-1 text-[11px] bg-white/25 hover:bg-white/40 text-white font-bold rounded">Copy</button>
             </div>
-            <div id="f-weekly-checkin-grid" class="weekly-section-bg fifteen-grid grid grid-cols-7 divide-x divide-slate-800 text-xs min-h-[300px] p-1 w-full"></div>
+            <div id="f-weekly-checkin-grid" class="weekly-section-bg fifteen-grid grid grid-cols-7 divide-x divide-slate-800 text-xs p-1 w-full"></div>
           </div>
         </div>
       </div>
 
       <div id="weekly-yang-section" class="hidden space-y-6">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <div class="glass-card rounded-2xl overflow-hidden shadow-sm">
             <div class="bg-gradient-to-r from-cyan-700 to-teal-700 px-4 py-2.5 font-bold text-white text-xs uppercase tracking-wider flex justify-between items-center">
               <span>Yang - Check-Out List</span>
               <button onclick="copyListFromElement('y-weekly-checkout-grid')" class="no-copy px-2.5 py-1 text-[11px] bg-white/25 hover:bg-white/40 text-white font-bold rounded">Copy</button>
             </div>
-            <div id="y-weekly-checkout-grid" class="weekly-section-bg fifteen-grid grid grid-cols-7 divide-x divide-slate-800 text-xs min-h-[300px] p-1 w-full"></div>
+            <div id="y-weekly-checkout-grid" class="weekly-section-bg fifteen-grid grid grid-cols-7 divide-x divide-slate-800 text-xs p-1 w-full"></div>
           </div>
 
           <div class="glass-card rounded-2xl overflow-hidden shadow-sm">
@@ -567,8 +355,160 @@
               <span>Yang - Check-In List</span>
               <button onclick="copyListFromElement('y-weekly-checkin-grid')" class="no-copy px-2.5 py-1 text-[11px] bg-white/25 hover:bg-white/40 text-white font-bold rounded">Copy</button>
             </div>
-            <div id="y-weekly-checkin-grid" class="weekly-section-bg fifteen-grid grid grid-cols-7 divide-x divide-slate-800 text-xs min-h-[300px] p-1 w-full"></div>
+            <div id="y-weekly-checkin-grid" class="weekly-section-bg fifteen-grid grid grid-cols-7 divide-x divide-slate-800 text-xs p-1 w-full"></div>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 15-DAY VIEW -->
+    <div id="view-fifteen" class="hidden space-y-6">
+      <div class="glass-card p-4 rounded-2xl shadow-sm flex flex-col sm:flex-row justify-between items-center gap-3">
+        <div class="flex items-center gap-3">
+          <span class="text-xs font-bold text-slate-300">Select Month:</span>
+          <input type="text" id="fifteen-month-picker" onchange="render15DayView()" class="px-3 py-1.5 border border-slate-700 rounded-lg text-sm font-semibold bg-slate-900 text-white">
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="openManageModal()" class="px-3.5 py-1.5 text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg shadow-sm">
+            Manage / Edit List
+          </button>
+          <button onclick="switch15Cleaner('FLORENCE')" id="fifteen-tab-flo" class="px-4 py-1.5 text-xs font-bold rounded-lg bg-rose-600 text-white shadow-sm">Florence (Flo)</button>
+          <button onclick="switch15Cleaner('YANG')" id="fifteen-tab-yang" class="px-4 py-1.5 text-xs font-bold rounded-lg bg-slate-800 text-slate-300">Yang</button>
+        </div>
+      </div>
+
+      <div class="glass-card p-5 rounded-2xl shadow-sm space-y-3">
+        <h3 class="text-xs font-bold text-indigo-300 uppercase tracking-wider">
+          Special Cleaning Summary (<span id="summary-month-label">Selected Month</span>)
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+          <div class="bg-emerald-950/40 p-3 rounded-xl border border-emerald-900/50">
+            <span class="font-bold text-emerald-400 block mb-1">LANDLORD STAYED CLEANING [LS]:</span>
+            <div id="summary-ls-list" class="space-y-0.5 text-slate-300 font-semibold">
+              <span class="text-slate-500 italic font-normal">None</span>
+            </div>
+          </div>
+          <div class="bg-pink-950/40 p-3 rounded-xl border border-pink-900/50">
+            <span class="font-bold text-pink-400 block mb-1">ROOM SERVICE CLEANING [RS]:</span>
+            <div id="summary-rs-list" class="space-y-0.5 text-slate-300 font-semibold">
+              <span class="text-slate-500 italic font-normal">None</span>
+            </div>
+          </div>
+          <div class="bg-orange-950/40 p-3 rounded-xl border border-orange-900/50">
+            <span class="font-bold text-orange-400 block mb-1">SET-UP CLEANING [SU]:</span>
+            <div id="summary-su-list" class="space-y-0.5 text-slate-300 font-semibold">
+              <span class="text-slate-500 italic font-normal">None</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="fifteen-flo-section" class="space-y-6">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <div class="glass-card rounded-2xl overflow-hidden shadow-sm">
+            <div class="bg-gradient-to-r from-rose-600 to-red-700 px-4 py-2.5 font-bold text-white text-xs uppercase tracking-wider flex justify-between items-center">
+              <span id="label-flo-15a">CLEANING A (FLO)</span>
+              <button onclick="copyListFromElement('flo-grid-1a')" class="no-copy px-2.5 py-1 text-[11px] bg-white/25 hover:bg-white/40 text-white font-bold rounded">Copy</button>
+            </div>
+            <div id="flo-grid-1a" class="weekly-section-bg fifteen-grid grid grid-cols-8 divide-x divide-slate-800 text-xs p-1 w-full"></div>
+          </div>
+          <div class="glass-card rounded-2xl overflow-hidden shadow-sm">
+            <div class="bg-gradient-to-r from-rose-700 to-pink-700 px-4 py-2.5 font-bold text-white text-xs uppercase tracking-wider flex justify-between items-center">
+              <span id="label-flo-15b">CLEANING B (FLO)</span>
+              <button onclick="copyListFromElement('flo-grid-1b')" class="no-copy px-2.5 py-1 text-[11px] bg-white/25 hover:bg-white/40 text-white font-bold rounded">Copy</button>
+            </div>
+            <div id="flo-grid-1b" class="weekly-section-bg fifteen-grid grid grid-cols-8 divide-x divide-slate-800 text-xs p-1 w-full"></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="fifteen-yang-section" class="hidden space-y-6">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <div class="glass-card rounded-2xl overflow-hidden shadow-sm">
+            <div class="bg-gradient-to-r from-cyan-700 to-teal-700 px-4 py-2.5 font-bold text-white text-xs uppercase tracking-wider flex justify-between items-center">
+              <span id="label-yang-15a">CLEANING A (YANG)</span>
+              <button onclick="copyListFromElement('yang-grid-1a')" class="no-copy px-2.5 py-1 text-[11px] bg-white/25 hover:bg-white/40 text-white font-bold rounded">Copy</button>
+            </div>
+            <div id="yang-grid-1a" class="weekly-section-bg fifteen-grid grid grid-cols-8 divide-x divide-slate-800 text-xs p-1 w-full"></div>
+          </div>
+          <div class="glass-card rounded-2xl overflow-hidden shadow-sm">
+            <div class="bg-gradient-to-r from-cyan-800 to-blue-700 px-4 py-2.5 font-bold text-white text-xs uppercase tracking-wider flex justify-between items-center">
+              <span id="label-yang-15b">CLEANING B (YANG)</span>
+              <button onclick="copyListFromElement('yang-grid-1b')" class="no-copy px-2.5 py-1 text-[11px] bg-white/25 hover:bg-white/40 text-white font-bold rounded">Copy</button>
+            </div>
+            <div id="yang-grid-1b" class="weekly-section-bg fifteen-grid grid grid-cols-8 divide-x divide-slate-800 text-xs p-1 w-full"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MASTER DATABASE VIEW -->
+    <div id="view-master" class="hidden space-y-6">
+      <div class="glass-card p-5 rounded-2xl shadow-sm space-y-4">
+        <div class="flex justify-between items-center">
+          <h2 class="text-base font-bold text-slate-100">Master Database Management (Max 60 Units)</h2>
+          <div class="flex gap-2">
+            <button onclick="exportBackupData()" class="px-3 py-1.5 text-xs font-semibold bg-indigo-950 text-indigo-300 hover:bg-indigo-900 rounded-lg border border-indigo-800">
+              Export Backup
+            </button>
+            <button onclick="document.getElementById('import-file-input').click()" class="px-3 py-1.5 text-xs font-semibold bg-emerald-950 text-emerald-300 hover:bg-emerald-900 rounded-lg border border-emerald-800">
+              Import Backup
+            </button>
+            <input type="file" id="import-file-input" class="hidden" accept=".json" onchange="importBackupData(event)">
+            <button onclick="clearMasterDB()" class="px-3 py-1.5 text-xs font-semibold bg-rose-700 hover:bg-rose-600 text-white rounded-lg shadow-sm">
+              Clear All Units
+            </button>
+          </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-3">
+          <input type="text" id="new-unit-code" placeholder="Enter Unit Code (e.g. AU6514)" class="flex-1 px-4 py-2 border border-slate-700 rounded-xl text-sm bg-slate-900 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          <select id="new-unit-cleaner" class="px-4 py-2 border border-slate-700 rounded-xl text-sm bg-slate-900 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <option value="FLORENCE">Florence (Red Font)</option>
+            <option value="YANG">Yang (Blue Font)</option>
+          </select>
+          <button onclick="addMasterUnit()" class="px-5 py-2 bg-indigo-600 text-white rounded-xl text-xs font-bold hover:bg-indigo-700">Add Unit</button>
+        </div>
+      </div>
+
+      <div class="glass-card p-4 rounded-2xl shadow-sm flex flex-col sm:flex-row justify-between items-center gap-3">
+        <div class="flex flex-wrap items-center gap-3 w-full sm:w-auto">
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-bold text-slate-300">Sort:</span>
+            <select id="master-sort-order" onchange="renderMasterDB()" class="px-3 py-1.5 border border-slate-700 rounded-lg text-xs font-bold bg-slate-900 text-white">
+              <option value="AZ">A - Z</option>
+              <option value="ZA">Z - A</option>
+            </select>
+          </div>
+          <div class="flex items-center gap-2 flex-1 sm:w-64">
+            <div class="relative w-full">
+              <input type="text" id="master-search-input" oninput="renderMasterDB()" placeholder="Search unit code..." class="w-full px-3 py-1.5 border border-slate-700 rounded-lg text-xs bg-slate-900 text-white font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            </div>
+          </div>
+        </div>
+        <div class="text-xs text-slate-400 font-medium hidden md:block">
+          Type <b>NONE</b> to flag red. Auto-saves instantly.
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="glass-card p-4 rounded-2xl shadow-sm">
+          <div class="flex justify-between items-center mb-3 border-b border-slate-800 pb-2">
+            <h3 class="text-sm font-bold text-rose-400">Florence Units (Red)</h3>
+            <button onclick="copyListFromElement('florence-master-list')" class="px-2.5 py-1 text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg border border-slate-700">
+              Copy Units
+            </button>
+          </div>
+          <ul id="florence-master-list" class="space-y-3 text-sm custom-scrollbar max-h-[500px] overflow-y-auto pr-1"></ul>
+        </div>
+        <div class="glass-card p-4 rounded-2xl shadow-sm">
+          <div class="flex justify-between items-center mb-3 border-b border-slate-800 pb-2">
+            <h3 class="text-sm font-bold text-sky-400">Yang Units (Blue)</h3>
+            <button onclick="copyListFromElement('yang-master-list')" class="px-2.5 py-1 text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg border border-slate-700">
+              Copy Units
+            </button>
+          </div>
+          <ul id="yang-master-list" class="space-y-3 text-sm custom-scrollbar max-h-[500px] overflow-y-auto pr-1"></ul>
         </div>
       </div>
     </div>
@@ -638,11 +578,9 @@
     ];
 
     let storedMaster = JSON.parse(localStorage.getItem('masterDB'));
-    let storedReservationsLog = JSON.parse(localStorage.getItem('reservationsLog'));
     let state = {
       masterDB: (storedMaster && storedMaster.length > 0) ? storedMaster : DEFAULT_MASTER,
       schedules: JSON.parse(localStorage.getItem('schedules')) || {},
-      reservationsLog: (storedReservationsLog && Array.isArray(storedReservationsLog)) ? storedReservationsLog : [],
       activeCleanerTab: 'FLORENCE'
     };
 
@@ -661,7 +599,6 @@
     function saveState() {
       localStorage.setItem('masterDB', JSON.stringify(state.masterDB));
       localStorage.setItem('schedules', JSON.stringify(state.schedules));
-      localStorage.setItem('reservationsLog', JSON.stringify(state.reservationsLog));
       updateMasterCount();
     }
 
@@ -701,12 +638,10 @@
               if (item.bedrooms === undefined) item.bedrooms = "";
               if (item.parking === undefined) item.parking = "";
             });
-            if (!state.reservationsLog) state.reservationsLog = [];
             saveState();
             renderMasterDB();
             renderWeeklyView();
             render15DayView();
-            renderReservationsLog();
           }
         } catch (err) {
           console.error("Error reading file.", err);
@@ -760,7 +695,7 @@
     }
 
     function switchTab(tab) {
-      ['master', 'daily', 'weekly', 'fifteen', 'reservations'].forEach(t => {
+      ['master', 'daily', 'weekly', 'fifteen'].forEach(t => {
         const el = document.getElementById(`view-${t}`);
         if(el) el.classList.add('hidden');
         const tabBtn = document.getElementById(`tab-${t}`);
@@ -774,7 +709,6 @@
       if(tab === 'daily') renderDailyView();
       if(tab === 'weekly') renderWeeklyView();
       if(tab === 'fifteen') render15DayView();
-      if(tab === 'reservations') renderReservationsLog();
     }
 
     function openManageModal() {
@@ -957,13 +891,13 @@
           const badgeClass = count > 0 ? 'count-pill' : 'count-pill-zero';
 
           const col = document.createElement('div');
-          col.className = "p-1 space-y-1 border-r border-b border-slate-800 min-h-[140px] w-full overflow-hidden min-w-0";
-          col.innerHTML = `<div class="font-black text-[12px] text-indigo-200 border-b border-slate-700 pb-1.5 mb-1.5 text-center no-copy bg-slate-900/90 rounded py-1.5 tracking-tight whitespace-nowrap overflow-hidden flex items-center justify-center">${dayLabel}<span class="${badgeClass}">${count}</span></div>`;
+          col.className = "p-1 space-y-1 border-r border-b border-slate-800 w-full overflow-hidden min-w-0";
+          col.innerHTML = `<div class="font-bold text-[10px] text-indigo-200 border-b border-slate-700 pb-1 mb-1 text-center no-copy bg-slate-900/90 rounded py-1 tracking-tighter whitespace-nowrap overflow-hidden flex items-center justify-center">${dayLabel}<span class="${badgeClass}">${count}</span></div>`;
 
           items.forEach(item => {
             const parsed = formatUnitText(item.raw || item.formatted || item.unit, false);
             const row = document.createElement('div');
-            row.className = "bg-slate-900 px-1 py-1 rounded border border-slate-800 shadow-2xs flex justify-center items-center overflow-hidden my-0.5";
+            row.className = "bg-slate-900 px-1 py-1 rounded border border-slate-800 shadow-2xs flex justify-center items-center overflow-hidden my-0.5 w-full";
             row.innerHTML = `<div class="unit-text ${cleaner === 'FLORENCE' ? 'unit-florence' : 'unit-yang'}" data-unit-clean="${parsed.raw}">${parsed.formatted}</div>`;
             col.appendChild(row);
           });
@@ -1132,7 +1066,7 @@
         tagHTML = `<span class="tag-su">SU</span>`;
       } else if (remainderText) {
         rawTagString = remainderText;
-        tagHTML = `<span class="text-indigo-300 font-semibold text-[9px] px-1.5 py-0.5 bg-indigo-950/60 rounded border border-indigo-900/50">${remainderText}</span>`;
+        tagHTML = `<span class="text-indigo-300 font-semibold text-[9.5px] px-1.5 py-0.5 bg-indigo-950/60 rounded border border-indigo-900/50">${remainderText}</span>`;
       }
 
       let nightsHTML = (isCheckIn && nights) ? `<span class="tag-nights">${nights}N</span>` : '';
@@ -1146,160 +1080,6 @@
     function getCleanerForUnit(unitCode) {
       const match = state.masterDB.find(m => m.code === unitCode);
       return match ? match.cleaner : 'FLORENCE';
-    }
-
-    function addScheduleItemDirect(date, unitCode, type, tagStr, customNotes = '') {
-      if (!date || !unitCode) return;
-      if (!state.schedules[date]) state.schedules[date] = [];
-
-      const rawInput = `${unitCode} ${tagStr}`.trim();
-      const { raw, formatted } = formatUnitText(rawInput, type === 'CHECKIN');
-      const cleaner = getCleanerForUnit(unitCode);
-
-      state.schedules[date].push({
-        id: Date.now() + Math.random(),
-        raw,
-        unit: unitCode,
-        formatted,
-        cleaner,
-        type,
-        checked: false,
-        lastCode: '',
-        newCode: '',
-        notes: customNotes
-      });
-      saveState();
-    }
-
-    function processSingleReservation() {
-      const unitCode = document.getElementById('res-unit-code').value.trim().toUpperCase();
-      const checkinInputStr = resCheckinPicker.selectedDates.length > 0 ? toLocalISO(resCheckinPicker.selectedDates[0]) : document.getElementById('res-checkin-date').value;
-      const checkoutInputStr = resCheckoutPicker.selectedDates.length > 0 ? toLocalISO(resCheckoutPicker.selectedDates[0]) : document.getElementById('res-checkout-date').value;
-
-      if (!unitCode || !checkinInputStr || !checkoutInputStr) return;
-
-      const [y1, m1, d1_val] = checkinInputStr.split('-').map(Number);
-      const [y2, m2, d2_val] = checkoutInputStr.split('-').map(Number);
-      const d1 = new Date(y1, m1 - 1, d1_val);
-      const d2 = new Date(y2, m2 - 1, d2_val);
-      const diffTime = d2 - d1;
-      const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
-
-      if (diffDays <= 0) return;
-
-      const nightsTag = `${diffDays}N`;
-      const cleaner = getCleanerForUnit(unitCode);
-
-      addScheduleItemDirect(checkinInputStr, unitCode, 'CHECKIN', nightsTag, '');
-      addScheduleItemDirect(checkoutInputStr, unitCode, 'CHECKOUT', '', '');
-
-      state.reservationsLog.unshift({
-        id: Date.now() + Math.random(),
-        unitCode,
-        checkinDate: checkinInputStr,
-        checkoutDate: checkoutInputStr,
-        nights: diffDays,
-        cleaner
-      });
-
-      saveState();
-      
-      renderDailyView();
-      renderWeeklyView();
-      render15DayView();
-      renderReservationsLog();
-      
-      clearReservationForm();
-      showToast("New Reservation Added", `Unit ${unitCode} (${diffDays}N) successfully synced!`);
-    }
-
-    function renderReservationsLog() {
-      const tbody = document.getElementById('reservations-log-tbody');
-      const countEl = document.getElementById('reservations-count');
-      tbody.innerHTML = '';
-      countEl.innerText = state.reservationsLog.length;
-
-      if (state.reservationsLog.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-500 italic font-sans">No reservations added in this queue yet.</td></tr>`;
-        return;
-      }
-
-      const frag = document.createDocumentFragment();
-      state.reservationsLog.forEach((res) => {
-        const tr = document.createElement('tr');
-        tr.className = "hover:bg-slate-900/50 transition-all";
-
-        const formatLogDate = (dateStr) => {
-          if (!dateStr) return '';
-          const [yy, mm, dd] = dateStr.split('-').map(Number);
-          const d = new Date(yy, mm - 1, dd);
-          return d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' }).toUpperCase();
-        };
-
-        tr.innerHTML = `
-          <td class="p-2 font-extrabold text-sm ${res.cleaner === 'FLORENCE' ? 'unit-florence' : 'unit-yang'}">${res.unitCode}</td>
-          <td class="p-2 text-slate-300 text-sm font-bold">${res.cleaner}</td>
-          <td class="p-2 text-slate-300 text-sm font-semibold">${formatLogDate(res.checkinDate)}</td>
-          <td class="p-2 text-slate-300 text-sm font-semibold">${formatLogDate(res.checkoutDate)}</td>
-          <td class="p-2"><span class="tag-nights text-xs px-1.5 py-0.5">${res.nights}N</span></td>
-          <td class="p-2 text-right space-x-1 flex justify-end items-center">
-            <button onclick="editReservationLogItem(${res.id})" class="px-2 py-1 bg-indigo-950 hover:bg-indigo-900 text-indigo-300 rounded border border-indigo-800 text-[10px] font-bold">Edit</button>
-            <button onclick="deleteReservationLogItem(${res.id})" class="px-2 py-1 bg-rose-950/60 hover:bg-rose-900 text-rose-300 rounded border border-rose-900 text-[10px] font-bold">Remove</button>
-          </td>
-        `;
-        frag.appendChild(tr);
-      });
-      tbody.appendChild(frag);
-    }
-
-    function editReservationLogItem(id) {
-      const res = state.reservationsLog.find(r => r.id === id);
-      if (!res) return;
-
-      const newUnit = prompt("Edit Unit Code:", res.unitCode);
-      if (!newUnit) return;
-      const newCheckin = prompt("Edit Check-In Date (YYYY-MM-DD):", res.checkinDate);
-      if (!newCheckin) return;
-      const newCheckout = prompt("Edit Check-Out Date (YYYY-MM-DD):", res.checkoutDate);
-      if (!newCheckout) return;
-
-      res.unitCode = newUnit.trim().toUpperCase();
-      res.checkinDate = newCheckin.trim();
-      res.checkoutDate = newCheckout.trim();
-      res.cleaner = getCleanerForUnit(res.unitCode);
-
-      const [y1, m1, d1_val] = res.checkinDate.split('-').map(Number);
-      const [y2, m2, d2_val] = res.checkoutDate.split('-').map(Number);
-      const d1 = new Date(y1, m1 - 1, d1_val);
-      const d2 = new Date(y2, m2 - 1, d2_val);
-      res.nights = Math.max(1, Math.round((d2 - d1) / (1000 * 60 * 60 * 24)));
-
-      saveState();
-      renderReservationsLog();
-      renderDailyView();
-      renderWeeklyView();
-      render15DayView();
-    }
-
-    function deleteReservationLogItem(id) {
-      state.reservationsLog = state.reservationsLog.filter(r => r.id !== id);
-      saveState();
-      renderReservationsLog();
-    }
-
-    function clearReservationsLog() {
-      if (confirm("Are you sure you want to clear the processed reservations list queue? (Your sorted calendars will remain untouched.)")) {
-        state.reservationsLog = [];
-        saveState();
-        renderReservationsLog();
-      }
-    }
-
-    function clearReservationForm() {
-      document.getElementById('res-unit-code').value = '';
-      const today = toLocalISO(new Date());
-      resCheckinPicker.setDate(today, true);
-      resCheckoutPicker.setDate(today, true);
     }
 
     function processInputLines(date, text, selectedType) {
@@ -1473,13 +1253,13 @@
         const isChecked = item.checked ? true : false;
         
         const div = document.createElement('div');
-        div.className = `unit-row-container glass-card px-2 py-1 rounded-lg border border-slate-800 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 my-1 transition-all ${isChecked ? 'opacity-40 line-through bg-slate-900/50' : ''}`;
+        div.className = `unit-row-container daily-unit-container glass-card px-2 py-1 rounded-lg border border-slate-800 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 my-1 transition-all ${isChecked ? 'opacity-40 line-through bg-slate-900/50' : ''}`;
         
         if (item.type === 'CHECKOUT') {
           div.innerHTML = `
             <div class="flex items-center gap-2.5 w-full sm:w-[185px] shrink-0">
               <input type="checkbox" ${isChecked ? 'checked' : ''} onchange="toggleCheckStatus('${date}', ${item.id}, this)" class="w-4 h-4 text-indigo-600 rounded border-slate-700 bg-slate-900 focus:ring-indigo-500 cursor-pointer">
-              <div class="unit-text text-xl font-extrabold tracking-tight ${item.cleaner === 'FLORENCE' ? 'unit-florence' : 'unit-yang'}" data-unit-clean="${parsed.raw}">${parsed.formatted}</div>
+              <div class="unit-text text-sm font-extrabold tracking-tight ${item.cleaner === 'FLORENCE' ? 'unit-florence' : 'unit-yang'}" data-unit-clean="${parsed.raw}">${parsed.formatted}</div>
             </div>
             <div class="flex flex-wrap items-center gap-1.5 w-full sm:w-auto text-xs shrink-0 flex-1 justify-end">
               <input type="text" value="${item.lastCode || ''}" oninput="updateItemField('${date}', ${item.id}, 'lastCode', this.value)" class="px-2 py-1 border border-slate-700 rounded text-xs font-semibold w-20 font-mono bg-slate-900 text-white shrink-0">
@@ -1491,7 +1271,7 @@
           div.innerHTML = `
             <div class="flex items-center gap-2.5 w-full sm:w-[185px] shrink-0">
               <input type="checkbox" ${isChecked ? 'checked' : ''} onchange="toggleCheckStatus('${date}', ${item.id}, this)" class="w-4 h-4 text-indigo-600 rounded border-slate-700 bg-slate-900 focus:ring-indigo-500 cursor-pointer">
-              <div class="unit-text text-xl font-extrabold tracking-tight ${item.cleaner === 'FLORENCE' ? 'unit-florence' : 'unit-yang'}" data-unit-clean="${parsed.raw}">${parsed.formatted}</div>
+              <div class="unit-text text-sm font-extrabold tracking-tight ${item.cleaner === 'FLORENCE' ? 'unit-florence' : 'unit-yang'}" data-unit-clean="${parsed.raw}">${parsed.formatted}</div>
             </div>
             <div class="flex flex-wrap items-center gap-1.5 w-full sm:w-auto text-xs shrink-0 flex-1 justify-end">
               <input type="text" value="${item.newCode || ''}" oninput="updateItemField('${date}', ${item.id}, 'newCode', this.value)" class="px-2 py-1 border border-slate-700 rounded text-xs font-semibold w-20 font-mono bg-slate-900 text-white shrink-0">
@@ -1605,14 +1385,14 @@
           const badgeClass = count > 0 ? 'count-pill' : 'count-pill-zero';
 
           const col = document.createElement('div');
-          col.className = "p-1 space-y-1 border-r border-slate-800 min-h-[250px] w-full overflow-hidden min-w-0";
-          col.innerHTML = `<div class="font-black text-[12px] text-indigo-200 border-b border-slate-700 pb-1.5 mb-1.5 text-center no-copy bg-slate-900/90 rounded py-1.5 tracking-tight whitespace-nowrap overflow-hidden flex items-center justify-center">${dayLabel}<span class="${badgeClass}">${count}</span></div>`;
+          col.className = "p-1 space-y-1 border-r border-slate-800 w-full overflow-hidden min-w-0";
+          col.innerHTML = `<div class="font-black text-[11px] text-indigo-200 border-b border-slate-700 pb-1 mb-1 text-center no-copy bg-slate-900/90 rounded py-1 tracking-tight whitespace-nowrap overflow-hidden flex items-center justify-center">${dayLabel}<span class="${badgeClass}">${count}</span></div>`;
 
           items.forEach(item => {
             const parsed = formatUnitText(item.raw || item.formatted || item.unit, type === 'CHECKIN');
             const row = document.createElement('div');
-            row.className = "bg-slate-900 px-1 py-1 rounded border border-slate-800 shadow-2xs flex justify-center items-center overflow-hidden my-0.5 unit-row-container";
-            row.innerHTML = `<div class="unit-text text-xs font-bold ${cleaner === 'FLORENCE' ? 'unit-florence' : 'unit-yang'}" data-unit-clean="${parsed.raw}">${parsed.formatted}</div>`;
+            row.className = "bg-slate-900 px-1.5 py-1 rounded border border-slate-800 shadow-2xs flex justify-center items-center overflow-hidden my-0.5 w-full unit-row-container";
+            row.innerHTML = `<div class="unit-text text-[11px] font-bold ${cleaner === 'FLORENCE' ? 'unit-florence' : 'unit-yang'}" data-unit-clean="${parsed.raw}">${parsed.formatted}</div>`;
             col.appendChild(row);
           });
 
@@ -1661,16 +1441,6 @@
       defaultDate: "today"
     });
 
-    const resCheckinPicker = flatpickr("#res-checkin-date", {
-      ...dateFormatConfig,
-      defaultDate: "today"
-    });
-
-    const resCheckoutPicker = flatpickr("#res-checkout-date", {
-      ...dateFormatConfig,
-      defaultDate: "today"
-    });
-
     const modalPicker = flatpickr("#modal-date-picker", {
       ...dateFormatConfig,
       defaultDate: "today",
@@ -1695,7 +1465,6 @@
     renderMasterDB();
     renderWeeklyView();
     render15DayView();
-    renderReservationsLog();
     renderDailyView();
   </script>
 </body>
