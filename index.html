@@ -1335,8 +1335,12 @@
       if (!date || !text.trim()) return;
       processInputLines(date, text, type);
       
+      // Auto-clear input field immediately upon sorting
       document.getElementById('daily-input').value = '';
+      
+      // Instant UI update across all calendar views
       renderDailyView();
+      renderWeeklyView();
       render15DayView();
     }
 
@@ -1512,9 +1516,14 @@
       if (!date || !text.trim()) return;
 
       processInputLines(date, text, type);
+      
+      // Auto-clear weekly textarea input field immediately upon sorting
       document.getElementById('weekly-input').value = '';
+      
+      // Instant UI update across all calendar views
       renderWeeklyView();
       render15DayView();
+      renderDailyView();
     }
 
     function switchCleanerTab(cleaner) {
