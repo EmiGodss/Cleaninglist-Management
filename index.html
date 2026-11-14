@@ -6,16 +6,15 @@
   <title>Cleaner Schedule Manager - EMIJRD</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐝</text></svg>">
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <!-- Flatpickr CSS for Enhanced Date Pickers -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/dark.css">
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
     
     body { 
-      font-family: 'Outfit', sans-serif !important; 
+      font-family: 'Inter', system-ui, -apple-system, sans-serif !important; 
       background: #0f172a; 
       color: #f8fafc;
       min-height: 100vh;
@@ -23,7 +22,7 @@
     }
 
     *, button, input, select, textarea, table, th, td {
-      font-family: 'Outfit', sans-serif !important;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
     }
     
     .unit-florence { color: #f87171 !important; font-weight: 800; } 
@@ -121,7 +120,7 @@
       background: #1e293b !important;
       border: 1px solid rgba(255, 255, 255, 0.15) !important;
       box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5) !important;
-      font-family: 'Outfit', sans-serif !important;
+      font-family: 'Inter', sans-serif !important;
       border-radius: 1rem !important;
       color: #f8fafc !important;
     }
@@ -130,7 +129,7 @@
     .flatpickr-day:hover { background: #334155 !important; }
     .flatpickr-months { background: #0f172a !important; border-top-left-radius: 1rem; border-top-right-radius: 1rem; }
     .flatpickr-current-month, .flatpickr-weekday { color: #f8fafc !important; font-weight: 700 !important; }
-    .flatpickr-input { background-color: #0f172a !important; color: #ffffff !important; font-family: 'Outfit', sans-serif !important; }
+    .flatpickr-input { background-color: #0f172a !important; color: #ffffff !important; font-family: 'Inter', sans-serif !important; }
   </style>
 </head>
 <body class="antialiased min-h-screen flex flex-col">
@@ -149,19 +148,19 @@
 
         <nav class="flex space-x-1 bg-slate-900/80 p-1.5 rounded-xl border border-slate-700">
           <button onclick="switchTab('reservations')" id="tab-reservations" class="px-3.5 py-2 text-xs font-bold rounded-lg bg-indigo-600 text-white shadow-sm flex items-center gap-1.5">
-            <i class="fa-solid fa-file-circle-plus"></i> New Reservation
+            New Reservation
           </button>
           <button onclick="switchTab('daily')" id="tab-daily" class="px-3.5 py-2 text-xs font-bold rounded-lg text-slate-300 hover:text-white flex items-center gap-1.5">
-            <i class="fa-solid fa-calendar-day"></i> Daily List
+            Daily List
           </button>
           <button onclick="switchTab('weekly')" id="tab-weekly" class="px-3.5 py-2 text-xs font-bold rounded-lg text-slate-300 hover:text-white flex items-center gap-1.5">
-            <i class="fa-solid fa-calendar-week"></i> Weekly List
+            Weekly List
           </button>
           <button onclick="switchTab('fifteen')" id="tab-fifteen" class="px-3.5 py-2 text-xs font-bold rounded-lg text-slate-300 hover:text-white flex items-center gap-1.5">
-            <i class="fa-solid fa-calendar-days"></i> 15-Day View
+            15-Day View
           </button>
           <button onclick="switchTab('master')" id="tab-master" class="px-3.5 py-2 text-xs font-bold rounded-lg text-slate-300 hover:text-white flex items-center gap-1.5">
-            <i class="fa-solid fa-database"></i> Master DB (<span id="master-count">0</span>/60)
+            Master DB (<span id="master-count">0</span>/60)
           </button>
         </nav>
       </div>
@@ -174,21 +173,21 @@
     <div id="view-fifteen" class="hidden space-y-6">
       <div class="glass-card p-4 rounded-2xl shadow-sm flex flex-col sm:flex-row justify-between items-center gap-3">
         <div class="flex items-center gap-3">
-          <span class="text-xs font-bold text-slate-300 flex items-center gap-1.5"><i class="fa-solid fa-calendar text-indigo-400"></i> Select Month:</span>
+          <span class="text-xs font-bold text-slate-300">Select Month:</span>
           <input type="text" id="fifteen-month-picker" onchange="render15DayView()" class="px-3 py-1.5 border border-slate-700 rounded-lg text-sm font-semibold bg-slate-900 text-white">
         </div>
         <div class="flex items-center gap-2">
-          <button onclick="openManageModal()" class="px-3.5 py-1.5 text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg shadow-sm flex items-center gap-1.5">
-            <i class="fa-solid fa-pen-to-square"></i> Manage / Edit List
+          <button onclick="openManageModal()" class="px-3.5 py-1.5 text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg shadow-sm">
+            Manage / Edit List
           </button>
-          <button onclick="switch15Cleaner('FLORENCE')" id="fifteen-tab-flo" class="px-4 py-1.5 text-xs font-bold rounded-lg bg-rose-600 text-white shadow-sm flex items-center gap-1.5"><i class="fa-solid fa-user-gear"></i> Florence (Flo)</button>
-          <button onclick="switch15Cleaner('YANG')" id="fifteen-tab-yang" class="px-4 py-1.5 text-xs font-bold rounded-lg bg-slate-800 text-slate-300 flex items-center gap-1.5"><i class="fa-solid fa-user"></i> Yang</button>
+          <button onclick="switch15Cleaner('FLORENCE')" id="fifteen-tab-flo" class="px-4 py-1.5 text-xs font-bold rounded-lg bg-rose-600 text-white shadow-sm">Florence (Flo)</button>
+          <button onclick="switch15Cleaner('YANG')" id="fifteen-tab-yang" class="px-4 py-1.5 text-xs font-bold rounded-lg bg-slate-800 text-slate-300">Yang</button>
         </div>
       </div>
 
       <div class="glass-card p-5 rounded-2xl shadow-sm space-y-3">
-        <h3 class="text-xs font-bold text-indigo-300 uppercase tracking-wider flex items-center gap-2">
-          <i class="fa-solid fa-filter text-indigo-400"></i> Special Cleaning Summary (<span id="summary-month-label">Selected Month</span>)
+        <h3 class="text-xs font-bold text-indigo-300 uppercase tracking-wider">
+          Special Cleaning Summary (<span id="summary-month-label">Selected Month</span>)
         </h3>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
           <div class="bg-emerald-950/40 p-3 rounded-xl border border-emerald-900/50">
@@ -217,14 +216,14 @@
           <div class="glass-card rounded-2xl overflow-hidden shadow-sm">
             <div class="bg-gradient-to-r from-rose-600 to-red-700 px-4 py-2.5 font-bold text-white text-xs uppercase tracking-wider flex justify-between items-center">
               <span id="label-flo-15a">CLEANING A (FLO)</span>
-              <button onclick="copyListFromElement('flo-grid-1a')" class="no-copy px-2.5 py-1 text-[11px] bg-white/25 hover:bg-white/40 text-white font-bold rounded flex items-center gap-1.5"><i class="fa-regular fa-copy"></i> Copy</button>
+              <button onclick="copyListFromElement('flo-grid-1a')" class="no-copy px-2.5 py-1 text-[11px] bg-white/25 hover:bg-white/40 text-white font-bold rounded">Copy</button>
             </div>
             <div id="flo-grid-1a" class="weekly-section-bg fifteen-grid grid grid-cols-8 divide-x divide-slate-800 text-xs min-h-[300px] p-0.5 w-full"></div>
           </div>
           <div class="glass-card rounded-2xl overflow-hidden shadow-sm">
             <div class="bg-gradient-to-r from-rose-700 to-pink-700 px-4 py-2.5 font-bold text-white text-xs uppercase tracking-wider flex justify-between items-center">
               <span id="label-flo-15b">CLEANING B (FLO)</span>
-              <button onclick="copyListFromElement('flo-grid-1b')" class="no-copy px-2.5 py-1 text-[11px] bg-white/25 hover:bg-white/40 text-white font-bold rounded flex items-center gap-1.5"><i class="fa-regular fa-copy"></i> Copy</button>
+              <button onclick="copyListFromElement('flo-grid-1b')" class="no-copy px-2.5 py-1 text-[11px] bg-white/25 hover:bg-white/40 text-white font-bold rounded">Copy</button>
             </div>
             <div id="flo-grid-1b" class="weekly-section-bg fifteen-grid grid grid-cols-8 divide-x divide-slate-800 text-xs min-h-[300px] p-0.5 w-full"></div>
           </div>
@@ -236,14 +235,14 @@
           <div class="glass-card rounded-2xl overflow-hidden shadow-sm">
             <div class="bg-gradient-to-r from-cyan-700 to-teal-700 px-4 py-2.5 font-bold text-white text-xs uppercase tracking-wider flex justify-between items-center">
               <span id="label-yang-15a">CLEANING A (YANG)</span>
-              <button onclick="copyListFromElement('yang-grid-1a')" class="no-copy px-2.5 py-1 text-[11px] bg-white/25 hover:bg-white/40 text-white font-bold rounded flex items-center gap-1.5"><i class="fa-regular fa-copy"></i> Copy</button>
+              <button onclick="copyListFromElement('yang-grid-1a')" class="no-copy px-2.5 py-1 text-[11px] bg-white/25 hover:bg-white/40 text-white font-bold rounded">Copy</button>
             </div>
             <div id="yang-grid-1a" class="weekly-section-bg fifteen-grid grid grid-cols-8 divide-x divide-slate-800 text-xs min-h-[300px] p-0.5 w-full"></div>
           </div>
           <div class="glass-card rounded-2xl overflow-hidden shadow-sm">
             <div class="bg-gradient-to-r from-cyan-800 to-blue-700 px-4 py-2.5 font-bold text-white text-xs uppercase tracking-wider flex justify-between items-center">
               <span id="label-yang-15b">CLEANING B (YANG)</span>
-              <button onclick="copyListFromElement('yang-grid-1b')" class="no-copy px-2.5 py-1 text-[11px] bg-white/25 hover:bg-white/40 text-white font-bold rounded flex items-center gap-1.5"><i class="fa-regular fa-copy"></i> Copy</button>
+              <button onclick="copyListFromElement('yang-grid-1b')" class="no-copy px-2.5 py-1 text-[11px] bg-white/25 hover:bg-white/40 text-white font-bold rounded">Copy</button>
             </div>
             <div id="yang-grid-1b" class="weekly-section-bg fifteen-grid grid grid-cols-8 divide-x divide-slate-800 text-xs min-h-[300px] p-0.5 w-full"></div>
           </div>
@@ -255,17 +254,17 @@
     <div id="view-master" class="hidden space-y-6">
       <div class="glass-card p-5 rounded-2xl shadow-sm space-y-4">
         <div class="flex justify-between items-center">
-          <h2 class="text-base font-bold text-slate-100 flex items-center gap-2"><i class="fa-solid fa-database text-indigo-400"></i> Master Database Management (Max 60 Units)</h2>
+          <h2 class="text-base font-bold text-slate-100">Master Database Management (Max 60 Units)</h2>
           <div class="flex gap-2">
-            <button onclick="exportBackupData()" class="px-3 py-1.5 text-xs font-semibold bg-indigo-950 text-indigo-300 hover:bg-indigo-900 rounded-lg border border-indigo-800 flex items-center gap-1.5">
-              <i class="fa-solid fa-download"></i> Export Backup
+            <button onclick="exportBackupData()" class="px-3 py-1.5 text-xs font-semibold bg-indigo-950 text-indigo-300 hover:bg-indigo-900 rounded-lg border border-indigo-800">
+              Export Backup
             </button>
-            <button onclick="document.getElementById('import-file-input').click()" class="px-3 py-1.5 text-xs font-semibold bg-emerald-950 text-emerald-300 hover:bg-emerald-900 rounded-lg border border-emerald-800 flex items-center gap-1.5">
-              <i class="fa-solid fa-upload"></i> Import Backup
+            <button onclick="document.getElementById('import-file-input').click()" class="px-3 py-1.5 text-xs font-semibold bg-emerald-950 text-emerald-300 hover:bg-emerald-900 rounded-lg border border-emerald-800">
+              Import Backup
             </button>
             <input type="file" id="import-file-input" class="hidden" accept=".json" onchange="importBackupData(event)">
-            <button onclick="clearMasterDB()" class="px-3 py-1.5 text-xs font-semibold bg-rose-700 hover:bg-rose-600 text-white rounded-lg shadow-sm flex items-center gap-1.5">
-              <i class="fa-solid fa-trash-can"></i> Clear All Units
+            <button onclick="clearMasterDB()" class="px-3 py-1.5 text-xs font-semibold bg-rose-700 hover:bg-rose-600 text-white rounded-lg shadow-sm">
+              Clear All Units
             </button>
           </div>
         </div>
@@ -276,14 +275,14 @@
             <option value="FLORENCE">Florence (Red Font)</option>
             <option value="YANG">Yang (Blue Font)</option>
           </select>
-          <button onclick="addMasterUnit()" class="px-5 py-2 bg-indigo-600 text-white rounded-xl text-xs font-bold hover:bg-indigo-700 flex items-center justify-center gap-1.5"><i class="fa-solid fa-plus"></i> Add Unit</button>
+          <button onclick="addMasterUnit()" class="px-5 py-2 bg-indigo-600 text-white rounded-xl text-xs font-bold hover:bg-indigo-700">Add Unit</button>
         </div>
       </div>
 
       <div class="glass-card p-4 rounded-2xl shadow-sm flex flex-col sm:flex-row justify-between items-center gap-3">
         <div class="flex flex-wrap items-center gap-3 w-full sm:w-auto">
           <div class="flex items-center gap-2">
-            <span class="text-xs font-bold text-slate-300 flex items-center gap-1"><i class="fa-solid fa-arrow-down-a-z"></i> Sort:</span>
+            <span class="text-xs font-bold text-slate-300">Sort:</span>
             <select id="master-sort-order" onchange="renderMasterDB()" class="px-3 py-1.5 border border-slate-700 rounded-lg text-xs font-bold bg-slate-900 text-white">
               <option value="AZ">A - Z</option>
               <option value="ZA">Z - A</option>
@@ -291,8 +290,7 @@
           </div>
           <div class="flex items-center gap-2 flex-1 sm:w-64">
             <div class="relative w-full">
-              <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400"><i class="fa-solid fa-magnifying-glass text-xs"></i></span>
-              <input type="text" id="master-search-input" oninput="renderMasterDB()" placeholder="Search unit code..." class="w-full pl-8 pr-3 py-1.5 border border-slate-700 rounded-lg text-xs bg-slate-900 text-white font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-500">
+              <input type="text" id="master-search-input" oninput="renderMasterDB()" placeholder="Search unit code..." class="w-full px-3 py-1.5 border border-slate-700 rounded-lg text-xs bg-slate-900 text-white font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-500">
             </div>
           </div>
         </div>
@@ -304,18 +302,18 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div class="glass-card p-4 rounded-2xl shadow-sm">
           <div class="flex justify-between items-center mb-3 border-b border-slate-800 pb-2">
-            <h3 class="text-sm font-bold text-rose-400 flex items-center gap-1.5"><i class="fa-solid fa-user"></i> Florence Units (Red)</h3>
-            <button onclick="copyListFromElement('florence-master-list')" class="px-2.5 py-1 text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg border border-slate-700 flex items-center gap-1.5">
-              <i class="fa-regular fa-copy"></i> Copy Units
+            <h3 class="text-sm font-bold text-rose-400">Florence Units (Red)</h3>
+            <button onclick="copyListFromElement('florence-master-list')" class="px-2.5 py-1 text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg border border-slate-700">
+              Copy Units
             </button>
           </div>
           <ul id="florence-master-list" class="space-y-3 text-sm custom-scrollbar max-h-[500px] overflow-y-auto pr-1"></ul>
         </div>
         <div class="glass-card p-4 rounded-2xl shadow-sm">
           <div class="flex justify-between items-center mb-3 border-b border-slate-800 pb-2">
-            <h3 class="text-sm font-bold text-sky-400 flex items-center gap-1.5"><i class="fa-solid fa-user"></i> Yang Units (Blue)</h3>
-            <button onclick="copyListFromElement('yang-master-list')" class="px-2.5 py-1 text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg border border-slate-700 flex items-center gap-1.5">
-              <i class="fa-regular fa-copy"></i> Copy Units
+            <h3 class="text-sm font-bold text-sky-400">Yang Units (Blue)</h3>
+            <button onclick="copyListFromElement('yang-master-list')" class="px-2.5 py-1 text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg border border-slate-700">
+              Copy Units
             </button>
           </div>
           <ul id="yang-master-list" class="space-y-3 text-sm custom-scrollbar max-h-[500px] overflow-y-auto pr-1"></ul>
@@ -332,8 +330,8 @@
             <span id="daily-date-label" class="text-sm font-bold text-slate-200"></span>
           </div>
           <div class="flex items-center gap-2">
-            <button onclick="openManageModal()" class="px-3.5 py-1.5 text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg shadow-sm flex items-center gap-1.5">
-              <i class="fa-solid fa-pen-to-square"></i> Manage / Edit List
+            <button onclick="openManageModal()" class="px-3.5 py-1.5 text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg shadow-sm">
+              Manage / Edit List
             </button>
             <select id="daily-entry-type" class="px-3 py-2 border border-slate-700 rounded-xl text-xs font-bold bg-slate-900 text-white">
               <option value="CHECKOUT">Check-Out</option>
@@ -344,10 +342,10 @@
         </div>
         <textarea id="daily-input" rows="3" placeholder="Enter units here (e.g. EC1113 | EC1113 2)..." class="w-full px-4 py-3 border border-slate-700 rounded-xl text-sm font-mono bg-slate-900 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
         <div class="flex justify-between items-center">
-          <button onclick="sortDailyAlphabetical()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl text-xs font-bold border border-slate-700 flex items-center gap-1.5">
-            <i class="fa-solid fa-arrow-down-a-z"></i> Sort A-Z
+          <button onclick="sortDailyAlphabetical()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl text-xs font-bold border border-slate-700">
+            Sort A-Z
           </button>
-          <button onclick="processDailyInput()" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold shadow-md flex items-center gap-1.5"><i class="fa-solid fa-list-check"></i> Enter & Sort Daily List</button>
+          <button onclick="processDailyInput()" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold shadow-md">Enter & Sort Daily List</button>
         </div>
       </div>
 
@@ -355,23 +353,23 @@
         <!-- FLORENCE SCHEDULE -->
         <div class="glass-card p-4 rounded-2xl shadow-sm border border-rose-950/50">
           <div class="flex justify-between items-center mb-3 border-b border-slate-800 pb-2">
-            <h3 class="text-sm font-bold text-rose-400 flex items-center gap-1.5"><i class="fa-solid fa-user-gear"></i> Florence Schedule</h3>
-            <button onclick="uncheckAllForCleaner('FLORENCE')" class="text-[10px] px-2.5 py-1 bg-rose-950/60 hover:bg-rose-900/60 text-rose-300 rounded-lg border border-rose-900 font-bold flex items-center gap-1">
-              <i class="fa-solid fa-rotate-left"></i> Checking Done
+            <h3 class="text-sm font-bold text-rose-400">Florence Schedule</h3>
+            <button onclick="uncheckAllForCleaner('FLORENCE')" class="text-[10px] px-2.5 py-1 bg-rose-950/60 hover:bg-rose-900/60 text-rose-300 rounded-lg border border-rose-900 font-bold">
+              Checking Done
             </button>
           </div>
           <div class="space-y-4">
             <div>
               <div class="flex justify-between items-center mb-1">
-                <h4 class="text-xs font-bold text-slate-400 flex items-center gap-1"><i class="fa-solid fa-person-walking-arrow-right text-rose-400"></i> Check-Out: <span id="count-daily-f-out" class="count-pill">0</span></h4>
-                <button onclick="copyDailyCleanerSection('FLORENCE', 'CHECKOUT')" class="text-[10px] px-2 py-0.5 bg-rose-950/60 hover:bg-rose-900/60 text-rose-300 rounded font-bold flex items-center gap-1"><i class="fa-regular fa-copy"></i> Copy Check-Out</button>
+                <h4 class="text-xs font-bold text-slate-400">Check-Out: <span id="count-daily-f-out" class="count-pill">0</span></h4>
+                <button onclick="copyDailyCleanerSection('FLORENCE', 'CHECKOUT')" class="text-[10px] px-2 py-0.5 bg-rose-950/60 hover:bg-rose-900/60 text-rose-300 rounded font-bold">Copy Check-Out</button>
               </div>
               <div id="daily-florence-checkout" class="space-y-0.5 text-base font-semibold min-h-[40px]"></div>
             </div>
             <div>
               <div class="flex justify-between items-center mb-1">
-                <h4 class="text-xs font-bold text-slate-400 flex items-center gap-1"><i class="fa-solid fa-person-walking-arrow-loop-left text-rose-400"></i> Check-In: <span id="count-daily-f-in" class="count-pill">0</span></h4>
-                <button onclick="copyDailyCleanerSection('FLORENCE', 'CHECKIN')" class="text-[10px] px-2 py-0.5 bg-rose-950/60 hover:bg-rose-900/60 text-rose-300 rounded font-bold flex items-center gap-1"><i class="fa-regular fa-copy"></i> Copy Check-In</button>
+                <h4 class="text-xs font-bold text-slate-400">Check-In: <span id="count-daily-f-in" class="count-pill">0</span></h4>
+                <button onclick="copyDailyCleanerSection('FLORENCE', 'CHECKIN')" class="text-[10px] px-2 py-0.5 bg-rose-950/60 hover:bg-rose-900/60 text-rose-300 rounded font-bold">Copy Check-In</button>
               </div>
               <div id="daily-florence-checkin" class="space-y-0.5 text-base font-semibold min-h-[40px]"></div>
             </div>
@@ -381,23 +379,23 @@
         <!-- YANG SCHEDULE -->
         <div class="glass-card p-4 rounded-2xl shadow-sm border border-sky-950/50">
           <div class="flex justify-between items-center mb-3 border-b border-slate-800 pb-2">
-            <h3 class="text-sm font-bold text-sky-400 flex items-center gap-1.5"><i class="fa-solid fa-user"></i> Yang Schedule</h3>
-            <button onclick="uncheckAllForCleaner('YANG')" class="text-[10px] px-2.5 py-1 bg-sky-950/60 hover:bg-sky-900/60 text-sky-300 rounded-lg border border-sky-900 font-bold flex items-center gap-1">
-              <i class="fa-solid fa-rotate-left"></i> Checking Done
+            <h3 class="text-sm font-bold text-sky-400">Yang Schedule</h3>
+            <button onclick="uncheckAllForCleaner('YANG')" class="text-[10px] px-2.5 py-1 bg-sky-950/60 hover:bg-sky-900/60 text-sky-300 rounded-lg border border-sky-900 font-bold">
+              Checking Done
             </button>
           </div>
           <div class="space-y-4">
             <div>
               <div class="flex justify-between items-center mb-1">
-                <h4 class="text-xs font-bold text-slate-400 flex items-center gap-1"><i class="fa-solid fa-person-walking-arrow-right text-sky-400"></i> Check-Out: <span id="count-daily-y-out" class="count-pill">0</span></h4>
-                <button onclick="copyDailyCleanerSection('YANG', 'CHECKOUT')" class="text-[10px] px-2 py-0.5 bg-sky-950/60 hover:bg-sky-900/60 text-sky-300 rounded font-bold flex items-center gap-1"><i class="fa-regular fa-copy"></i> Copy Check-Out</button>
+                <h4 class="text-xs font-bold text-slate-400">Check-Out: <span id="count-daily-y-out" class="count-pill">0</span></h4>
+                <button onclick="copyDailyCleanerSection('YANG', 'CHECKOUT')" class="text-[10px] px-2 py-0.5 bg-sky-950/60 hover:bg-sky-900/60 text-sky-300 rounded font-bold">Copy Check-Out</button>
               </div>
               <div id="daily-yang-checkout" class="space-y-0.5 text-base font-semibold min-h-[40px]"></div>
             </div>
             <div>
               <div class="flex justify-between items-center mb-1">
-                <h4 class="text-xs font-bold text-slate-400 flex items-center gap-1"><i class="fa-solid fa-person-walking-arrow-loop-left text-sky-400"></i> Check-In: <span id="count-daily-y-in" class="count-pill">0</span></h4>
-                <button onclick="copyDailyCleanerSection('YANG', 'CHECKIN')" class="text-[10px] px-2 py-0.5 bg-sky-950/60 hover:bg-sky-900/60 text-sky-300 rounded font-bold flex items-center gap-1"><i class="fa-regular fa-copy"></i> Copy Check-In</button>
+                <h4 class="text-xs font-bold text-slate-400">Check-In: <span id="count-daily-y-in" class="count-pill">0</span></h4>
+                <button onclick="copyDailyCleanerSection('YANG', 'CHECKIN')" class="text-[10px] px-2 py-0.5 bg-sky-950/60 hover:bg-sky-900/60 text-sky-300 rounded font-bold">Copy Check-In</button>
               </div>
               <div id="daily-yang-checkin" class="space-y-0.5 text-base font-semibold min-h-[40px]"></div>
             </div>
@@ -410,7 +408,6 @@
     <div id="view-reservations" class="space-y-6">
       <div class="glass-card p-6 rounded-2xl shadow-sm space-y-4 border border-indigo-900/50">
         <div class="flex items-center gap-2 border-b border-slate-800 pb-3">
-          <i class="fa-solid fa-file-circle-plus text-indigo-400 text-lg"></i>
           <div>
             <h2 class="text-base font-bold text-slate-100">Add New Reservation</h2>
             <p class="text-xs text-slate-400">Enter the unit code, check-in date, check-out date, and platform. Nights are auto-counted and sorted into schedules.</p>
@@ -419,19 +416,19 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
           <div>
-            <label class="block text-xs font-bold text-slate-300 mb-1 flex items-center gap-1"><i class="fa-solid fa-door-open text-indigo-400"></i> Unit Code:</label>
+            <label class="block text-xs font-bold text-slate-300 mb-1">Unit Code:</label>
             <input type="text" id="res-unit-code" maxlength="15" placeholder="e.g. AU6514" class="w-full px-3 py-2 border border-slate-700 rounded-xl text-sm font-semibold bg-slate-900 text-white uppercase focus:outline-none focus:ring-2 focus:ring-indigo-500">
           </div>
           <div>
-            <label class="block text-xs font-bold text-slate-300 mb-1 flex items-center gap-1"><i class="fa-solid fa-calendar-plus text-indigo-400"></i> Check-In Date:</label>
+            <label class="block text-xs font-bold text-slate-300 mb-1">Check-In Date:</label>
             <input type="text" id="res-checkin-date" class="w-full px-3 py-2 border border-slate-700 rounded-xl text-sm font-semibold bg-slate-900 text-white">
           </div>
           <div>
-            <label class="block text-xs font-bold text-slate-300 mb-1 flex items-center gap-1"><i class="fa-solid fa-calendar-minus text-indigo-400"></i> Check-Out Date:</label>
+            <label class="block text-xs font-bold text-slate-300 mb-1">Check-Out Date:</label>
             <input type="text" id="res-checkout-date" class="w-full px-3 py-2 border border-slate-700 rounded-xl text-sm font-semibold bg-slate-900 text-white">
           </div>
           <div>
-            <label class="block text-xs font-bold text-slate-300 mb-1 flex items-center gap-1"><i class="fa-solid fa-globe text-indigo-400"></i> Platform:</label>
+            <label class="block text-xs font-bold text-slate-300 mb-1">Platform:</label>
             <select id="res-tag-input" class="w-full px-3 py-2 border border-slate-700 rounded-xl text-sm font-semibold bg-slate-900 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
               <option value="BOOKING.COM">BOOKING.COM</option>
               <option value="AIRBNB">AIRBNB</option>
@@ -440,9 +437,9 @@
         </div>
 
         <div class="flex justify-end gap-3 pt-2">
-          <button onclick="clearReservationForm()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs font-bold flex items-center gap-1.5"><i class="fa-solid fa-rotate-right"></i> Clear Form</button>
-          <button onclick="processSingleReservation()" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold shadow-md flex items-center gap-2">
-            <i class="fa-solid fa-bolt"></i> Save & Sort Reservation
+          <button onclick="clearReservationForm()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs font-bold">Clear Form</button>
+          <button onclick="processSingleReservation()" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold shadow-md">
+            Save & Sort Reservation
           </button>
         </div>
       </div>
@@ -450,12 +447,12 @@
       <!-- RESERVATIONS QUEUE LIST -->
       <div class="glass-card p-6 rounded-2xl shadow-sm space-y-4">
         <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-          <h3 class="text-sm font-bold text-indigo-300 flex items-center gap-2">
-            <i class="fa-solid fa-list-check"></i> Processed Reservations Log (<span id="reservations-count">0</span>)
+          <h3 class="text-sm font-bold text-indigo-300">
+            Processed Reservations Log (<span id="reservations-count">0</span>)
           </h3>
           <div class="flex gap-2">
-            <button onclick="clearReservationsLog()" class="px-3 py-1 bg-rose-950 hover:bg-rose-900 text-rose-300 rounded-lg text-xs font-bold border border-rose-900 flex items-center gap-1.5">
-              <i class="fa-solid fa-trash-can"></i> Clear Queue List
+            <button onclick="clearReservationsLog()" class="px-3 py-1 bg-rose-950 hover:bg-rose-900 text-rose-300 rounded-lg text-xs font-bold border border-rose-900">
+              Clear Queue List
             </button>
           </div>
         </div>
@@ -488,7 +485,7 @@
       <div class="glass-card p-5 rounded-2xl shadow-sm space-y-4">
         <div class="flex flex-col sm:flex-row justify-between items-center gap-3">
           <div class="flex items-center gap-3">
-            <span class="text-xs font-bold text-slate-300 flex items-center gap-1.5"><i class="fa-solid fa-calendar-plus text-indigo-400"></i> Select Target Date:</span>
+            <span class="text-xs font-bold text-slate-300">Select Target Date:</span>
             <input type="text" id="weekly-target-date" class="px-3 py-1.5 border border-slate-700 rounded-lg text-sm font-semibold bg-slate-900 text-white">
           </div>
           <div class="flex items-center gap-2">
@@ -501,23 +498,23 @@
         </div>
         <textarea id="weekly-input" rows="3" placeholder="Enter weekly units here (e.g. EC1113 | EC1113 2)..." class="w-full px-4 py-3 border border-slate-700 rounded-xl text-sm bg-slate-900 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
         <div class="flex justify-end">
-          <button onclick="processWeeklyInput()" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold shadow-md flex items-center gap-1.5">
-            <i class="fa-solid fa-filter"></i> Sort to Weekly List
+          <button onclick="processWeeklyInput()" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold shadow-md">
+            Sort to Weekly List
           </button>
         </div>
       </div>
 
       <div class="glass-card p-4 rounded-2xl shadow-sm flex flex-col sm:flex-row justify-between items-center gap-3">
         <div class="flex items-center gap-3">
-          <span class="text-xs font-bold text-slate-300 flex items-center gap-1.5"><i class="fa-solid fa-calendar-week text-indigo-400"></i> Select Week Anchor:</span>
+          <span class="text-xs font-bold text-slate-300">Select Week Anchor:</span>
           <input type="text" id="weekly-picker" onchange="renderWeeklyView()" class="px-3 py-1.5 border border-slate-700 rounded-lg text-sm font-semibold bg-slate-900 text-white">
         </div>
         <div class="flex items-center gap-2">
-          <button onclick="openManageModal()" class="px-3.5 py-1.5 text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg shadow-sm flex items-center gap-1.5">
-            <i class="fa-solid fa-pen-to-square"></i> Manage / Edit List
+          <button onclick="openManageModal()" class="px-3.5 py-1.5 text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg shadow-sm">
+            Manage / Edit List
           </button>
-          <button onclick="switchCleanerTab('FLORENCE')" id="cleaner-tab-florence" class="px-4 py-1.5 text-xs font-bold rounded-lg bg-rose-600 text-white shadow-sm flex items-center gap-1.5"><i class="fa-solid fa-user-gear"></i> Florence</button>
-          <button onclick="switchCleanerTab('YANG')" id="cleaner-tab-yang" class="px-4 py-1.5 text-xs font-bold rounded-lg bg-slate-800 text-slate-300 flex items-center gap-1.5"><i class="fa-solid fa-user"></i> Yang</button>
+          <button onclick="switchCleanerTab('FLORENCE')" id="cleaner-tab-florence" class="px-4 py-1.5 text-xs font-bold rounded-lg bg-rose-600 text-white shadow-sm">Florence</button>
+          <button onclick="switchCleanerTab('YANG')" id="cleaner-tab-yang" class="px-4 py-1.5 text-xs font-bold rounded-lg bg-slate-800 text-slate-300">Yang</button>
         </div>
       </div>
 
@@ -525,16 +522,16 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div class="glass-card rounded-2xl overflow-hidden shadow-sm">
             <div class="bg-gradient-to-r from-rose-600 to-pink-600 px-4 py-2.5 font-bold text-white text-xs uppercase tracking-wider flex justify-between items-center">
-              <span class="flex items-center gap-1.5"><i class="fa-solid fa-person-walking-arrow-right"></i> Florence - Check-Out List</span>
-              <button onclick="copyListFromElement('f-weekly-checkout-grid')" class="no-copy px-2.5 py-1 text-[11px] bg-white/25 hover:bg-white/40 text-white font-bold rounded flex items-center gap-1.5"><i class="fa-regular fa-copy"></i> Copy</button>
+              <span>Florence - Check-Out List</span>
+              <button onclick="copyListFromElement('f-weekly-checkout-grid')" class="no-copy px-2.5 py-1 text-[11px] bg-white/25 hover:bg-white/40 text-white font-bold rounded">Copy</button>
             </div>
             <div id="f-weekly-checkout-grid" class="weekly-section-bg fifteen-grid grid grid-cols-7 divide-x divide-slate-800 text-xs min-h-[300px] p-0.5 w-full"></div>
           </div>
 
           <div class="glass-card rounded-2xl overflow-hidden shadow-sm">
             <div class="bg-gradient-to-r from-rose-700 to-pink-700 px-4 py-2.5 font-bold text-white text-xs uppercase tracking-wider flex justify-between items-center">
-              <span class="flex items-center gap-1.5"><i class="fa-solid fa-person-walking-arrow-loop-left"></i> Florence - Check-In List</span>
-              <button onclick="copyListFromElement('f-weekly-checkin-grid')" class="no-copy px-2.5 py-1 text-[11px] bg-white/25 hover:bg-white/40 text-white font-bold rounded flex items-center gap-1.5"><i class="fa-regular fa-copy"></i> Copy</button>
+              <span>Florence - Check-In List</span>
+              <button onclick="copyListFromElement('f-weekly-checkin-grid')" class="no-copy px-2.5 py-1 text-[11px] bg-white/25 hover:bg-white/40 text-white font-bold rounded">Copy</button>
             </div>
             <div id="f-weekly-checkin-grid" class="weekly-section-bg fifteen-grid grid grid-cols-7 divide-x divide-slate-800 text-xs min-h-[300px] p-0.5 w-full"></div>
           </div>
@@ -545,16 +542,16 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div class="glass-card rounded-2xl overflow-hidden shadow-sm">
             <div class="bg-gradient-to-r from-cyan-700 to-teal-700 px-4 py-2.5 font-bold text-white text-xs uppercase tracking-wider flex justify-between items-center">
-              <span class="flex items-center gap-1.5"><i class="fa-solid fa-person-walking-arrow-right"></i> Yang - Check-Out List</span>
-              <button onclick="copyListFromElement('y-weekly-checkout-grid')" class="no-copy px-2.5 py-1 text-[11px] bg-white/25 hover:bg-white/40 text-white font-bold rounded flex items-center gap-1.5"><i class="fa-regular fa-copy"></i> Copy</button>
+              <span>Yang - Check-Out List</span>
+              <button onclick="copyListFromElement('y-weekly-checkout-grid')" class="no-copy px-2.5 py-1 text-[11px] bg-white/25 hover:bg-white/40 text-white font-bold rounded">Copy</button>
             </div>
             <div id="y-weekly-checkout-grid" class="weekly-section-bg fifteen-grid grid grid-cols-7 divide-x divide-slate-800 text-xs min-h-[300px] p-0.5 w-full"></div>
           </div>
 
           <div class="glass-card rounded-2xl overflow-hidden shadow-sm">
             <div class="bg-gradient-to-r from-cyan-800 to-blue-700 px-4 py-2.5 font-bold text-white text-xs uppercase tracking-wider flex justify-between items-center">
-              <span class="flex items-center gap-1.5"><i class="fa-solid fa-person-walking-arrow-loop-left"></i> Yang - Check-In List</span>
-              <button onclick="copyListFromElement('y-weekly-checkin-grid')" class="no-copy px-2.5 py-1 text-[11px] bg-white/25 hover:bg-white/40 text-white font-bold rounded flex items-center gap-1.5"><i class="fa-regular fa-copy"></i> Copy</button>
+              <span>Yang - Check-In List</span>
+              <button onclick="copyListFromElement('y-weekly-checkin-grid')" class="no-copy px-2.5 py-1 text-[11px] bg-white/25 hover:bg-white/40 text-white font-bold rounded">Copy</button>
             </div>
             <div id="y-weekly-checkin-grid" class="weekly-section-bg fifteen-grid grid grid-cols-7 divide-x divide-slate-800 text-xs min-h-[300px] p-0.5 w-full"></div>
           </div>
@@ -568,25 +565,25 @@
   <div id="manage-modal" class="hidden fixed inset-0 bg-slate-950/70 backdrop-blur-xs z-50 flex items-center justify-center p-4">
     <div class="glass-card rounded-2xl max-w-xl w-full p-6 shadow-2xl space-y-5 border border-slate-700">
       <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-        <h3 class="text-base font-bold text-slate-100 flex items-center gap-2"><i class="fa-solid fa-pen-to-square text-indigo-400"></i> Manage / Edit Schedule Entries</h3>
-        <button onclick="closeManageModal()" class="text-slate-400 hover:text-white text-lg"><i class="fa-solid fa-xmark"></i></button>
+        <h3 class="text-base font-bold text-slate-100">Manage / Edit Schedule Entries</h3>
+        <button onclick="closeManageModal()" class="text-slate-400 hover:text-white text-lg font-bold px-2">×</button>
       </div>
 
       <div class="space-y-4">
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <div>
-            <label class="block text-xs font-bold text-slate-300 mb-1 flex items-center gap-1"><i class="fa-solid fa-calendar text-indigo-400"></i> Select Date:</label>
+            <label class="block text-xs font-bold text-slate-300 mb-1">Select Date:</label>
             <input type="text" id="modal-date-picker" onchange="loadModalDateEntries()" class="w-full px-3 py-1.5 border border-slate-700 rounded-lg text-xs font-semibold bg-slate-900 text-white">
           </div>
           <div>
-            <label class="block text-xs font-bold text-slate-300 mb-1 flex items-center gap-1"><i class="fa-solid fa-user-gear text-indigo-400"></i> Cleaner:</label>
+            <label class="block text-xs font-bold text-slate-300 mb-1">Cleaner:</label>
             <select id="modal-cleaner-select" onchange="loadModalDateEntries()" class="w-full px-3 py-1.5 border border-slate-700 rounded-lg text-xs font-semibold bg-slate-900 text-white">
               <option value="FLORENCE">Florence</option>
               <option value="YANG">Yang</option>
             </select>
           </div>
           <div>
-            <label class="block text-xs font-bold text-slate-300 mb-1 flex items-center gap-1"><i class="fa-solid fa-list-check text-indigo-400"></i> Cleaning Type:</label>
+            <label class="block text-xs font-bold text-slate-300 mb-1">Cleaning Type:</label>
             <select id="modal-type-select" onchange="loadModalDateEntries()" class="w-full px-3 py-1.5 border border-slate-700 rounded-lg text-xs font-semibold bg-slate-900 text-white">
               <option value="CHECKOUT">Check-Out</option>
               <option value="CHECKIN">Check-In</option>
@@ -596,17 +593,17 @@
 
         <div class="flex gap-2 bg-slate-900 p-3 rounded-xl border border-slate-700">
           <input type="text" id="modal-add-input" placeholder="Add unit (e.g. AU6514 BOOKING.COM)" class="flex-1 px-3 py-1.5 border border-slate-700 rounded-lg text-xs bg-slate-800 text-white">
-          <button onclick="addModalEntry()" class="px-4 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-lg flex items-center gap-1.5"><i class="fa-solid fa-plus"></i> Add Entry</button>
+          <button onclick="addModalEntry()" class="px-4 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-lg">Add Entry</button>
         </div>
 
         <div>
-          <h4 class="text-xs font-bold text-slate-400 mb-2 flex items-center gap-1.5"><i class="fa-solid fa-list"></i> Current Listed Units for Date:</h4>
+          <h4 class="text-xs font-bold text-slate-400 mb-2">Current Listed Units for Date:</h4>
           <div id="modal-entries-list" class="space-y-2 max-h-60 overflow-y-auto custom-scrollbar pr-1"></div>
         </div>
       </div>
 
       <div class="flex justify-end pt-2 border-t border-slate-800">
-        <button onclick="closeManageModal()" class="px-5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold rounded-xl flex items-center gap-1.5"><i class="fa-solid fa-xmark"></i> Close</button>
+        <button onclick="closeManageModal()" class="px-5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold rounded-xl">Close</button>
       </div>
     </div>
   </div>
@@ -784,8 +781,8 @@
         div.innerHTML = `
           <span class="font-bold text-slate-200">${item.raw || item.unit}</span>
           <div class="flex gap-2">
-            <button onclick="editModalItem('${date}', ${item.id})" class="px-2 py-1 bg-indigo-950 text-indigo-300 hover:bg-indigo-900 rounded font-semibold border border-indigo-800 flex items-center gap-1"><i class="fa-solid fa-pen"></i> Edit / Tag</button>
-            <button onclick="deleteScheduleItem('${date}', ${item.id}); loadModalDateEntries();" class="px-2 py-1 bg-rose-950 text-rose-300 hover:bg-rose-900 rounded font-semibold border border-rose-800 flex items-center gap-1"><i class="fa-solid fa-trash"></i> Delete</button>
+            <button onclick="editModalItem('${date}', ${item.id})" class="px-2 py-1 bg-indigo-950 text-indigo-300 hover:bg-indigo-900 rounded font-semibold border border-indigo-800">Edit / Tag</button>
+            <button onclick="deleteScheduleItem('${date}', ${item.id}); loadModalDateEntries();" class="px-2 py-1 bg-rose-950 text-rose-300 hover:bg-rose-900 rounded font-semibold border border-rose-800">Delete</button>
           </div>
         `;
         container.appendChild(div);
@@ -849,8 +846,8 @@
       document.getElementById('fifteen-flo-section').classList.toggle('hidden', cleaner !== 'FLORENCE');
       document.getElementById('fifteen-yang-section').classList.toggle('hidden', cleaner !== 'YANG');
       
-      document.getElementById('fifteen-tab-flo').className = cleaner === 'FLORENCE' ? 'px-4 py-1.5 text-xs font-bold rounded-lg bg-rose-600 text-white shadow-sm flex items-center gap-1.5' : 'px-4 py-1.5 text-xs font-bold rounded-lg bg-slate-800 text-slate-300 flex items-center gap-1.5';
-      document.getElementById('fifteen-tab-yang').className = cleaner === 'YANG' ? 'px-4 py-1.5 text-xs font-bold rounded-lg bg-cyan-600 text-white shadow-sm flex items-center gap-1.5' : 'px-4 py-1.5 text-xs font-bold rounded-lg bg-slate-800 text-slate-300 flex items-center gap-1.5';
+      document.getElementById('fifteen-tab-flo').className = cleaner === 'FLORENCE' ? 'px-4 py-1.5 text-xs font-bold rounded-lg bg-rose-600 text-white shadow-sm' : 'px-4 py-1.5 text-xs font-bold rounded-lg bg-slate-800 text-slate-300';
+      document.getElementById('fifteen-tab-yang').className = cleaner === 'YANG' ? 'px-4 py-1.5 text-xs font-bold rounded-lg bg-cyan-600 text-white shadow-sm' : 'px-4 py-1.5 text-xs font-bold rounded-lg bg-slate-800 text-slate-300';
     }
 
     function render15DayView() {
@@ -1000,8 +997,8 @@
         li.innerHTML = `
           <div class="flex justify-between items-center">
             <div class="unit-text ${item.cleaner === 'FLORENCE' ? 'unit-florence' : 'unit-yang'}" style="justify-content: flex-start !important;" data-unit-clean="${item.code}">${item.code}</div>
-            <button onclick="deleteMasterUnit(${originalIndex})" class="no-copy text-xs text-rose-400 hover:text-rose-300 flex items-center gap-1 font-semibold px-2 py-1 bg-rose-950/60 rounded border border-rose-900">
-              <i class="fa-solid fa-xmark"></i> Clear
+            <button onclick="deleteMasterUnit(${originalIndex})" class="no-copy text-xs text-rose-400 hover:text-rose-300 font-semibold px-2 py-1 bg-rose-950/60 rounded border border-rose-900">
+              Clear
             </button>
           </div>
           <div class="space-y-1.5 text-xs">
@@ -1221,7 +1218,7 @@
           <td class="p-2"><span class="tag-nights text-xs px-1.5 py-0.5">${res.nights}N</span></td>
           <td class="p-2">${platformBadge}</td>
           <td class="p-2 text-right">
-            <button onclick="deleteReservationLogItem(${res.id})" class="px-2 py-1 bg-rose-950/60 hover:bg-rose-900 text-rose-300 rounded border border-rose-900 text-[10px] font-bold flex items-center gap-1 ml-auto"><i class="fa-solid fa-trash"></i> Remove</button>
+            <button onclick="deleteReservationLogItem(${res.id})" class="px-2 py-1 bg-rose-950/60 hover:bg-rose-900 text-rose-300 rounded border border-rose-900 text-[10px] font-bold ml-auto">Remove</button>
           </td>
         `;
         frag.appendChild(tr);
@@ -1431,7 +1428,7 @@
             <div class="flex flex-wrap items-center gap-1.5 w-full sm:w-auto text-xs shrink-0 flex-1 justify-end">
               <input type="text" value="${item.lastCode || ''}" oninput="updateItemField('${date}', ${item.id}, 'lastCode', this.value)" class="px-2.5 py-1 border border-slate-700 rounded text-sm font-semibold w-24 font-mono bg-slate-900 text-white shrink-0">
               <input type="text" value="${item.notes || ''}" oninput="updateItemField('${date}', ${item.id}, 'notes', this.value)" class="px-3 py-1 border border-slate-700 rounded text-sm font-semibold flex-1 min-w-[210px] bg-slate-900 text-white shrink-0">
-              <button onclick="clearItemInputs('${date}', ${item.id}, 'checkout')" title="Clear Code & Notes" class="px-2 py-1 bg-rose-950/60 hover:bg-rose-900/60 text-rose-400 rounded border border-rose-900 font-bold shrink-0"><i class="fa-solid fa-trash-can"></i></button>
+              <button onclick="clearItemInputs('${date}', ${item.id}, 'checkout')" title="Clear Code & Notes" class="px-2 py-1 bg-rose-950/60 hover:bg-rose-900/60 text-rose-400 rounded border border-rose-900 font-bold shrink-0">Clear</button>
             </div>
           `;
         } else {
@@ -1443,7 +1440,7 @@
             <div class="flex flex-wrap items-center gap-1.5 w-full sm:w-auto text-xs shrink-0 flex-1 justify-end">
               <input type="text" value="${item.newCode || ''}" oninput="updateItemField('${date}', ${item.id}, 'newCode', this.value)" class="px-2.5 py-1 border border-slate-700 rounded text-sm font-semibold w-24 font-mono bg-slate-900 text-white shrink-0">
               <input type="text" value="${item.notes || ''}" oninput="updateItemField('${date}', ${item.id}, 'notes', this.value)" class="px-3 py-1 border border-slate-700 rounded text-sm font-semibold flex-1 min-w-[210px] bg-slate-900 text-white shrink-0">
-              <button onclick="clearItemInputs('${date}', ${item.id}, 'checkin')" title="Clear New Code & Notes" class="px-2 py-1 bg-rose-950/60 hover:bg-rose-900/60 text-rose-400 rounded border border-rose-900 font-bold shrink-0"><i class="fa-solid fa-trash-can"></i></button>
+              <button onclick="clearItemInputs('${date}', ${item.id}, 'checkin')" title="Clear New Code & Notes" class="px-2 py-1 bg-rose-950/60 hover:bg-rose-900/60 text-rose-400 rounded border border-rose-900 font-bold shrink-0">Clear</button>
             </div>
           `;
         }
@@ -1492,8 +1489,8 @@
       document.getElementById('weekly-florence-section').classList.toggle('hidden', cleaner !== 'FLORENCE');
       document.getElementById('weekly-yang-section').classList.toggle('hidden', cleaner !== 'YANG');
       
-      document.getElementById('cleaner-tab-florence').className = cleaner === 'FLORENCE' ? 'px-4 py-1.5 text-xs font-bold rounded-lg bg-rose-600 text-white shadow-sm flex items-center gap-1.5' : 'px-4 py-1.5 text-xs font-bold rounded-lg bg-slate-800 text-slate-300 flex items-center gap-1.5';
-      document.getElementById('cleaner-tab-yang').className = cleaner === 'YANG' ? 'px-4 py-1.5 text-xs font-bold rounded-lg bg-cyan-600 text-white shadow-sm flex items-center gap-1.5' : 'px-4 py-1.5 text-xs font-bold rounded-lg bg-slate-800 text-slate-300 flex items-center gap-1.5';
+      document.getElementById('cleaner-tab-florence').className = cleaner === 'FLORENCE' ? 'px-4 py-1.5 text-xs font-bold rounded-lg bg-rose-600 text-white shadow-sm' : 'px-4 py-1.5 text-xs font-bold rounded-lg bg-slate-800 text-slate-300';
+      document.getElementById('cleaner-tab-yang').className = cleaner === 'YANG' ? 'px-4 py-1.5 text-xs font-bold rounded-lg bg-cyan-600 text-white shadow-sm' : 'px-4 py-1.5 text-xs font-bold rounded-lg bg-slate-800 text-slate-300';
     }
 
     function getWeekDates(anchorDateStr) {
