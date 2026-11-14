@@ -507,7 +507,8 @@
       <div class="glass-card p-4 rounded-2xl shadow-sm flex flex-col sm:flex-row justify-between items-center gap-3">
         <div class="flex items-center gap-3">
           <span class="text-xs font-bold text-slate-300">Select Week Anchor:</span>
-          <input type="text" id="weekly-picker" onchange="renderWeeklyView()" class="px-3 py-1.5 border border-slate-700 rounded-lg text-sm font-semibold bg-slate-900 text-white">
+          <input type="text" id="weekly-picker" class="px-3 py-1.5 border border-slate-700 rounded-lg text-sm font-semibold bg-slate-900 text-white">
+          <span id="weekly-range-label" class="text-xs font-bold text-indigo-300"></span>
         </div>
         <div class="flex items-center gap-2">
           <button onclick="openManageModal()" class="px-3.5 py-1.5 text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg shadow-sm">
@@ -566,7 +567,7 @@
     <div class="glass-card rounded-2xl max-w-xl w-full p-6 shadow-2xl space-y-5 border border-slate-700">
       <div class="flex justify-between items-center border-b border-slate-800 pb-3">
         <h3 class="text-base font-bold text-slate-100">Manage / Edit Schedule Entries</h3>
-        <button onclick="closeManageModal()" class="text-slate-400 hover:text-white text-lg font-bold px-2">×</button>
+        <button onclick="closeManageModal()" class="text-slate-400 hover:text-white text-lg font-bold px-2">&times;</button>
       </div>
 
       <div class="space-y-4">
@@ -638,6 +639,12 @@
       if (item.parking === undefined) item.parking = "";
     });
 
+    function toLocalISO(d) {
+      return d.getFullYear() + '-' +
+        String(d.getMonth() + 1).padStart(2, '0') + '-' +
+        String(d.getDate()).padStart(2, '0');
+    }
+
     function saveState() {
       localStorage.setItem('masterDB', JSON.stringify(state.masterDB));
       localStorage.setItem('schedules', JSON.stringify(state.schedules));
@@ -661,7 +668,7 @@
       const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state));
       const downloadAnchor = document.createElement('a');
       downloadAnchor.setAttribute("href", dataStr);
-      downloadAnchor.setAttribute("download", `schedule_backup_${new Date().toISOString().split('T')[0]}.json`);
+      downloadAnchor.setAttribute("download", `schedule_backup_${toLocalISO(new Date())}.json`);
       document.body.appendChild(downloadAnchor);
       downloadAnchor.click();
       downloadAnchor.remove();
@@ -716,7 +723,7 @@
 
     function copyDailyCleanerSection(cleaner, type) {
       const picker = document.getElementById('daily-date-picker')._flatpickr;
-      const date = picker && picker.selectedDates.length > 0 ? picker.selectedDates[0].toISOString().split('T')[0] : document.getElementById('daily-date-picker').value;
+      const date = picker && picker.selectedDates.length > 0 ? toLocalISO(picker.selectedDates[0]) : document.getElementById('daily-date-picker').value;
       if (!date || !state.schedules[date]) return;
 
       const items = state.schedules[date].filter(i => i.cleaner === cleaner && i.type === type);
@@ -759,7 +766,7 @@
 
     function openManageModal() {
       const picker = document.getElementById('daily-date-picker')._flatpickr;
-      const today = picker && picker.selectedDates.length > 0 ? picker.selectedDates[0].toISOString().split('T')[0] : new Date().toISOString().split('T')[0];
+      const today = picker && picker.selectedDates.length > 0 ? toLocalISO(picker.selectedDates[0]) : toLocalISO(new Date());
       modalPicker.setDate(today, true);
       document.getElementById('manage-modal').classList.remove('hidden');
       loadModalDateEntries();
@@ -770,7 +777,7 @@
     }
 
     function loadModalDateEntries() {
-      const date = modalPicker.selectedDates.length > 0 ? modalPicker.selectedDates[0].toISOString().split('T')[0] : document.getElementById('modal-date-picker').value;
+      const date = modalPicker.selectedDates.length > 0 ? toLocalISO(modalPicker.selectedDates[0]) : document.getElementById('modal-date-picker').value;
       const cleaner = document.getElementById('modal-cleaner-select').value;
       const type = document.getElementById('modal-type-select').value;
       const container = document.getElementById('modal-entries-list');
@@ -802,7 +809,7 @@
     }
 
     function addModalEntry() {
-      const date = modalPicker.selectedDates.length > 0 ? modalPicker.selectedDates[0].toISOString().split('T')[0] : document.getElementById('modal-date-picker').value;
+      const date = modalPicker.selectedDates.length > 0 ? toLocalISO(modalPicker.selectedDates[0]) : document.getElementById('modal-date-picker').value;
       const cleaner = document.getElementById('modal-cleaner-select').value;
       const type = document.getElementById('modal-type-select').value;
       const val = document.getElementById('modal-add-input').value.trim();
@@ -1143,13 +1150,15 @@
 
     function processSingleReservation() {
       const unitCode = document.getElementById('res-unit-code').value.trim().toUpperCase();
-      const checkinInputStr = resCheckinPicker.selectedDates.length > 0 ? resCheckinPicker.selectedDates[0].toISOString().split('T')[0] : document.getElementById('res-checkin-date').value;
-      const checkoutInputStr = resCheckoutPicker.selectedDates.length > 0 ? resCheckoutPicker.selectedDates[0].toISOString().split('T')[0] : document.getElementById('res-checkout-date').value;
+      const checkinInputStr = resCheckinPicker.selectedDates.length > 0 ? toLocalISO(resCheckinPicker.selectedDates[0]) : document.getElementById('res-checkin-date').value;
+      const checkoutInputStr = resCheckoutPicker.selectedDates.length > 0 ? toLocalISO(resCheckoutPicker.selectedDates[0]) : document.getElementById('res-checkout-date').value;
 
       if (!unitCode || !checkinInputStr || !checkoutInputStr) return;
 
-      const d1 = new Date(checkinInputStr);
-      const d2 = new Date(checkoutInputStr);
+      const [y1, m1, d1_val] = checkinInputStr.split('-').map(Number);
+      const [y2, m2, d2_val] = checkoutInputStr.split('-').map(Number);
+      const d1 = new Date(y1, m1 - 1, d1_val);
+      const d2 = new Date(y2, m2 - 1, d2_val);
       const diffTime = d2 - d1;
       const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
 
@@ -1172,16 +1181,12 @@
 
       saveState();
       
-      // Auto-render everything so the new entry shows up instantly
       renderDailyView();
       renderWeeklyView();
       render15DayView();
       renderReservationsLog();
       
-      // Clear inputs automatically
       clearReservationForm();
-
-      // Show notification toast popup
       showToast("New Reservation Added", `Unit ${unitCode} (${diffDays}N) successfully synced!`);
     }
 
@@ -1203,7 +1208,8 @@
 
         const formatLogDate = (dateStr) => {
           if (!dateStr) return '';
-          const d = new Date(dateStr);
+          const [yy, mm, dd] = dateStr.split('-').map(Number);
+          const d = new Date(yy, mm - 1, dd);
           return d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' }).toUpperCase();
         };
 
@@ -1239,8 +1245,10 @@
       res.checkoutDate = newCheckout.trim();
       res.cleaner = getCleanerForUnit(res.unitCode);
 
-      const d1 = new Date(res.checkinDate);
-      const d2 = new Date(res.checkoutDate);
+      const [y1, m1, d1_val] = res.checkinDate.split('-').map(Number);
+      const [y2, m2, d2_val] = res.checkoutDate.split('-').map(Number);
+      const d1 = new Date(y1, m1 - 1, d1_val);
+      const d2 = new Date(y2, m2 - 1, d2_val);
       res.nights = Math.max(1, Math.round((d2 - d1) / (1000 * 60 * 60 * 24)));
 
       saveState();
@@ -1266,7 +1274,7 @@
 
     function clearReservationForm() {
       document.getElementById('res-unit-code').value = '';
-      const today = new Date().toISOString().split('T')[0];
+      const today = toLocalISO(new Date());
       resCheckinPicker.setDate(today, true);
       resCheckoutPicker.setDate(today, true);
     }
@@ -1318,17 +1326,15 @@
 
     function processDailyInput() {
       const picker = document.getElementById('daily-date-picker')._flatpickr;
-      const date = picker && picker.selectedDates.length > 0 ? picker.selectedDates[0].toISOString().split('T')[0] : document.getElementById('daily-date-picker').value;
+      const date = picker && picker.selectedDates.length > 0 ? toLocalISO(picker.selectedDates[0]) : document.getElementById('daily-date-picker').value;
       const type = document.getElementById('daily-entry-type').value;
       const text = document.getElementById('daily-input').value;
 
       if (!date || !text.trim()) return;
       processInputLines(date, text, type);
       
-      // Auto-clear input field immediately upon sorting
       document.getElementById('daily-input').value = '';
       
-      // Instant UI update across all calendar views
       renderDailyView();
       renderWeeklyView();
       render15DayView();
@@ -1336,7 +1342,7 @@
 
     function sortDailyAlphabetical() {
       const picker = document.getElementById('daily-date-picker')._flatpickr;
-      const date = picker && picker.selectedDates.length > 0 ? picker.selectedDates[0].toISOString().split('T')[0] : document.getElementById('daily-date-picker').value;
+      const date = picker && picker.selectedDates.length > 0 ? toLocalISO(picker.selectedDates[0]) : document.getElementById('daily-date-picker').value;
       if (!date || !state.schedules[date]) return;
 
       state.schedules[date].sort((a, b) => {
@@ -1402,7 +1408,7 @@
 
     function uncheckAllForCleaner(cleaner) {
       const picker = document.getElementById('daily-date-picker')._flatpickr;
-      const date = picker && picker.selectedDates.length > 0 ? picker.selectedDates[0].toISOString().split('T')[0] : document.getElementById('daily-date-picker').value;
+      const date = picker && picker.selectedDates.length > 0 ? toLocalISO(picker.selectedDates[0]) : document.getElementById('daily-date-picker').value;
       if (!date || !state.schedules[date]) return;
 
       state.schedules[date].forEach(item => {
@@ -1417,7 +1423,7 @@
 
     function renderDailyView() {
       const picker = document.getElementById('daily-date-picker')._flatpickr;
-      const date = picker && picker.selectedDates.length > 0 ? picker.selectedDates[0].toISOString().split('T')[0] : document.getElementById('daily-date-picker').value;
+      const date = picker && picker.selectedDates.length > 0 ? toLocalISO(picker.selectedDates[0]) : document.getElementById('daily-date-picker').value;
       
       if (picker && picker.selectedDates.length > 0) {
         const d = picker.selectedDates[0];
@@ -1499,7 +1505,7 @@
 
     function processWeeklyInput() {
       const picker = document.getElementById('weekly-target-date')._flatpickr;
-      const date = picker && picker.selectedDates.length > 0 ? picker.selectedDates[0].toISOString().split('T')[0] : document.getElementById('weekly-target-date').value;
+      const date = picker && picker.selectedDates.length > 0 ? toLocalISO(picker.selectedDates[0]) : document.getElementById('weekly-target-date').value;
       const type = document.getElementById('weekly-entry-type').value;
       const text = document.getElementById('weekly-input').value;
 
@@ -1507,10 +1513,8 @@
 
       processInputLines(date, text, type);
       
-      // Auto-clear weekly textarea input field immediately upon sorting
       document.getElementById('weekly-input').value = '';
       
-      // Instant UI update across all calendar views
       renderWeeklyView();
       render15DayView();
       renderDailyView();
@@ -1528,22 +1532,29 @@
     function getWeekDates(anchorDateStr) {
       const [year, month, dayNum] = anchorDateStr.split('-').map(Number);
       const anchor = new Date(year, month - 1, dayNum);
-      const day = anchor.getDay();
-      const diff = anchor.getDate() - day + (day === 0 ? -6 : 1);
-      const monday = new Date(anchor.getFullYear(), anchor.getMonth(), diff);
+      const day = anchor.getDay();                   // 0 = Sunday
+      const offsetToMonday = day === 0 ? -6 : 1 - day;
+      const monday = new Date(year, month - 1, dayNum + offsetToMonday);
 
       const days = [];
       for (let i = 0; i < 7; i++) {
-        const d = new Date(monday.getFullYear(), monday.getMonth(), monday.getDate() + i);
-        days.push(d.toISOString().split('T')[0]);
+        days.push(toLocalISO(new Date(monday.getFullYear(), monday.getMonth(), monday.getDate() + i)));
       }
       return days;
     }
 
     function renderWeeklyView() {
-      const picker = document.getElementById('weekly-picker')._flatpickr;
-      const anchor = picker && picker.selectedDates.length > 0 ? picker.selectedDates[0].toISOString().split('T')[0] : document.getElementById('weekly-picker').value;
+      const anchor = document.getElementById('weekly-picker').value || toLocalISO(new Date());
       const weekDates = getWeekDates(anchor);
+
+      const rangeLabel = document.getElementById('weekly-range-label');
+      if (rangeLabel) {
+        const fmt = (s) => {
+          const [yy, mm, dd] = s.split('-').map(Number);
+          return new Date(yy, mm - 1, dd).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }).toUpperCase();
+        };
+        rangeLabel.innerText = `${fmt(weekDates[0])} – ${fmt(weekDates[6])}`;
+      }
 
       const fOutGrid = document.getElementById('f-weekly-checkout-grid');
       const fInGrid = document.getElementById('f-weekly-checkin-grid');
@@ -1604,6 +1615,7 @@
 
     const dailyPicker = flatpickr("#daily-date-picker", {
       ...dateFormatConfig,
+      defaultDate: "today",
       onChange: function(selectedDates, dateStr, instance) {
         renderDailyView();
       }
@@ -1611,25 +1623,29 @@
 
     const weeklyPicker = flatpickr("#weekly-picker", {
       ...dateFormatConfig,
-      onChange: function(selectedDates, dateStr, instance) {
-        renderWeeklyView();
-      }
+      defaultDate: "today",
+      locale: { firstDayOfWeek: 1 },
+      onChange: function() { renderWeeklyView(); }
     });
 
     const weeklyTargetPicker = flatpickr("#weekly-target-date", {
-      ...dateFormatConfig
+      ...dateFormatConfig,
+      defaultDate: "today"
     });
 
     const resCheckinPicker = flatpickr("#res-checkin-date", {
-      ...dateFormatConfig
+      ...dateFormatConfig,
+      defaultDate: "today"
     });
 
     const resCheckoutPicker = flatpickr("#res-checkout-date", {
-      ...dateFormatConfig
+      ...dateFormatConfig,
+      defaultDate: "today"
     });
 
     const modalPicker = flatpickr("#modal-date-picker", {
       ...dateFormatConfig,
+      defaultDate: "today",
       onChange: function(selectedDates, dateStr, instance) {
         loadModalDateEntries();
       }
@@ -1645,7 +1661,7 @@
       }
     });
 
-    const todayStr = new Date().toISOString().split('T')[0];
+    const todayStr = toLocalISO(new Date());
     
     saveState();
     renderMasterDB();
