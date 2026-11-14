@@ -7,6 +7,10 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐝</text></svg>">
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <!-- Flatpickr CSS for Enhanced Date Pickers -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/dark.css">
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
     
@@ -33,7 +37,7 @@
 
     .fifteen-grid .unit-text, .weekly-grid .unit-text { font-size: 9px; font-weight: 800; justify-content: center !important; }
 
-    .tag-nights, .tag-rs, .tag-ls, .tag-su {
+    .tag-nights, .tag-rs, .tag-ls, .tag-su, .tag-booking, .tag-airbnb {
       display: inline-flex !important;
       align-items: center !important;
       justify-content: center !important;
@@ -49,6 +53,8 @@
     .tag-rs { background-color: #f472b6 !important; color: #500724 !important; font-weight: 900 !important; } 
     .tag-ls { background-color: #4ade80 !important; color: #052e16 !important; font-weight: 900 !important; } 
     .tag-su { background-color: #fb923c !important; color: #431407 !important; font-weight: 900 !important; } 
+    .tag-booking { background-color: #38bdf8 !important; color: #082f49 !important; font-weight: 900 !important; }
+    .tag-airbnb { background-color: #f43f5e !important; color: #ffe4e6 !important; font-weight: 900 !important; }
 
     .count-pill {
       background-color: #312e81;
@@ -105,6 +111,22 @@
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
     .custom-scrollbar::-webkit-scrollbar-track { background: #1e293b; border-radius: 4px; }
     .custom-scrollbar::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
+
+    /* Custom Flatpickr Dark Theme Polish */
+    .flatpickr-calendar {
+      background: #1e293b !important;
+      border: 1px solid rgba(255, 255, 255, 0.15) !important;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5) !important;
+      font-family: 'Plus Jakarta Sans', sans-serif !important;
+      border-radius: 1rem !important;
+      color: #f8fafc !important;
+    }
+    .flatpickr-days { background: #1e293b !important; border-bottom-left-radius: 1rem; border-bottom-right-radius: 1rem; }
+    .flatpickr-day.selected, .flatpickr-day.selected:hover { background: #4f46e5 !important; border-color: #4f46e5 !important; }
+    .flatpickr-day:hover { background: #334155 !important; }
+    .flatpickr-months { background: #0f172a !important; border-top-left-radius: 1rem; border-top-right-radius: 1rem; }
+    .flatpickr-current-month, .flatpickr-weekday { color: #f8fafc !important; font-weight: 700 !important; }
+    .flatpickr-input { background-color: #0f172a !important; color: #ffffff !important; }
   </style>
 </head>
 <body class="antialiased min-h-screen flex flex-col">
@@ -149,7 +171,7 @@
       <div class="glass-card p-4 rounded-2xl shadow-sm flex flex-col sm:flex-row justify-between items-center gap-3">
         <div class="flex items-center gap-3">
           <span class="text-xs font-bold text-slate-300">Select Month:</span>
-          <input type="month" id="fifteen-month-picker" onchange="render15DayView()" class="px-3 py-1.5 border border-slate-700 rounded-lg text-sm font-semibold bg-slate-900 text-white">
+          <input type="text" id="fifteen-month-picker" onchange="render15DayView()" class="px-3 py-1.5 border border-slate-700 rounded-lg text-sm font-semibold bg-slate-900 text-white">
         </div>
         <div class="flex items-center gap-2">
           <button onclick="openManageModal()" class="px-3.5 py-1.5 text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg shadow-sm flex items-center gap-1.5">
@@ -302,7 +324,7 @@
       <div class="glass-card p-5 rounded-2xl shadow-sm space-y-4">
         <div class="flex flex-col sm:flex-row justify-between items-center gap-3">
           <div class="flex items-center gap-3">
-            <input type="date" id="daily-date-picker" onchange="renderDailyView()" class="px-3 py-1.5 border border-slate-700 rounded-lg text-sm font-semibold bg-slate-900 text-white">
+            <input type="text" id="daily-date-picker" onchange="renderDailyView()" class="px-3 py-1.5 border border-slate-700 rounded-lg text-sm font-semibold bg-slate-900 text-white">
             <span id="daily-date-label" class="text-sm font-bold text-slate-200"></span>
           </div>
           <div class="flex items-center gap-2">
@@ -340,14 +362,14 @@
                 <h4 class="text-xs font-bold text-slate-400 flex items-center">Check-Out: <span id="count-daily-f-out" class="count-pill">0</span></h4>
                 <button onclick="copyDailyCleanerSection('FLORENCE', 'CHECKOUT')" class="text-[10px] px-2 py-0.5 bg-rose-950/60 hover:bg-rose-900/60 text-rose-300 rounded font-bold"><i class="fa-regular fa-copy"></i> Copy Check-Out</button>
               </div>
-              <div id="daily-florence-checkout" class="space-y-1 text-sm min-h-[40px]"></div>
+              <div id="daily-florence-checkout" class="space-y-0.5 text-base font-semibold min-h-[40px]"></div>
             </div>
             <div>
               <div class="flex justify-between items-center mb-1">
                 <h4 class="text-xs font-bold text-slate-400 flex items-center">Check-In: <span id="count-daily-f-in" class="count-pill">0</span></h4>
                 <button onclick="copyDailyCleanerSection('FLORENCE', 'CHECKIN')" class="text-[10px] px-2 py-0.5 bg-rose-950/60 hover:bg-rose-900/60 text-rose-300 rounded font-bold"><i class="fa-regular fa-copy"></i> Copy Check-In</button>
               </div>
-              <div id="daily-florence-checkin" class="space-y-1 text-sm min-h-[40px]"></div>
+              <div id="daily-florence-checkin" class="space-y-0.5 text-base font-semibold min-h-[40px]"></div>
             </div>
           </div>
         </div>
@@ -366,14 +388,14 @@
                 <h4 class="text-xs font-bold text-slate-400 flex items-center">Check-Out: <span id="count-daily-y-out" class="count-pill">0</span></h4>
                 <button onclick="copyDailyCleanerSection('YANG', 'CHECKOUT')" class="text-[10px] px-2 py-0.5 bg-sky-950/60 hover:bg-sky-900/60 text-sky-300 rounded font-bold"><i class="fa-regular fa-copy"></i> Copy Check-Out</button>
               </div>
-              <div id="daily-yang-checkout" class="space-y-1 text-sm min-h-[40px]"></div>
+              <div id="daily-yang-checkout" class="space-y-0.5 text-base font-semibold min-h-[40px]"></div>
             </div>
             <div>
               <div class="flex justify-between items-center mb-1">
                 <h4 class="text-xs font-bold text-slate-400 flex items-center">Check-In: <span id="count-daily-y-in" class="count-pill">0</span></h4>
                 <button onclick="copyDailyCleanerSection('YANG', 'CHECKIN')" class="text-[10px] px-2 py-0.5 bg-sky-950/60 hover:bg-sky-900/60 text-sky-300 rounded font-bold"><i class="fa-regular fa-copy"></i> Copy Check-In</button>
               </div>
-              <div id="daily-yang-checkin" class="space-y-1 text-sm min-h-[40px]"></div>
+              <div id="daily-yang-checkin" class="space-y-0.5 text-base font-semibold min-h-[40px]"></div>
             </div>
           </div>
         </div>
@@ -387,7 +409,7 @@
           <i class="fa-solid fa-file-arrow-down text-indigo-400 text-lg"></i>
           <div>
             <h2 class="text-base font-bold text-slate-100">Add New Reservation</h2>
-            <p class="text-xs text-slate-400">Enter the unit code, check-in date, check-out date, and optional tags. Nights are auto-counted and sorted into schedules.</p>
+            <p class="text-xs text-slate-400">Enter the unit code, check-in date, check-out date, and platform. Nights are auto-counted and sorted into schedules.</p>
           </div>
         </div>
 
@@ -398,15 +420,18 @@
           </div>
           <div>
             <label class="block text-xs font-bold text-slate-300 mb-1">Check-In Date:</label>
-            <input type="date" id="res-checkin-date" class="w-full px-3 py-2 border border-slate-700 rounded-xl text-sm font-semibold bg-slate-900 text-white">
+            <input type="text" id="res-checkin-date" class="w-full px-3 py-2 border border-slate-700 rounded-xl text-sm font-semibold bg-slate-900 text-white">
           </div>
           <div>
             <label class="block text-xs font-bold text-slate-300 mb-1">Check-Out Date:</label>
-            <input type="date" id="res-checkout-date" class="w-full px-3 py-2 border border-slate-700 rounded-xl text-sm font-semibold bg-slate-900 text-white">
+            <input type="text" id="res-checkout-date" class="w-full px-3 py-2 border border-slate-700 rounded-xl text-sm font-semibold bg-slate-900 text-white">
           </div>
           <div>
-            <label class="block text-xs font-bold text-slate-300 mb-1">Tag / Note (Max 30 Chars):</label>
-            <input type="text" id="res-tag-input" maxlength="30" placeholder="e.g. DAVIKA DAHAL or RS" class="w-full px-3 py-2 border border-slate-700 rounded-xl text-sm font-mono bg-slate-900 text-white uppercase focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <label class="block text-xs font-bold text-slate-300 mb-1">Platform:</label>
+            <select id="res-tag-input" class="w-full px-3 py-2 border border-slate-700 rounded-xl text-sm font-semibold bg-slate-900 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+              <option value="BOOKING.COM">BOOKING.COM</option>
+              <option value="AIRBNB">AIRBNB</option>
+            </select>
           </div>
         </div>
 
@@ -440,11 +465,11 @@
                 <th class="p-3">Check-In</th>
                 <th class="p-3">Check-Out</th>
                 <th class="p-3">Nights</th>
-                <th class="p-3">Tag / Note</th>
+                <th class="p-3">Platform</th>
                 <th class="p-3 text-right">Action</th>
               </tr>
             </thead>
-            <tbody id="reservations-log-tbody" class="divide-y divide-slate-800 font-mono">
+            <tbody id="reservations-log-tbody" class="divide-y divide-slate-800 font-mono text-sm font-semibold">
               <tr>
                 <td colspan="7" class="p-4 text-center text-slate-500 italic font-sans">No reservations added in this queue yet.</td>
               </tr>
@@ -460,7 +485,7 @@
         <div class="flex flex-col sm:flex-row justify-between items-center gap-3">
           <div class="flex items-center gap-3">
             <span class="text-xs font-bold text-slate-300">Select Target Date:</span>
-            <input type="date" id="weekly-target-date" class="px-3 py-1.5 border border-slate-700 rounded-lg text-sm font-semibold bg-slate-900 text-white">
+            <input type="text" id="weekly-target-date" class="px-3 py-1.5 border border-slate-700 rounded-lg text-sm font-semibold bg-slate-900 text-white">
           </div>
           <div class="flex items-center gap-2">
             <select id="weekly-entry-type" class="px-3 py-2 border border-slate-700 rounded-xl text-xs font-bold bg-slate-900 text-white">
@@ -481,7 +506,7 @@
       <div class="glass-card p-4 rounded-2xl shadow-sm flex flex-col sm:flex-row justify-between items-center gap-3">
         <div class="flex items-center gap-3">
           <span class="text-xs font-bold text-slate-300">Select Week Anchor:</span>
-          <input type="date" id="weekly-picker" onchange="renderWeeklyView()" class="px-3 py-1.5 border border-slate-700 rounded-lg text-sm font-semibold bg-slate-900 text-white">
+          <input type="text" id="weekly-picker" onchange="renderWeeklyView()" class="px-3 py-1.5 border border-slate-700 rounded-lg text-sm font-semibold bg-slate-900 text-white">
         </div>
         <div class="flex items-center gap-2">
           <button onclick="openManageModal()" class="px-3.5 py-1.5 text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg shadow-sm flex items-center gap-1.5">
@@ -547,7 +572,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <div>
             <label class="block text-xs font-bold text-slate-300 mb-1">Select Date:</label>
-            <input type="date" id="modal-date-picker" onchange="loadModalDateEntries()" class="w-full px-3 py-1.5 border border-slate-700 rounded-lg text-xs font-semibold bg-slate-900 text-white">
+            <input type="text" id="modal-date-picker" onchange="loadModalDateEntries()" class="w-full px-3 py-1.5 border border-slate-700 rounded-lg text-xs font-semibold bg-slate-900 text-white">
           </div>
           <div>
             <label class="block text-xs font-bold text-slate-300 mb-1">Cleaner:</label>
@@ -566,7 +591,7 @@
         </div>
 
         <div class="flex gap-2 bg-slate-900 p-3 rounded-xl border border-slate-700">
-          <input type="text" id="modal-add-input" placeholder="Add unit (e.g. AU6514 RS or AU6514 2 RS)" class="flex-1 px-3 py-1.5 border border-slate-700 rounded-lg text-xs font-mono bg-slate-800 text-white">
+          <input type="text" id="modal-add-input" placeholder="Add unit (e.g. AU6514 RS or BOOKING.COM)" class="flex-1 px-3 py-1.5 border border-slate-700 rounded-lg text-xs font-mono bg-slate-800 text-white">
           <button onclick="addModalEntry()" class="px-4 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-lg">+ Add Entry</button>
         </div>
 
@@ -677,7 +702,8 @@
     }
 
     function copyDailyCleanerSection(cleaner, type) {
-      const date = document.getElementById('daily-date-picker').value;
+      const picker = document.getElementById('daily-date-picker')._flatpickr;
+      const date = picker && picker.selectedDates.length > 0 ? picker.altVBDate || picker.selectedDates[0].toISOString().split('T')[0] : document.getElementById('daily-date-picker').value;
       if (!date || !state.schedules[date]) return;
 
       const items = state.schedules[date].filter(i => i.cleaner === cleaner && i.type === type);
@@ -719,8 +745,9 @@
     }
 
     function openManageModal() {
-      const today = document.getElementById('daily-date-picker').value || new Date().toISOString().split('T')[0];
-      document.getElementById('modal-date-picker').value = today;
+      const picker = document.getElementById('daily-date-picker')._flatpickr;
+      const today = picker && picker.selectedDates.length > 0 ? picker.selectedDates[0].toISOString().split('T')[0] : new Date().toISOString().split('T')[0];
+      modalPicker.setDate(today, true);
       document.getElementById('manage-modal').classList.remove('hidden');
       loadModalDateEntries();
     }
@@ -730,7 +757,7 @@
     }
 
     function loadModalDateEntries() {
-      const date = document.getElementById('modal-date-picker').value;
+      const date = modalPicker.selectedDates.length > 0 ? modalPicker.selectedDates[0].toISOString().split('T')[0] : document.getElementById('modal-date-picker').value;
       const cleaner = document.getElementById('modal-cleaner-select').value;
       const type = document.getElementById('modal-type-select').value;
       const container = document.getElementById('modal-entries-list');
@@ -762,7 +789,7 @@
     }
 
     function addModalEntry() {
-      const date = document.getElementById('modal-date-picker').value;
+      const date = modalPicker.selectedDates.length > 0 ? modalPicker.selectedDates[0].toISOString().split('T')[0] : document.getElementById('modal-date-picker').value;
       const cleaner = document.getElementById('modal-cleaner-select').value;
       const type = document.getElementById('modal-type-select').value;
       const val = document.getElementById('modal-add-input').value.trim();
@@ -799,7 +826,7 @@
       if (!item) return;
 
       const currentRaw = item.raw || item.unit;
-      const val = prompt("Update unit entry / add tags (e.g. AU6514 RS or DAVIKA DAHAL):", currentRaw);
+      const val = prompt("Update unit entry / add platform (e.g. AU6514 BOOKING.COM):", currentRaw);
       if (!val) return;
 
       const { raw, formatted } = formatUnitText(val, item.type === 'CHECKIN');
@@ -1033,7 +1060,7 @@
       let parts = cleanStr.split(/\s+/);
       
       let unit = parts[0] || '';
-      let tagOrNameParts = [];
+      let tagOrPlatformParts = [];
       let nights = '';
 
       for (let i = 1; i < parts.length; i++) {
@@ -1044,21 +1071,30 @@
         } else if (pUpper.endsWith('N') && !isNaN(pUpper.slice(0, -1))) {
           nights = pUpper.slice(0, -1);
         } else {
-          tagOrNameParts.push(p);
+          tagOrPlatformParts.push(p);
         }
       }
 
-      let remainderText = tagOrNameParts.join(' ').trim();
-      let upperRemainder = remainderText.toUpperCase();
+      let remainderText = tagOrPlatformParts.join(' ').trim().toUpperCase();
 
       let tagHTML = '';
       let rawTagString = '';
 
-      if (['RS', 'LS', 'SU'].includes(upperRemainder)) {
-        rawTagString = upperRemainder;
-        if (upperRemainder === 'RS') tagHTML = `<span class="tag-rs">RS</span>`;
-        else if (upperRemainder === 'LS') tagHTML = `<span class="tag-ls">LS</span>`;
-        else if (upperRemainder === 'SU') tagHTML = `<span class="tag-su">SU</span>`;
+      if (remainderText === 'BOOKING.COM') {
+        rawTagString = 'BOOKING.COM';
+        tagHTML = `<span class="tag-booking">BOOKING.COM</span>`;
+      } else if (remainderText === 'AIRBNB') {
+        rawTagString = 'AIRBNB';
+        tagHTML = `<span class="tag-airbnb">AIRBNB</span>`;
+      } else if (remainderText === 'RS') {
+        rawTagString = 'RS';
+        tagHTML = `<span class="tag-rs">RS</span>`;
+      } else if (remainderText === 'LS') {
+        rawTagString = 'LS';
+        tagHTML = `<span class="tag-ls">LS</span>`;
+      } else if (remainderText === 'SU') {
+        rawTagString = 'SU';
+        tagHTML = `<span class="tag-su">SU</span>`;
       } else if (remainderText) {
         rawTagString = remainderText;
         tagHTML = `<span class="text-indigo-300 font-semibold text-[9px] px-1 bg-indigo-950/60 rounded border border-indigo-900/50">${remainderText}</span>`;
@@ -1068,7 +1104,7 @@
       return { 
         raw: `${unit} ${nights ? nights + 'N' : ''} ${rawTagString}`.trim(), 
         formatted: `${unit} ${nightsHTML} ${tagHTML}`.trim(),
-        tag: upperRemainder 
+        tag: remainderText 
       };
     }
 
@@ -1102,36 +1138,40 @@
 
     function processSingleReservation() {
       const unitCode = document.getElementById('res-unit-code').value.trim().toUpperCase();
-      const checkinDate = document.getElementById('res-checkin-date').value;
-      const checkoutDate = document.getElementById('res-checkout-date').value;
-      const tagStr = document.getElementById('res-tag-input-input') || document.getElementById('res-tag-input').value.trim();
+      const checkinDate = dailyPicker.selectedDates.length > 0 ? dailyPicker.selectedDates[0].toISOString().split('T')[0] : document.getElementById('res-checkin-date').value;
+      const checkoutDate = weeklyPicker.selectedDates.length > 0 ? weeklyPicker.selectedDates[0].toISOString().split('T')[0] : document.getElementById('res-checkout-date').value;
+      
+      // Let's grab exact values using dedicated picker instance dates
+      const checkinInputStr = resCheckinPicker.selectedDates.length > 0 ? resCheckinPicker.selectedDates[0].toISOString().split('T')[0] : document.getElementById('res-checkin-date').value;
+      const checkoutInputStr = resCheckoutPicker.selectedDates.length > 0 ? resCheckoutPicker.selectedDates[0].toISOString().split('T')[0] : document.getElementById('res-checkout-date').value;
+      const platformStr = document.getElementById('res-tag-input').value.trim().toUpperCase();
 
-      if (!unitCode || !checkinDate || !checkoutDate) return;
+      if (!unitCode || !checkinInputStr || !checkoutInputStr) return;
 
-      const d1 = new Date(checkinDate);
-      const d2 = new Date(checkoutDate);
+      const d1 = new Date(checkinInputStr);
+      const d2 = new Date(checkoutInputStr);
       const diffTime = d2 - d1;
       const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
 
       if (diffDays <= 0) return;
 
       const nightsTag = `${diffDays}N`;
-      const combinedTag = tagStr ? `${nightsTag} ${tagStr}` : nightsTag;
+      const combinedTag = platformStr ? `${nightsTag} ${platformStr}` : nightsTag;
       const cleaner = getCleanerForUnit(unitCode);
 
-      // Add Check-In entry on check-in date with counted nights & note
-      addScheduleItemDirect(checkinDate, unitCode, 'CHECKIN', combinedTag, tagStr);
-      // Add Check-Out entry on check-out date with note
-      addScheduleItemDirect(checkoutDate, unitCode, 'CHECKOUT', tagStr, tagStr);
+      // Add Check-In entry on check-in date with counted nights & platform tag
+      addScheduleItemDirect(checkinInputStr, unitCode, 'CHECKIN', combinedTag, platformStr);
+      // Add Check-Out entry on check-out date with platform tag
+      addScheduleItemDirect(checkoutInputStr, unitCode, 'CHECKOUT', platformStr, platformStr);
 
       // Add to reservations log queue
       state.reservationsLog.unshift({
         id: Date.now() + Math.random(),
         unitCode,
-        checkinDate,
-        checkoutDate,
+        checkinDate: checkinInputStr,
+        checkoutDate: checkoutInputStr,
         nights: diffDays,
-        tag: tagStr,
+        tag: platformStr,
         cleaner
       });
 
@@ -1159,13 +1199,30 @@
       state.reservationsLog.forEach((res) => {
         const tr = document.createElement('tr');
         tr.className = "hover:bg-slate-900/50 transition-all";
+        
+        let platformBadge = '<span class="text-slate-500">—</span>';
+        if (res.tag === 'BOOKING.COM') {
+          platformBadge = `<span class="tag-booking">BOOKING.COM</span>`;
+        } else if (res.tag === 'AIRBNB') {
+          platformBadge = `<span class="tag-airbnb">AIRBNB</span>`;
+        } else if (res.tag) {
+          platformBadge = `<span class="text-indigo-300 font-semibold">${res.tag}</span>`;
+        }
+
+        // Format dates to "DAY, MON DAY, YEAR"
+        const formatLogDate = (dateStr) => {
+          if (!dateStr) return '';
+          const d = new Date(dateStr);
+          return d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' }).toUpperCase();
+        };
+
         tr.innerHTML = `
           <td class="p-3 font-bold ${res.cleaner === 'FLORENCE' ? 'unit-florence' : 'unit-yang'}">${res.unitCode}</td>
           <td class="p-3 text-slate-300">${res.cleaner}</td>
-          <td class="p-3 text-slate-300">${res.checkinDate}</td>
-          <td class="p-3 text-slate-300">${res.checkoutDate}</td>
+          <td class="p-3 text-slate-300">${formatLogDate(res.checkinDate)}</td>
+          <td class="p-3 text-slate-300">${formatLogDate(res.checkoutDate)}</td>
           <td class="p-3"><span class="tag-nights">${res.nights}N</span></td>
-          <td class="p-3">${res.tag ? `<span class="text-indigo-300 font-semibold">${res.tag}</span>` : '<span class="text-slate-500">—</span>'}</td>
+          <td class="p-3">${platformBadge}</td>
           <td class="p-3 text-right">
             <button onclick="deleteReservationLogItem(${res.id})" class="px-2 py-1 bg-rose-950/60 hover:bg-rose-900 text-rose-300 rounded border border-rose-900 text-[10px] font-sans font-bold">Remove</button>
           </td>
@@ -1191,9 +1248,10 @@
 
     function clearReservationForm() {
       document.getElementById('res-unit-code').value = '';
-      document.getElementById('res-checkin-date').value = new Date().toISOString().split('T')[0];
-      document.getElementById('res-checkout-date').value = new Date().toISOString().split('T')[0];
-      document.getElementById('res-tag-input').value = '';
+      const today = new Date().toISOString().split('T')[0];
+      resCheckinPicker.setDate(today, true);
+      resCheckoutPicker.setDate(today, true);
+      document.getElementById('res-tag-input').value = 'BOOKING.COM';
     }
 
     function processInputLines(date, text, selectedType) {
@@ -1242,7 +1300,8 @@
     }
 
     function processDailyInput() {
-      const date = document.getElementById('daily-date-picker').value;
+      const picker = document.getElementById('daily-date-picker')._flatpickr;
+      const date = picker && picker.selectedDates.length > 0 ? picker.selectedDates[0].toISOString().split('T')[0] : document.getElementById('daily-date-picker').value;
       const type = document.getElementById('daily-entry-type').value;
       const text = document.getElementById('daily-input').value;
 
@@ -1255,7 +1314,8 @@
     }
 
     function sortDailyAlphabetical() {
-      const date = document.getElementById('daily-date-picker').value;
+      const picker = document.getElementById('daily-date-picker')._flatpickr;
+      const date = picker && picker.selectedDates.length > 0 ? picker.selectedDates[0].toISOString().split('T')[0] : document.getElementById('daily-date-picker').value;
       if (!date || !state.schedules[date]) return;
 
       state.schedules[date].sort((a, b) => {
@@ -1320,7 +1380,8 @@
     }
 
     function uncheckAllForCleaner(cleaner) {
-      const date = document.getElementById('daily-date-picker').value;
+      const picker = document.getElementById('daily-date-picker')._flatpickr;
+      const date = picker && picker.selectedDates.length > 0 ? picker.selectedDates[0].toISOString().split('T')[0] : document.getElementById('daily-date-picker').value;
       if (!date || !state.schedules[date]) return;
 
       state.schedules[date].forEach(item => {
@@ -1334,8 +1395,13 @@
     }
 
     function renderDailyView() {
-      const date = document.getElementById('daily-date-picker').value;
-      document.getElementById('daily-date-label').innerText = date;
+      const picker = document.getElementById('daily-date-picker')._flatpickr;
+      const date = picker && picker.selectedDates.length > 0 ? picker.selectedDates[0].toISOString().split('T')[0] : document.getElementById('daily-date-picker').value;
+      
+      if (picker && picker.selectedDates.length > 0) {
+        const d = picker.selectedDates[0];
+        document.getElementById('daily-date-label').innerText = d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' }).toUpperCase();
+      }
 
       const fCheckout = document.getElementById('daily-florence-checkout');
       const fCheckin = document.getElementById('daily-florence-checkin');
@@ -1357,30 +1423,30 @@
         const isChecked = item.checked ? true : false;
         
         const div = document.createElement('div');
-        div.className = `unit-row-container glass-card p-2.5 rounded-lg border border-slate-800 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 my-1 transition-all ${isChecked ? 'opacity-40 line-through bg-slate-900/50' : ''}`;
+        div.className = `unit-row-container glass-card p-2 rounded-lg border border-slate-800 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 my-0.5 transition-all ${isChecked ? 'opacity-40 line-through bg-slate-900/50' : ''}`;
         
         if (item.type === 'CHECKOUT') {
           div.innerHTML = `
-            <div class="flex items-center gap-2.5 w-full sm:w-[130px] shrink-0">
+            <div class="flex items-center gap-2.5 w-full sm:w-[140px] shrink-0">
               <input type="checkbox" ${isChecked ? 'checked' : ''} onchange="toggleCheckStatus('${date}', ${item.id}, this)" class="w-4 h-4 text-indigo-600 rounded border-slate-700 bg-slate-900 focus:ring-indigo-500 cursor-pointer">
-              <div class="unit-text ${item.cleaner === 'FLORENCE' ? 'unit-florence' : 'unit-yang'}" data-unit-clean="${parsed.raw}">${parsed.formatted}</div>
+              <div class="unit-text text-base font-bold ${item.cleaner === 'FLORENCE' ? 'unit-florence' : 'unit-yang'}" data-unit-clean="${parsed.raw}">${parsed.formatted}</div>
             </div>
             <div class="flex flex-wrap items-center gap-2 w-full sm:w-auto text-xs shrink-0 flex-1 justify-end">
-              <input type="text" value="${item.lastCode || ''}" oninput="updateItemField('${date}', ${item.id}, 'lastCode', this.value)" class="px-2.5 py-1.5 border border-slate-700 rounded text-xs w-24 font-mono bg-slate-900 text-white shrink-0">
-              <input type="text" value="${item.notes || ''}" oninput="updateItemField('${date}', ${item.id}, 'notes', this.value)" class="px-3 py-1.5 border border-slate-700 rounded text-[11px] flex-1 min-w-[210px] bg-slate-900 text-white shrink-0">
-              <button onclick="clearItemInputs('${date}', ${item.id}, 'checkout')" title="Clear Code & Notes" class="px-2.5 py-1.5 bg-rose-950/60 hover:bg-rose-900/60 text-rose-400 rounded border border-rose-900 font-bold shrink-0"><i class="fa-solid fa-trash-can"></i></button>
+              <input type="text" value="${item.lastCode || ''}" oninput="updateItemField('${date}', ${item.id}, 'lastCode', this.value)" class="px-2 py-1 border border-slate-700 rounded text-xs w-24 font-mono bg-slate-900 text-white shrink-0">
+              <input type="text" value="${item.notes || ''}" oninput="updateItemField('${date}', ${item.id}, 'notes', this.value)" class="px-3 py-1 border border-slate-700 rounded text-xs flex-1 min-w-[210px] bg-slate-900 text-white shrink-0">
+              <button onclick="clearItemInputs('${date}', ${item.id}, 'checkout')" title="Clear Code & Notes" class="px-2 py-1 bg-rose-950/60 hover:bg-rose-900/60 text-rose-400 rounded border border-rose-900 font-bold shrink-0"><i class="fa-solid fa-trash-can"></i></button>
             </div>
           `;
         } else {
           div.innerHTML = `
-            <div class="flex items-center gap-2.5 w-full sm:w-[130px] shrink-0">
+            <div class="flex items-center gap-2.5 w-full sm:w-[140px] shrink-0">
               <input type="checkbox" ${isChecked ? 'checked' : ''} onchange="toggleCheckStatus('${date}', ${item.id}, this)" class="w-4 h-4 text-indigo-600 rounded border-slate-700 bg-slate-900 focus:ring-indigo-500 cursor-pointer">
-              <div class="unit-text ${item.cleaner === 'FLORENCE' ? 'unit-florence' : 'unit-yang'}" data-unit-clean="${parsed.raw}">${parsed.formatted}</div>
+              <div class="unit-text text-base font-bold ${item.cleaner === 'FLORENCE' ? 'unit-florence' : 'unit-yang'}" data-unit-clean="${parsed.raw}">${parsed.formatted}</div>
             </div>
             <div class="flex flex-wrap items-center gap-2 w-full sm:w-auto text-xs shrink-0 flex-1 justify-end">
-              <input type="text" value="${item.newCode || ''}" oninput="updateItemField('${date}', ${item.id}, 'newCode', this.value)" class="px-2.5 py-1.5 border border-slate-700 rounded text-xs w-24 font-mono bg-slate-900 text-white shrink-0">
-              <input type="text" value="${item.notes || ''}" oninput="updateItemField('${date}', ${item.id}, 'notes', this.value)" class="px-3 py-1.5 border border-slate-700 rounded text-[11px] flex-1 min-w-[210px] bg-slate-900 text-white shrink-0">
-              <button onclick="clearItemInputs('${date}', ${item.id}, 'checkin')" title="Clear New Code & Notes" class="px-2.5 py-1.5 bg-rose-950/60 hover:bg-rose-900/60 text-rose-400 rounded border border-rose-900 font-bold shrink-0"><i class="fa-solid fa-trash-can"></i></button>
+              <input type="text" value="${item.newCode || ''}" oninput="updateItemField('${date}', ${item.id}, 'newCode', this.value)" class="px-2 py-1 border border-slate-700 rounded text-xs w-24 font-mono bg-slate-900 text-white shrink-0">
+              <input type="text" value="${item.notes || ''}" oninput="updateItemField('${date}', ${item.id}, 'notes', this.value)" class="px-3 py-1 border border-slate-700 rounded text-xs flex-1 min-w-[210px] bg-slate-900 text-white shrink-0">
+              <button onclick="clearItemInputs('${date}', ${item.id}, 'checkin')" title="Clear New Code & Notes" class="px-2.5 py-1 bg-rose-950/60 hover:bg-rose-900/60 text-rose-400 rounded border border-rose-900 font-bold shrink-0"><i class="fa-solid fa-trash-can"></i></button>
             </div>
           `;
         }
@@ -1411,7 +1477,8 @@
     }
 
     function processWeeklyInput() {
-      const date = document.getElementById('weekly-target-date').value;
+      const picker = document.getElementById('weekly-target-date')._flatpickr;
+      const date = picker && picker.selectedDates.length > 0 ? picker.selectedDates[0].toISOString().split('T')[0] : document.getElementById('weekly-target-date').value;
       const type = document.getElementById('weekly-entry-type').value;
       const text = document.getElementById('weekly-input').value;
 
@@ -1448,7 +1515,8 @@
     }
 
     function renderWeeklyView() {
-      const anchor = document.getElementById('weekly-picker').value;
+      const picker = document.getElementById('weekly-picker')._flatpickr;
+      const anchor = picker && picker.selectedDates.length > 0 ? picker.selectedDates[0].toISOString().split('T')[0] : document.getElementById('weekly-picker').value;
       const weekDates = getWeekDates(anchor);
 
       const fOutGrid = document.getElementById('f-weekly-checkout-grid');
@@ -1480,7 +1548,7 @@
             const parsed = formatUnitText(item.raw || item.formatted || item.unit, type === 'CHECKIN');
             const row = document.createElement('div');
             row.className = "bg-slate-900 px-0.5 py-1 rounded border border-slate-800 shadow-2xs flex justify-center items-center overflow-hidden my-0.5 unit-row-container";
-            row.innerHTML = `<div class="unit-text ${cleaner === 'FLORENCE' ? 'unit-florence' : 'unit-yang'}" data-unit-clean="${parsed.raw}">${parsed.formatted}</div>`;
+            row.innerHTML = `<div class="unit-text text-xs font-bold ${cleaner === 'FLORENCE' ? 'unit-florence' : 'unit-yang'}" data-unit-clean="${parsed.raw}">${parsed.formatted}</div>`;
             col.appendChild(row);
           });
 
@@ -1499,20 +1567,67 @@
       yInGrid.appendChild(yInFrag);
     }
 
-    const today = new Date().toISOString().split('T')[0];
-    const currentMonth = today.slice(0, 7);
-    document.getElementById('daily-date-picker').value = today;
-    document.getElementById('weekly-picker').value = today;
-    document.getElementById('weekly-target-date').value = today;
-    document.getElementById('res-checkin-date').value = today;
-    document.getElementById('res-checkout-date').value = today;
-    document.getElementById('fifteen-month-picker').value = currentMonth;
+    // Initialize Flatpickr Enhanced Date Pickers with Format "DAY, MON DAY, YEAR"
+    const dateFormatConfig = {
+      altInput: true,
+      altFormat: "D, M j, Y",
+      dateFormat: "Y-m-d",
+      defaultDate: "today",
+      theme: "dark"
+    };
+
+    const dailyPicker = flatpickr("#daily-date-picker", {
+      ...dateFormatConfig,
+      onChange: function(selectedDates, dateStr, instance) {
+        renderDailyView();
+      }
+    });
+
+    const weeklyPicker = flatpickr("#weekly-picker", {
+      ...dateFormatConfig,
+      onChange: function(selectedDates, dateStr, instance) {
+        renderWeeklyView();
+      }
+    });
+
+    const weeklyTargetPicker = flatpickr("#weekly-target-date", {
+      ...dateFormatConfig
+    });
+
+    const resCheckinPicker = flatpickr("#res-checkin-date", {
+      ...dateFormatConfig
+    });
+
+    const resCheckoutPicker = flatpickr("#res-checkout-date", {
+      ...dateFormatConfig
+    });
+
+    const modalPicker = flatpickr("#modal-date-picker", {
+      ...dateFormatConfig,
+      onChange: function(selectedDates, dateStr, instance) {
+        loadModalDateEntries();
+      }
+    });
+
+    const fifteenMonthPicker = flatpickr("#fifteen-month-picker", {
+      plugins: [],
+      altInput: true,
+      altFormat: "F Y",
+      dateFormat: "Y-m",
+      defaultDate: "today",
+      onChange: function(selectedDates, dateStr, instance) {
+        render15DayView();
+      }
+    });
+
+    const todayStr = new Date().toISOString().split('T')[0];
     
     saveState();
     renderMasterDB();
     renderWeeklyView();
     render15DayView();
     renderReservationsLog();
+    renderDailyView();
   </script>
 </body>
 </html>
