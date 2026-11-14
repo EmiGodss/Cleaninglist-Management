@@ -33,49 +33,56 @@
       align-items: center !important;
       justify-content: flex-start !important;
       text-align: left !important;
-      gap: 3px !important;
+      gap: 5px !important;
       width: 100%;
       white-space: nowrap !important;
     }
 
-    /* Further optimized font size and letter spacing for 15+ characters */
+    /* 15-Day and Weekly View specific unit text sizing */
     .fifteen-grid .unit-text, .weekly-grid .unit-text { 
-      font-size: 8.5px !important; 
+      font-size: 9.5px !important; 
       font-weight: 800; 
       justify-content: center !important; 
-      letter-spacing: -0.4px;
+      letter-spacing: -0.3px;
     }
 
+    /* Enhanced Night & Platform Tags */
     .tag-nights, .tag-booking, .tag-airbnb, .tag-ls, .tag-rs, .tag-su {
       display: inline-flex !important;
       align-items: center !important;
       justify-content: center !important;
-      font-weight: 800 !important;
-      border-radius: 2.5px;
+      font-weight: 900 !important;
+      border-radius: 4px;
       white-space: nowrap !important;
       text-align: center;
-      font-size: 6.5px !important;
-      padding: 0.2px 1.5px !important;
     }
 
-    .tag-nights { background-color: #fef08a !important; color: #854d0e !important; } 
-    .tag-booking { background-color: #38bdf8 !important; color: #082f49 !important; font-weight: 900 !important; }
-    .tag-airbnb { background-color: #f43f5e !important; color: #ffe4e6 !important; font-weight: 900 !important; }
-    .tag-ls { background-color: #10b981 !important; color: #022c22 !important; font-weight: 900 !important; }
-    .tag-rs { background-color: #ec4899 !important; color: #500724 !important; font-weight: 900 !important; }
-    .tag-su { background-color: #f97316 !important; color: #431407 !important; font-weight: 900 !important; }
+    .tag-nights { 
+      background-color: #fef08a !important; 
+      color: #713f12 !important; 
+      font-size: 11px !important; 
+      padding: 1px 5px !important; 
+      letter-spacing: -0.2px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    } 
+
+    .tag-booking { background-color: #38bdf8 !important; color: #082f49 !important; font-size: 7.5px !important; padding: 0.5px 2px !important; }
+    .tag-airbnb { background-color: #f43f5e !important; color: #ffe4e6 !important; font-size: 7.5px !important; padding: 0.5px 2px !important; }
+    .tag-ls { background-color: #10b981 !important; color: #022c22 !important; font-size: 7.5px !important; padding: 0.5px 2px !important; }
+    .tag-rs { background-color: #ec4899 !important; color: #500724 !important; font-size: 7.5px !important; padding: 0.5px 2px !important; }
+    .tag-su { background-color: #f97316 !important; color: #431407 !important; font-size: 7.5px !important; padding: 0.5px 2px !important; }
 
     .count-pill {
       background-color: #312e81;
       color: #e0e7ff;
       font-weight: 800;
-      font-size: 9.5px;
+      font-size: 10px;
       padding: 1px 6px;
       border-radius: 9999px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      margin-left: 3px;
+      margin-left: 4px;
       line-height: 12px;
     }
 
@@ -83,13 +90,13 @@
       background-color: #1e293b;
       color: #64748b;
       font-weight: 700;
-      font-size: 9px;
+      font-size: 9.5px;
       padding: 1px 5px;
       border-radius: 9999px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      margin-left: 3px;
+      margin-left: 4px;
       line-height: 12px;
     }
 
@@ -108,7 +115,6 @@
       color: #f1f5f9;
     }
 
-    /* Scroll Optimization */
     .unit-row-container {
       content-visibility: auto;
       contain-intrinsic-size: auto 60px;
@@ -121,7 +127,6 @@
     .custom-scrollbar::-webkit-scrollbar-track { background: #1e293b; border-radius: 4px; }
     .custom-scrollbar::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
 
-    /* Custom Flatpickr Dark Theme Polish */
     .flatpickr-calendar {
       background: #1e293b !important;
       border: 1px solid rgba(255, 255, 255, 0.15) !important;
@@ -154,7 +159,6 @@
   <header class="glass-card border-b border-slate-800 sticky top-0 z-30 shadow-md">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between h-24 items-center">
-        <!-- Logo connected to logo.jpg from your repository -->
         <div class="flex items-center space-x-3.5 py-2">
           <img src="logo.jpg" alt="EMIJRD Online Services Logo" class="h-16 w-auto object-contain rounded-xl shadow-md border border-indigo-500/30">
           <div>
@@ -375,20 +379,20 @@
               Checking Done
             </button>
           </div>
-          <div class="space-y-4">
+          <div class="space-y-3">
             <div>
               <div class="flex justify-between items-center mb-1">
                 <h4 class="text-xs font-bold text-slate-400">Check-Out: <span id="count-daily-f-out" class="count-pill">0</span></h4>
                 <button onclick="copyDailyCleanerSection('FLORENCE', 'CHECKOUT')" class="text-[10px] px-2 py-0.5 bg-rose-950/60 hover:bg-rose-900/60 text-rose-300 rounded font-bold">Copy Check-Out</button>
               </div>
-              <div id="daily-florence-checkout" class="space-y-0.5 text-base font-semibold min-h-[40px]"></div>
+              <div id="daily-florence-checkout" class="space-y-1 text-lg font-bold min-h-[30px]"></div>
             </div>
             <div>
               <div class="flex justify-between items-center mb-1">
                 <h4 class="text-xs font-bold text-slate-400">Check-In: <span id="count-daily-f-in" class="count-pill">0</span></h4>
                 <button onclick="copyDailyCleanerSection('FLORENCE', 'CHECKIN')" class="text-[10px] px-2 py-0.5 bg-rose-950/60 hover:bg-rose-900/60 text-rose-300 rounded font-bold">Copy Check-In</button>
               </div>
-              <div id="daily-florence-checkin" class="space-y-0.5 text-base font-semibold min-h-[40px]"></div>
+              <div id="daily-florence-checkin" class="space-y-1 text-lg font-bold min-h-[30px]"></div>
             </div>
           </div>
         </div>
@@ -401,20 +405,20 @@
               Checking Done
             </button>
           </div>
-          <div class="space-y-4">
+          <div class="space-y-3">
             <div>
               <div class="flex justify-between items-center mb-1">
                 <h4 class="text-xs font-bold text-slate-400">Check-Out: <span id="count-daily-y-out" class="count-pill">0</span></h4>
                 <button onclick="copyDailyCleanerSection('YANG', 'CHECKOUT')" class="text-[10px] px-2 py-0.5 bg-sky-950/60 hover:bg-sky-900/60 text-sky-300 rounded font-bold">Copy Check-Out</button>
               </div>
-              <div id="daily-yang-checkout" class="space-y-0.5 text-base font-semibold min-h-[40px]"></div>
+              <div id="daily-yang-checkout" class="space-y-1 text-lg font-bold min-h-[30px]"></div>
             </div>
             <div>
               <div class="flex justify-between items-center mb-1">
                 <h4 class="text-xs font-bold text-slate-400">Check-In: <span id="count-daily-y-in" class="count-pill">0</span></h4>
                 <button onclick="copyDailyCleanerSection('YANG', 'CHECKIN')" class="text-[10px] px-2 py-0.5 bg-sky-950/60 hover:bg-sky-900/60 text-sky-300 rounded font-bold">Copy Check-In</button>
               </div>
-              <div id="daily-yang-checkin" class="space-y-0.5 text-base font-semibold min-h-[40px]"></div>
+              <div id="daily-yang-checkin" class="space-y-1 text-lg font-bold min-h-[30px]"></div>
             </div>
           </div>
         </div>
@@ -943,8 +947,10 @@
         for(let d = startDay; d <= endDay; d++) {
           const dateStr = `${year}-${month}-${String(d).padStart(2, '0')}`;
           const dateObj = new Date(year, month - 1, d);
-          const shortMon = dateObj.toLocaleDateString('en-US', { month: 'short' }).toUpperCase();
-          const dayLabel = `${shortMon} ${String(d).padStart(2, '0')}`;
+          const shortWeekday = dateObj.toLocaleDateString('en-US', { weekday: 'short' }).toUpperCase();
+          const shortMon = dateObj.toLocaleDateString('en-US', { month: 'numeric' });
+          const dayNum = String(d).padStart(2, '0');
+          const dayLabel = `${shortWeekday} ${shortMon}/${dayNum}`;
 
           const items = (state.schedules[dateStr] || []).filter(i => i.cleaner === cleaner && i.type === 'CHECKOUT');
           const count = items.length;
@@ -952,7 +958,7 @@
 
           const col = document.createElement('div');
           col.className = "p-0.5 space-y-0.5 border-r border-b border-slate-800 min-h-[120px] w-full overflow-hidden min-w-0";
-          col.innerHTML = `<div class="font-bold text-[9px] text-slate-300 border-b border-slate-700 pb-0.5 mb-0.5 text-center no-copy bg-slate-900/80 rounded py-0.5 uppercase tracking-tighter whitespace-nowrap overflow-hidden flex items-center justify-center">${dayLabel}<span class="${badgeClass}">${count}</span></div>`;
+          col.innerHTML = `<div class="font-black text-[11px] text-indigo-200 border-b border-slate-700 pb-1 mb-1 text-center no-copy bg-slate-900/90 rounded py-1 tracking-tight whitespace-nowrap overflow-hidden flex items-center justify-center">${dayLabel}<span class="${badgeClass}">${count}</span></div>`;
 
           items.forEach(item => {
             const parsed = formatUnitText(item.raw || item.formatted || item.unit, false);
@@ -1062,7 +1068,6 @@
       const code = codeInput.value.trim().toUpperCase();
 
       if (!code) return;
-
       if (state.masterDB.some(m => m.code === code)) return;
 
       state.masterDB.push({ code, cleaner: cleanerInput.value, address: "", bedrooms: "", parking: "" });
@@ -1127,7 +1132,7 @@
         tagHTML = `<span class="tag-su">SU</span>`;
       } else if (remainderText) {
         rawTagString = remainderText;
-        tagHTML = `<span class="text-indigo-300 font-semibold text-[10px] px-1 bg-indigo-950/60 rounded border border-indigo-900/50">${remainderText}</span>`;
+        tagHTML = `<span class="text-indigo-300 font-semibold text-[8px] px-1 bg-indigo-950/60 rounded border border-indigo-900/50">${remainderText}</span>`;
       }
 
       let nightsHTML = (isCheckIn && nights) ? `<span class="tag-nights">${nights}N</span>` : '';
@@ -1468,30 +1473,30 @@
         const isChecked = item.checked ? true : false;
         
         const div = document.createElement('div');
-        div.className = `unit-row-container glass-card p-1.5 rounded-lg border border-slate-800 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-1.5 my-0.5 transition-all ${isChecked ? 'opacity-40 line-through bg-slate-900/50' : ''}`;
+        div.className = `unit-row-container glass-card px-2 py-1 rounded-lg border border-slate-800 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 my-1 transition-all ${isChecked ? 'opacity-40 line-through bg-slate-900/50' : ''}`;
         
         if (item.type === 'CHECKOUT') {
           div.innerHTML = `
-            <div class="flex items-center gap-2.5 w-full sm:w-[150px] shrink-0">
+            <div class="flex items-center gap-2.5 w-full sm:w-[170px] shrink-0">
               <input type="checkbox" ${isChecked ? 'checked' : ''} onchange="toggleCheckStatus('${date}', ${item.id}, this)" class="w-4 h-4 text-indigo-600 rounded border-slate-700 bg-slate-900 focus:ring-indigo-500 cursor-pointer">
-              <div class="unit-text text-lg font-extrabold ${item.cleaner === 'FLORENCE' ? 'unit-florence' : 'unit-yang'}" data-unit-clean="${parsed.raw}">${parsed.formatted}</div>
+              <div class="unit-text text-xl font-extrabold tracking-tight ${item.cleaner === 'FLORENCE' ? 'unit-florence' : 'unit-yang'}" data-unit-clean="${parsed.raw}">${parsed.formatted}</div>
             </div>
             <div class="flex flex-wrap items-center gap-1.5 w-full sm:w-auto text-xs shrink-0 flex-1 justify-end">
-              <input type="text" value="${item.lastCode || ''}" oninput="updateItemField('${date}', ${item.id}, 'lastCode', this.value)" class="px-2.5 py-1 border border-slate-700 rounded text-sm font-semibold w-24 font-mono bg-slate-900 text-white shrink-0">
-              <input type="text" value="${item.notes || ''}" oninput="updateItemField('${date}', ${item.id}, 'notes', this.value)" class="px-3 py-1 border border-slate-700 rounded text-sm font-semibold flex-1 min-w-[210px] bg-slate-900 text-white shrink-0">
-              <button onclick="clearItemInputs('${date}', ${item.id}, 'checkout')" title="Clear Code & Notes" class="px-2 py-1 bg-rose-950/60 hover:bg-rose-900/60 text-rose-400 rounded border border-rose-900 font-bold shrink-0">Clear</button>
+              <input type="text" value="${item.lastCode || ''}" oninput="updateItemField('${date}', ${item.id}, 'lastCode', this.value)" class="px-2 py-1 border border-slate-700 rounded text-xs font-semibold w-20 font-mono bg-slate-900 text-white shrink-0">
+              <input type="text" value="${item.notes || ''}" oninput="updateItemField('${date}', ${item.id}, 'notes', this.value)" class="px-2.5 py-1 border border-slate-700 rounded text-xs font-semibold flex-1 min-w-[180px] bg-slate-900 text-white shrink-0">
+              <button onclick="clearItemInputs('${date}', ${item.id}, 'checkout')" title="Clear Code & Notes" class="px-2 py-1 bg-rose-950/60 hover:bg-rose-900/60 text-rose-400 rounded border border-rose-900 font-bold shrink-0 text-[11px]">Clear</button>
             </div>
           `;
         } else {
           div.innerHTML = `
-            <div class="flex items-center gap-2.5 w-full sm:w-[150px] shrink-0">
+            <div class="flex items-center gap-2.5 w-full sm:w-[170px] shrink-0">
               <input type="checkbox" ${isChecked ? 'checked' : ''} onchange="toggleCheckStatus('${date}', ${item.id}, this)" class="w-4 h-4 text-indigo-600 rounded border-slate-700 bg-slate-900 focus:ring-indigo-500 cursor-pointer">
-              <div class="unit-text text-lg font-extrabold ${item.cleaner === 'FLORENCE' ? 'unit-florence' : 'unit-yang'}" data-unit-clean="${parsed.raw}">${parsed.formatted}</div>
+              <div class="unit-text text-xl font-extrabold tracking-tight ${item.cleaner === 'FLORENCE' ? 'unit-florence' : 'unit-yang'}" data-unit-clean="${parsed.raw}">${parsed.formatted}</div>
             </div>
             <div class="flex flex-wrap items-center gap-1.5 w-full sm:w-auto text-xs shrink-0 flex-1 justify-end">
-              <input type="text" value="${item.newCode || ''}" oninput="updateItemField('${date}', ${item.id}, 'newCode', this.value)" class="px-2.5 py-1 border border-slate-700 rounded text-sm font-semibold w-24 font-mono bg-slate-900 text-white shrink-0">
-              <input type="text" value="${item.notes || ''}" oninput="updateItemField('${date}', ${item.id}, 'notes', this.value)" class="px-3 py-1 border border-slate-700 rounded text-sm font-semibold flex-1 min-w-[210px] bg-slate-900 text-white shrink-0">
-              <button onclick="clearItemInputs('${date}', ${item.id}, 'checkin')" title="Clear New Code & Notes" class="px-2 py-1 bg-rose-950/60 hover:bg-rose-900/60 text-rose-400 rounded border border-rose-900 font-bold shrink-0">Clear</button>
+              <input type="text" value="${item.newCode || ''}" oninput="updateItemField('${date}', ${item.id}, 'newCode', this.value)" class="px-2 py-1 border border-slate-700 rounded text-xs font-semibold w-20 font-mono bg-slate-900 text-white shrink-0">
+              <input type="text" value="${item.notes || ''}" oninput="updateItemField('${date}', ${item.id}, 'notes', this.value)" class="px-2.5 py-1 border border-slate-700 rounded text-xs font-semibold flex-1 min-w-[180px] bg-slate-900 text-white shrink-0">
+              <button onclick="clearItemInputs('${date}', ${item.id}, 'checkin')" title="Clear New Code & Notes" class="px-2 py-1 bg-rose-950/60 hover:bg-rose-900/60 text-rose-400 rounded border border-rose-900 font-bold shrink-0 text-[11px]">Clear</button>
             </div>
           `;
         }
@@ -1508,7 +1513,7 @@
       fCheckout.appendChild(fOutFrag);
       fCheckin.appendChild(fInFrag);
       yCheckout.appendChild(yOutFrag);
-      yCheckin.appendChild(yInFrag);
+      yInCheckin.appendChild(yInFrag);
 
       document.getElementById('count-daily-f-out').innerText = counts.fOut;
       document.getElementById('count-daily-f-in').innerText = counts.fIn;
@@ -1550,7 +1555,7 @@
     function getWeekDates(anchorDateStr) {
       const [year, month, dayNum] = anchorDateStr.split('-').map(Number);
       const anchor = new Date(year, month - 1, dayNum);
-      const day = anchor.getDay();                   // 0 = Sunday
+      const day = anchor.getDay(); // 0 = Sunday
       const offsetToMonday = day === 0 ? -6 : 1 - day;
       const monday = new Date(year, month - 1, dayNum + offsetToMonday);
 
@@ -1589,7 +1594,10 @@
       weekDates.forEach((dateStr) => {
         const [y, m, d] = dateStr.split('-').map(Number);
         const dateObj = new Date(y, m - 1, d);
-        const dayLabel = dateObj.toLocaleDateString('en-US', { weekday: 'short', month: 'numeric', day: 'numeric' }).toUpperCase();
+        const shortWeekday = dateObj.toLocaleDateString('en-US', { weekday: 'short' }).toUpperCase();
+        const shortMon = dateObj.toLocaleDateString('en-US', { month: 'numeric' });
+        const dayNum = String(d).padStart(2, '0');
+        const dayLabel = `${shortWeekday} ${shortMon}/${dayNum}`;
 
         const createCol = (cleaner, type) => {
           const items = (state.schedules[dateStr] || []).filter(i => i.cleaner === cleaner && i.type === type);
@@ -1598,7 +1606,7 @@
 
           const col = document.createElement('div');
           col.className = "p-0.5 space-y-0.5 border-r border-slate-800 min-h-[250px] w-full overflow-hidden min-w-0";
-          col.innerHTML = `<div class="font-bold text-[9px] text-slate-300 border-b border-slate-700 pb-0.5 mb-0.5 text-center no-copy bg-slate-900/80 rounded py-0.5 uppercase tracking-tighter whitespace-nowrap overflow-hidden flex items-center justify-center">${dayLabel}<span class="${badgeClass}">${count}</span></div>`;
+          col.innerHTML = `<div class="font-black text-[11px] text-indigo-200 border-b border-slate-700 pb-1 mb-1 text-center no-copy bg-slate-900/90 rounded py-1 tracking-tight whitespace-nowrap overflow-hidden flex items-center justify-center">${dayLabel}<span class="${badgeClass}">${count}</span></div>`;
 
           items.forEach(item => {
             const parsed = formatUnitText(item.raw || item.formatted || item.unit, type === 'CHECKIN');
