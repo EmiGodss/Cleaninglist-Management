@@ -398,15 +398,15 @@
           </div>
           <div>
             <label class="block text-xs font-bold text-slate-300 mb-1">Check-In Date:</label>
-            <input type="date" id="res-checkin-date" maxlength="15" class="w-full px-3 py-2 border border-slate-700 rounded-xl text-sm font-semibold bg-slate-900 text-white">
+            <input type="date" id="res-checkin-date" class="w-full px-3 py-2 border border-slate-700 rounded-xl text-sm font-semibold bg-slate-900 text-white">
           </div>
           <div>
             <label class="block text-xs font-bold text-slate-300 mb-1">Check-Out Date:</label>
-            <input type="date" id="res-checkout-date" maxlength="15" class="w-full px-3 py-2 border border-slate-700 rounded-xl text-sm font-semibold bg-slate-900 text-white">
+            <input type="date" id="res-checkout-date" class="w-full px-3 py-2 border border-slate-700 rounded-xl text-sm font-semibold bg-slate-900 text-white">
           </div>
           <div>
-            <label class="block text-xs font-bold text-slate-300 mb-1">Tag / Note (e.g., RS, LS, SU):</label>
-            <input type="text" id="res-tag-input" maxlength="15" placeholder="e.g. RS" class="w-full px-3 py-2 border border-slate-700 rounded-xl text-sm font-mono bg-slate-900 text-white uppercase focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <label class="block text-xs font-bold text-slate-300 mb-1">Tag / Note (Max 30 Chars):</label>
+            <input type="text" id="res-tag-input" maxlength="30" placeholder="e.g. DAVIKA DAHAL or RS" class="w-full px-3 py-2 border border-slate-700 rounded-xl text-sm font-mono bg-slate-900 text-white uppercase focus:outline-none focus:ring-2 focus:ring-indigo-500">
           </div>
         </div>
 
@@ -440,7 +440,7 @@
                 <th class="p-3">Check-In</th>
                 <th class="p-3">Check-Out</th>
                 <th class="p-3">Nights</th>
-                <th class="p-3">Tag</th>
+                <th class="p-3">Tag / Note</th>
                 <th class="p-3 text-right">Action</th>
               </tr>
             </thead>
@@ -649,12 +649,9 @@
             renderWeeklyView();
             render15DayView();
             renderReservationsLog();
-            alert("Backup imported successfully!");
-          } else {
-            alert("Invalid backup file format.");
           }
         } catch (err) {
-          alert("Error reading file.");
+          console.error("Error reading file.", err);
         }
       };
       reader.readAsText(file);
@@ -672,24 +669,16 @@
         if (unitText) textToCopy.push(unitText);
       });
 
-      if (textToCopy.length === 0) {
-        alert("No units to copy in this list.");
-        return;
-      }
+      if (textToCopy.length === 0) return;
 
-      navigator.clipboard.writeText(textToCopy.join('\n')).then(() => {
-        alert("Units copied to clipboard!");
-      }).catch(err => {
+      navigator.clipboard.writeText(textToCopy.join('\n')).catch(err => {
         console.error("Copy failed: ", err);
       });
     }
 
     function copyDailyCleanerSection(cleaner, type) {
       const date = document.getElementById('daily-date-picker').value;
-      if (!date || !state.schedules[date]) {
-        alert("No units to copy for this section.");
-        return;
-      }
+      if (!date || !state.schedules[date]) return;
 
       const items = state.schedules[date].filter(i => i.cleaner === cleaner && i.type === type);
       let textToCopy = [];
@@ -700,14 +689,9 @@
         if (cleanText) textToCopy.push(cleanText);
       });
 
-      if (textToCopy.length === 0) {
-        alert(`No ${type.toLowerCase()} units to copy for ${cleaner}.`);
-        return;
-      }
+      if (textToCopy.length === 0) return;
 
-      navigator.clipboard.writeText(textToCopy.join('\n')).then(() => {
-        alert(`${cleaner} ${type === 'CHECKOUT' ? 'Check-Out' : 'Check-In'} units copied to clipboard!`);
-      }).catch(err => {
+      navigator.clipboard.writeText(textToCopy.join('\n')).catch(err => {
         console.error("Copy failed: ", err);
       });
     }
@@ -815,7 +799,7 @@
       if (!item) return;
 
       const currentRaw = item.raw || item.unit;
-      const val = prompt("Update unit entry / add tags (e.g. AU6514 RS or AU6514 2 RS):", currentRaw);
+      const val = prompt("Update unit entry / add tags (e.g. AU6514 RS or DAVIKA DAHAL):", currentRaw);
       if (!val) return;
 
       const { raw, formatted } = formatUnitText(val, item.type === 'CHECKIN');
@@ -1015,20 +999,14 @@
     }
 
     function addMasterUnit() {
-      if (state.masterDB.length >= 60) {
-        alert("Master Database max capacity (60 entries) reached!");
-        return;
-      }
+      if (state.masterDB.length >= 60) return;
       const codeInput = document.getElementById('new-unit-code');
       const cleanerInput = document.getElementById('new-unit-cleaner');
       const code = codeInput.value.trim().toUpperCase();
 
       if (!code) return;
 
-      if (state.masterDB.some(m => m.code === code)) {
-        alert("Unit code already exists in Master DB!");
-        return;
-      }
+      if (state.masterDB.some(m => m.code === code)) return;
 
       state.masterDB.push({ code, cleaner: cleanerInput.value, address: "", bedrooms: "", parking: "" });
       saveState();
@@ -1055,30 +1033,42 @@
       let parts = cleanStr.split(/\s+/);
       
       let unit = parts[0] || '';
-      let tag = '';
+      let tagOrNameParts = [];
       let nights = '';
 
       for (let i = 1; i < parts.length; i++) {
-        let p = parts[i].toUpperCase();
-        if (['RS', 'LS', 'SU'].includes(p)) {
-          tag = p;
-        } else if (!isNaN(p)) {
-          nights = p;
-        } else if (p.endsWith('N') && !isNaN(p.slice(0, -1))) {
-          nights = p.slice(0, -1);
+        let p = parts[i];
+        let pUpper = p.toUpperCase();
+        if (!isNaN(pUpper)) {
+          nights = pUpper;
+        } else if (pUpper.endsWith('N') && !isNaN(pUpper.slice(0, -1))) {
+          nights = pUpper.slice(0, -1);
+        } else {
+          tagOrNameParts.push(p);
         }
       }
 
+      let remainderText = tagOrNameParts.join(' ').trim();
+      let upperRemainder = remainderText.toUpperCase();
+
       let tagHTML = '';
-      if (tag === 'RS') tagHTML = `<span class="tag-rs">RS</span>`;
-      else if (tag === 'LS') tagHTML = `<span class="tag-ls">LS</span>`;
-      else if (tag === 'SU') tagHTML = `<span class="tag-su">SU</span>`;
+      let rawTagString = '';
+
+      if (['RS', 'LS', 'SU'].includes(upperRemainder)) {
+        rawTagString = upperRemainder;
+        if (upperRemainder === 'RS') tagHTML = `<span class="tag-rs">RS</span>`;
+        else if (upperRemainder === 'LS') tagHTML = `<span class="tag-ls">LS</span>`;
+        else if (upperRemainder === 'SU') tagHTML = `<span class="tag-su">SU</span>`;
+      } else if (remainderText) {
+        rawTagString = remainderText;
+        tagHTML = `<span class="text-indigo-300 font-semibold text-[9px] px-1 bg-indigo-950/60 rounded border border-indigo-900/50">${remainderText}</span>`;
+      }
 
       let nightsHTML = (isCheckIn && nights) ? `<span class="tag-nights">${nights}N</span>` : '';
       return { 
-        raw: `${unit} ${nights ? nights + 'N' : ''} ${tag}`.trim(), 
+        raw: `${unit} ${nights ? nights + 'N' : ''} ${rawTagString}`.trim(), 
         formatted: `${unit} ${nightsHTML} ${tagHTML}`.trim(),
-        tag: tag 
+        tag: upperRemainder 
       };
     }
 
@@ -1087,7 +1077,7 @@
       return match ? match.cleaner : 'FLORENCE';
     }
 
-    function addScheduleItemDirect(date, unitCode, type, tagStr) {
+    function addScheduleItemDirect(date, unitCode, type, tagStr, customNotes = '') {
       if (!date || !unitCode) return;
       if (!state.schedules[date]) state.schedules[date] = [];
 
@@ -1105,7 +1095,7 @@
         checked: false,
         lastCode: '',
         newCode: '',
-        notes: ''
+        notes: customNotes
       });
       saveState();
     }
@@ -1114,31 +1104,25 @@
       const unitCode = document.getElementById('res-unit-code').value.trim().toUpperCase();
       const checkinDate = document.getElementById('res-checkin-date').value;
       const checkoutDate = document.getElementById('res-checkout-date').value;
-      const tagStr = document.getElementById('res-tag-input').value.trim().toUpperCase();
+      const tagStr = document.getElementById('res-tag-input-input') || document.getElementById('res-tag-input').value.trim();
 
-      if (!unitCode || !checkinDate || !checkoutDate) {
-        alert("Please fill in the unit code, check-in date, and check-out date.");
-        return;
-      }
+      if (!unitCode || !checkinDate || !checkoutDate) return;
 
       const d1 = new Date(checkinDate);
       const d2 = new Date(checkoutDate);
       const diffTime = d2 - d1;
       const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
 
-      if (diffDays <= 0) {
-        alert("Check-out date must be after check-in date.");
-        return;
-      }
+      if (diffDays <= 0) return;
 
       const nightsTag = `${diffDays}N`;
       const combinedTag = tagStr ? `${nightsTag} ${tagStr}` : nightsTag;
       const cleaner = getCleanerForUnit(unitCode);
 
-      // Add Check-In entry on check-in date with counted nights
-      addScheduleItemDirect(checkinDate, unitCode, 'CHECKIN', combinedTag);
-      // Add Check-Out entry on check-out date
-      addScheduleItemDirect(checkoutDate, unitCode, 'CHECKOUT', tagStr);
+      // Add Check-In entry on check-in date with counted nights & note
+      addScheduleItemDirect(checkinDate, unitCode, 'CHECKIN', combinedTag, tagStr);
+      // Add Check-Out entry on check-out date with note
+      addScheduleItemDirect(checkoutDate, unitCode, 'CHECKOUT', tagStr, tagStr);
 
       // Add to reservations log queue
       state.reservationsLog.unshift({
@@ -1157,7 +1141,6 @@
       render15DayView();
       renderReservationsLog();
       
-      alert(`Reservation for ${unitCode} successfully sorted!\n- Check-In added to ${checkinDate} (${diffDays}N)\n- Check-Out added to ${checkoutDate}`);
       clearReservationForm();
     }
 
@@ -1182,7 +1165,7 @@
           <td class="p-3 text-slate-300">${res.checkinDate}</td>
           <td class="p-3 text-slate-300">${res.checkoutDate}</td>
           <td class="p-3"><span class="tag-nights">${res.nights}N</span></td>
-          <td class="p-3">${res.tag ? `<span class="tag-rs">${res.tag}</span>` : '<span class="text-slate-500">—</span>'}</td>
+          <td class="p-3">${res.tag ? `<span class="text-indigo-300 font-semibold">${res.tag}</span>` : '<span class="text-slate-500">—</span>'}</td>
           <td class="p-3 text-right">
             <button onclick="deleteReservationLogItem(${res.id})" class="px-2 py-1 bg-rose-950/60 hover:bg-rose-900 text-rose-300 rounded border border-rose-900 text-[10px] font-sans font-bold">Remove</button>
           </td>
@@ -1432,10 +1415,7 @@
       const type = document.getElementById('weekly-entry-type').value;
       const text = document.getElementById('weekly-input').value;
 
-      if (!date || !text.trim()) {
-        alert("Please select a target date and enter unit codes.");
-        return;
-      }
+      if (!date || !text.trim()) return;
 
       processInputLines(date, text, type);
       document.getElementById('weekly-input').value = '';
