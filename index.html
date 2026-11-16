@@ -298,7 +298,10 @@
           </div>
         </div>
         <textarea id="weekly-input" rows="3" placeholder="Enter weekly units here (e.g. EC1113 | EC1113 LS)..." class="w-full px-4 py-3 border border-slate-700 rounded-xl text-sm bg-slate-900 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
-        <div class="flex justify-end">
+        <div class="flex justify-between items-center">
+          <button onclick="sortWeeklyAlphabetical()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl text-xs font-bold border border-slate-700">
+            Sort A-Z Week
+          </button>
           <button onclick="processWeeklyInput()" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold shadow-md">
             Sort to Weekly List
           </button>
@@ -367,6 +370,9 @@
         <div class="flex items-center gap-3">
           <span class="text-xs font-bold text-slate-300">Select Month:</span>
           <input type="text" id="fifteen-month-picker" onchange="render15DayView()" class="px-3 py-1.5 border border-slate-700 rounded-lg text-sm font-semibold bg-slate-900 text-white">
+          <button onclick="sort15DayAlphabetical()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg text-xs font-bold border border-slate-700 ml-2">
+            Sort A-Z Month
+          </button>
         </div>
         <div class="flex items-center gap-2">
           <button onclick="openManageModal()" class="px-3.5 py-1.5 text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg shadow-sm">
@@ -642,6 +648,7 @@
             renderMasterDB();
             renderWeeklyView();
             render15DayView();
+            renderDailyView();
           }
         } catch (err) {
           console.error("Error reading file.", err);
@@ -814,6 +821,37 @@
       
       document.getElementById('fifteen-tab-flo').className = cleaner === 'FLORENCE' ? 'px-4 py-1.5 text-xs font-bold rounded-lg bg-rose-600 text-white shadow-sm' : 'px-4 py-1.5 text-xs font-bold rounded-lg bg-slate-800 text-slate-300';
       document.getElementById('fifteen-tab-yang').className = cleaner === 'YANG' ? 'px-4 py-1.5 text-xs font-bold rounded-lg bg-cyan-600 text-white shadow-sm' : 'px-4 py-1.5 text-xs font-bold rounded-lg bg-slate-800 text-slate-300';
+    }
+
+    function sort15DayAlphabetical() {
+      const monthVal = document.getElementById('fifteen-month-picker').value;
+      if (!monthVal) return;
+      const [year, month] = monthVal.split('-');
+      const totalDays = new Date(year, month, 0).getDate();
+
+      for (let d = 1; d <= totalDays; d++) {
+        const dateStr = `${year}-${month}-${String(d).padStart(2, '0')}`;
+        if (state.schedules[dateStr]) {
+          state.schedules[dateStr].sort((a, b) => (a.unit || '').localeCompare(b.unit || ''));
+        }
+      }
+      saveState();
+      render15DayView();
+      showToast("Sorted", "15-Day view sorted alphabetically A-Z.");
+    }
+
+    function sortWeeklyAlphabetical() {
+      const anchor = document.getElementById('weekly-picker').value || toLocalISO(new Date());
+      const weekDates = getWeekDates(anchor);
+
+      weekDates.forEach(dateStr => {
+        if (state.schedules[dateStr]) {
+          state.schedules[dateStr].sort((a, b) => (a.unit || '').localeCompare(b.unit || ''));
+        }
+      });
+      saveState();
+      renderWeeklyView();
+      showToast("Sorted", "Weekly view sorted alphabetically A-Z.");
     }
 
     function render15DayView() {
