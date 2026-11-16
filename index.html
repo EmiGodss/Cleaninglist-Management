@@ -10,6 +10,12 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/dark.css">
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  
+  <!-- Firebase App, Realtime Database & Analytics SDK (Compat Versions) -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics-compat.js"></script>
+
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
     
@@ -569,6 +575,23 @@
   </div>
 
   <script>
+    // Firebase Configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyAOzQyxcXklyIOvKJLZQdLCSjjzsL_9cHQ",
+      authDomain: "cleaning-schedule-management.firebaseapp.com",
+      databaseURL: "https://cleaning-schedule-management-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "cleaning-schedule-management",
+      storageBucket: "cleaning-schedule-management.firebasestorage.app",
+      messagingSenderId: "1043777556949",
+      appId: "1:1043777556949:web:ebe67cf30bf633ee8fad5c",
+      measurementId: "G-R6HC9T0NHT"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    const analytics = firebase.analytics();
+
     const DEFAULT_MASTER = [
       { code: "AU6514", cleaner: "FLORENCE", address: "", bedrooms: "", parking: "" },
       { code: "VP1601S", cleaner: "FLORENCE", address: "", bedrooms: "", parking: "" },
@@ -583,18 +606,11 @@
       { code: "WP1708D", cleaner: "YANG", address: "", bedrooms: "", parking: "" }
     ];
 
-    let storedMaster = JSON.parse(localStorage.getItem('masterDB'));
     let state = {
-      masterDB: (storedMaster && storedMaster.length > 0) ? storedMaster : DEFAULT_MASTER,
-      schedules: JSON.parse(localStorage.getItem('schedules')) || {},
+      masterDB: DEFAULT_MASTER,
+      schedules: {},
       activeCleanerTab: 'FLORENCE'
     };
-
-    state.masterDB.forEach(item => {
-      if (item.address === undefined) item.address = "";
-      if (item.bedrooms === undefined) item.bedrooms = "";
-      if (item.parking === undefined) item.parking = "";
-    });
 
     function toLocalISO(d) {
       return d.getFullYear() + '-' +
@@ -602,10 +618,38 @@
         String(d.getDate()).padStart(2, '0');
     }
 
+    // Save to Firebase Realtime Database
     function saveState() {
-      localStorage.setItem('masterDB', JSON.stringify(state.masterDB));
-      localStorage.setItem('schedules', JSON.stringify(state.schedules));
-      updateMasterCount();
+      db.ref('appState').set(state).then(() => {
+        updateMasterCount();
+      }).catch((err) => {
+        console.error("Error saving to Firebase:", err);
+      });
+    }
+
+    // Real-time listener for multi-device synchronization
+    function initRealtimeSync() {
+      db.ref('appState').on('value', (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          state.masterDB = data.masterDB || DEFAULT_MASTER;
+          state.schedules = data.schedules || {};
+          
+          state.masterDB.forEach(item => {
+            if (item.address === undefined) item.address = "";
+            if (item.bedrooms === undefined) item.bedrooms = "";
+            if (item.parking === undefined) item.parking = "";
+          });
+
+          renderMasterDB();
+          renderWeeklyView();
+          render15DayView();
+          renderDailyView();
+          updateMasterCount();
+        } else {
+          saveState();
+        }
+      });
     }
 
     function showToast(title, message) {
@@ -1497,13 +1541,8 @@
       }
     });
 
-    const todayStr = toLocalISO(new Date());
-    
-    saveState();
-    renderMasterDB();
-    renderWeeklyView();
-    render15DayView();
-    renderDailyView();
+    // Start real-time sync with Firebase
+    initRealtimeSync();
   </script>
 </body>
 </html>
