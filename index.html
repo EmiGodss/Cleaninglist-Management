@@ -1295,24 +1295,24 @@
         
         if (item.type === 'CHECKOUT') {
           div.innerHTML = `
-            <div class="flex items-center gap-2.5 w-full sm:w-[185px] shrink-0">
+            <div class="flex items-center gap-2.5 w-full sm:w-[150px] shrink-0">
               <input type="checkbox" ${isChecked ? 'checked' : ''} onchange="toggleCheckStatus('${date}', ${item.id}, this)" class="w-4 h-4 text-indigo-600 rounded border-slate-700 bg-slate-900 focus:ring-indigo-500 cursor-pointer">
               <div class="unit-text text-sm font-extrabold tracking-tight ${item.cleaner === 'FLORENCE' ? 'unit-florence' : 'unit-yang'}" data-unit-clean="${parsed.raw}">${parsed.formatted}</div>
             </div>
             <div class="flex flex-wrap items-center gap-1.5 w-full sm:w-auto text-xs shrink-0 flex-1 justify-end">
-              <input type="text" value="${item.lastCode || ''}" oninput="updateItemField('${date}', ${item.id}, 'lastCode', this.value)" class="px-2 py-1 border border-slate-700 rounded text-xs font-semibold w-20 font-mono bg-slate-900 text-white shrink-0">
+              <input type="text" maxlength="15" value="${item.lastCode || ''}" oninput="updateItemField('${date}', ${item.id}, 'lastCode', this.value)" class="px-2 py-1 border border-slate-700 rounded text-xs font-semibold w-28 font-mono bg-slate-900 text-white shrink-0">
               <input type="text" value="${item.notes || ''}" oninput="updateItemField('${date}', ${item.id}, 'notes', this.value)" class="px-2.5 py-1 border border-slate-700 rounded text-xs font-semibold flex-1 min-w-[180px] bg-slate-900 text-white shrink-0">
               <button onclick="clearItemInputs('${date}', ${item.id}, 'checkout')" title="Clear Code & Notes" class="px-2 py-1 bg-rose-950/60 hover:bg-rose-900/60 text-rose-400 rounded border border-rose-900 font-bold shrink-0 text-[11px]">Clear</button>
             </div>
           `;
         } else {
           div.innerHTML = `
-            <div class="flex items-center gap-2.5 w-full sm:w-[185px] shrink-0">
+            <div class="flex items-center gap-2.5 w-full sm:w-[150px] shrink-0">
               <input type="checkbox" ${isChecked ? 'checked' : ''} onchange="toggleCheckStatus('${date}', ${item.id}, this)" class="w-4 h-4 text-indigo-600 rounded border-slate-700 bg-slate-900 focus:ring-indigo-500 cursor-pointer">
               <div class="unit-text text-sm font-extrabold tracking-tight ${item.cleaner === 'FLORENCE' ? 'unit-florence' : 'unit-yang'}" data-unit-clean="${parsed.raw}">${parsed.formatted}</div>
             </div>
             <div class="flex flex-wrap items-center gap-1.5 w-full sm:w-auto text-xs shrink-0 flex-1 justify-end">
-              <input type="text" value="${item.newCode || ''}" oninput="updateItemField('${date}', ${item.id}, 'newCode', this.value)" class="px-2 py-1 border border-slate-700 rounded text-xs font-semibold w-20 font-mono bg-slate-900 text-white shrink-0">
+              <input type="text" maxlength="15" value="${item.newCode || ''}" oninput="updateItemField('${date}', ${item.id}, 'newCode', this.value)" class="px-2 py-1 border border-slate-700 rounded text-xs font-semibold w-28 font-mono bg-slate-900 text-white shrink-0">
               <input type="text" value="${item.notes || ''}" oninput="updateItemField('${date}', ${item.id}, 'notes', this.value)" class="px-2.5 py-1 border border-slate-700 rounded text-xs font-semibold flex-1 min-w-[180px] bg-slate-900 text-white shrink-0">
               <button onclick="clearItemInputs('${date}', ${item.id}, 'checkin')" title="Clear New Code & Notes" class="px-2 py-1 bg-rose-950/60 hover:bg-rose-900/60 text-rose-400 rounded border border-rose-900 font-bold shrink-0 text-[11px]">Clear</button>
             </div>
