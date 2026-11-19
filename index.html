@@ -279,6 +279,21 @@
           </div>
         </div>
       </div>
+
+      <!-- SATURDAY COLLATED INSPECTIONS BOX (DOWNWARD LIST) -->
+      <div id="saturday-inspection-box" class="hidden glass-card p-5 rounded-2xl shadow-sm border border-amber-500/40 bg-amber-950/15 space-y-3 max-w-2xl">
+        <div class="flex justify-between items-center border-b border-amber-500/20 pb-2.5">
+          <div class="flex items-center gap-2">
+            <span class="text-base">👩‍💼</span>
+            <h3 class="text-sm font-extrabold text-amber-300 uppercase tracking-wider">Saturday Inspections List</h3>
+            <span id="saturday-inspection-count" class="count-pill bg-amber-900/80 text-amber-200 border border-amber-600/40">0</span>
+          </div>
+          <button onclick="copySaturdayInspections()" class="px-3 py-1.5 bg-amber-600 hover:bg-amber-500 text-slate-950 font-extrabold rounded-lg text-xs shadow-sm transition-colors">
+            Copy List
+          </button>
+        </div>
+        <div id="saturday-inspection-list" class="flex flex-col space-y-2.5 text-xs"></div>
+      </div>
     </div>
 
     <!-- WEEKLY LIST VIEW -->
@@ -1228,6 +1243,7 @@
       if (item) {
         item[field] = value;
         setTimeout(saveState, 50);
+        renderSaturdayInspections(date);
       }
     }
 
@@ -1260,6 +1276,100 @@
 
       saveState();
       renderDailyView();
+    }
+
+    function extractInspectionNote(notesStr) {
+      if (!notesStr) return null;
+      const parts = notesStr.split('|');
+      for (const part of parts) {
+        const trimmed = part.trim();
+        if (/INSPECTIONS?\s*@/i.test(trimmed) || trimmed.includes('👩‍💼')) {
+          return trimmed;
+        }
+      }
+      return null;
+    }
+
+    function getSaturdayInspectionEntries(date) {
+      if (!date || !state.schedules[date]) return [];
+      const [y, m, d] = date.split('-').map(Number);
+      const dateObj = new Date(y, m - 1, d);
+      if (dateObj.getDay() !== 6) return []; // 6 = Saturday
+
+      const entries = [];
+      state.schedules[date].forEach(item => {
+        const inspNote = extractInspectionNote(item.notes);
+        if (inspNote) {
+          const codeVal = (item.type === 'CHECKIN' ? item.newCode : item.lastCode) || '';
+          entries.push({
+            unit: item.unit,
+            cleaner: item.cleaner,
+            code: codeVal.trim(),
+            inspection: inspNote
+          });
+        }
+      });
+      return entries;
+    }
+
+    function renderSaturdayInspections(date) {
+      const box = document.getElementById('saturday-inspection-box');
+      const listContainer = document.getElementById('saturday-inspection-list');
+      const countPill = document.getElementById('saturday-inspection-count');
+      if (!box || !listContainer || !date) return;
+
+      const [y, m, d] = date.split('-').map(Number);
+      const dateObj = new Date(y, m - 1, d);
+
+      // Show only on Saturdays (day 6)
+      if (dateObj.getDay() !== 6) {
+        box.classList.add('hidden');
+        return;
+      }
+
+      box.classList.remove('hidden');
+      const entries = getSaturdayInspectionEntries(date);
+      countPill.innerText = entries.length;
+      listContainer.innerHTML = '';
+
+      if (entries.length === 0) {
+        listContainer.innerHTML = `<div class="text-slate-400 italic text-xs py-1">No units tagged with "👩‍💼INSPECTION @ XX:XX" in notes yet.</div>`;
+        return;
+      }
+
+      entries.forEach(entry => {
+        const unitColorClass = entry.cleaner === 'FLORENCE' ? 'unit-florence' : 'unit-yang';
+        const row = document.createElement('div');
+        row.className = "bg-slate-900/90 border border-slate-700/80 rounded-xl px-4 py-2.5 shadow-sm flex flex-col space-y-1";
+        row.innerHTML = `
+          <div class="flex items-center justify-between gap-2">
+            <span class="font-extrabold text-sm ${unitColorClass}">${entry.unit}</span>
+            <span class="text-[11px] font-bold text-amber-300 bg-amber-950/60 border border-amber-700/40 px-2.5 py-0.5 rounded">${entry.inspection}</span>
+          </div>
+          <div class="text-xs font-mono font-semibold text-slate-300">
+            <span class="text-slate-400">CODE:</span> ${entry.code || '<span class="text-slate-500 italic">None</span>'}
+          </div>
+        `;
+        listContainer.appendChild(row);
+      });
+    }
+
+    function copySaturdayInspections() {
+      const picker = document.getElementById('daily-date-picker')._flatpickr;
+      const date = picker && picker.selectedDates.length > 0 ? toLocalISO(picker.selectedDates[0]) : document.getElementById('daily-date-picker').value;
+      const entries = getSaturdayInspectionEntries(date);
+
+      if (entries.length === 0) {
+        showToast("Empty", "No Saturday inspections found to copy.");
+        return;
+      }
+
+      const formattedText = entries.map(e => `${e.unit} — ${e.inspection}\nCODE: ${e.code}`).join('\n');
+      navigator.clipboard.writeText(formattedText).then(() => {
+        showToast("Copied", "Saturday inspections list copied to clipboard.");
+      }).catch(err => {
+        console.error("Copy failed: ", err);
+      });
     }
 
     function renderDailyView() {
@@ -1342,6 +1452,8 @@
       document.getElementById('count-daily-f-in').className = counts.fIn > 0 ? 'count-pill' : 'count-pill-zero';
       document.getElementById('count-daily-y-out').className = counts.yOut > 0 ? 'count-pill' : 'count-pill-zero';
       document.getElementById('count-daily-y-in').className = counts.yIn > 0 ? 'count-pill' : 'count-pill-zero';
+
+      renderSaturdayInspections(date);
     }
 
     function processWeeklyInput() {
