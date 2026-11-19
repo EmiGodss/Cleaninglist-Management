@@ -1617,6 +1617,17 @@
       yInGrid.appendChild(yInFrag);
     }
 
+    function attachExplicitClickOpen(instance) {
+      const targetInput = instance.altInput || instance.input;
+      if (!targetInput) return;
+      targetInput.addEventListener('click', function(e) {
+        e.stopPropagation();
+        if (!instance.isOpen) {
+          instance.open();
+        }
+      });
+    }
+
     const dateFormatConfig = {
       altInput: true,
       altFormat: "D, M j, Y",
@@ -1624,7 +1635,10 @@
       defaultDate: "today",
       theme: "dark",
       allowInput: false,
-      clickOpens: true
+      clickOpens: false,
+      onReady: function(selectedDates, dateStr, instance) {
+        attachExplicitClickOpen(instance);
+      }
     };
 
     const dailyPicker = flatpickr("#daily-date-picker", {
@@ -1660,6 +1674,12 @@
       altFormat: "F Y",
       dateFormat: "Y-m",
       defaultDate: "today",
+      theme: "dark",
+      allowInput: false,
+      clickOpens: false,
+      onReady: function(selectedDates, dateStr, instance) {
+        attachExplicitClickOpen(instance);
+      },
       onChange: function(selectedDates, dateStr, instance) {
         render15DayView();
       }
