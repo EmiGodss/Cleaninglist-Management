@@ -827,6 +827,62 @@
       picker.setDate(next, true);
     }
 
+    // --- LINKED CHECK-OUT HELPERS ---
+    function removeLinkedCheckout(checkInDate, checkInItem) {
+      if (!checkInItem || checkInItem.type !== 'CHECKIN') return;
+
+      // 1. Search by direct linkedCheckInId across all dates
+      let removed = false;
+      Object.keys(state.schedules).forEach(dKey => {
+        const beforeLen = state.schedules[dKey].length;
+        state.schedules[dKey] = state.schedules[dKey].filter(entry => entry.linkedCheckInId !== checkInItem.id);
+        if (state.schedules[dKey].length < beforeLen) {
+          removed = true;
+        }
+      });
+
+      // 2. Fallback for legacy items created before linkedCheckInId existed
+      if (!removed) {
+        const parsed = formatUnitText(checkInItem.raw || checkInItem.formatted || checkInItem.unit, true);
+        if (parsed.nights > 0) {
+          const expectedCheckoutDate = addDaysToISO(checkInDate, parsed.nights);
+          if (state.schedules[expectedCheckoutDate]) {
+            const idx = state.schedules[expectedCheckoutDate].findIndex(entry =>
+              entry.type === 'CHECKOUT' &&
+              entry.unit === checkInItem.unit &&
+              entry.cleaner === checkInItem.cleaner &&
+              !entry.linkedCheckInId
+            );
+            if (idx !== -1) {
+              state.schedules[expectedCheckoutDate].splice(idx, 1);
+            }
+          }
+        }
+      }
+    }
+
+    function createLinkedCheckout(checkInDate, checkInItem, nightsCount) {
+      if (!checkInItem || checkInItem.type !== 'CHECKIN' || !nightsCount || nightsCount <= 0) return;
+
+      const checkoutDate = addDaysToISO(checkInDate, nightsCount);
+      if (!state.schedules[checkoutDate]) state.schedules[checkoutDate] = [];
+
+      const coParsed = formatUnitText(checkInItem.unit, false);
+      state.schedules[checkoutDate].push({
+        id: Date.now() + Math.random(),
+        linkedCheckInId: checkInItem.id,
+        raw: coParsed.raw,
+        unit: checkInItem.unit,
+        formatted: coParsed.formatted,
+        cleaner: checkInItem.cleaner,
+        type: 'CHECKOUT',
+        checked: false,
+        lastCode: '',
+        newCode: '',
+        notes: ''
+      });
+    }
+
     function openManageModal() {
       const picker = document.getElementById('daily-date-picker')._flatpickr;
       const today = picker && picker.selectedDates.length > 0 ? toLocalISO(picker.selectedDates[0]) : toLocalISO(new Date());
@@ -883,7 +939,7 @@
       const unitOnly = parsed.raw.split(' ')[0];
       if (!state.schedules[date]) state.schedules[date] = [];
 
-      state.schedules[date].push({
+      const newEntry = {
         id: Date.now() + Math.random(),
         raw: parsed.raw,
         unit: unitOnly,
@@ -894,25 +950,12 @@
         lastCode: '',
         newCode: '',
         notes: ''
-      });
+      };
 
-      // Auto-add Check-Out if Check-In has nights
+      state.schedules[date].push(newEntry);
+
       if (type === 'CHECKIN' && parsed.nights > 0) {
-        const checkoutDate = addDaysToISO(date, parsed.nights);
-        if (!state.schedules[checkoutDate]) state.schedules[checkoutDate] = [];
-        const coParsed = formatUnitText(unitOnly, false);
-        state.schedules[checkoutDate].push({
-          id: Date.now() + Math.random(),
-          raw: coParsed.raw,
-          unit: unitOnly,
-          formatted: coParsed.formatted,
-          cleaner,
-          type: 'CHECKOUT',
-          checked: false,
-          lastCode: '',
-          newCode: '',
-          notes: ''
-        });
+        createLinkedCheckout(date, newEntry, parsed.nights);
       }
 
       saveState();
@@ -931,10 +974,23 @@
       const val = prompt("Update unit entry:", currentRaw);
       if (!val) return;
 
-      const { raw, formatted } = formatUnitText(val, item.type === 'CHECKIN');
-      item.raw = raw;
-      item.unit = raw.split(' ')[0];
-      item.formatted = formatted;
+      // Remove previous linked check-out before applying updated nights/unit
+      if (item.type === 'CHECKIN') {
+        removeLinkedCheckout(date, item);
+      }
+
+      const parsed = formatUnitText(val, item.type === 'CHECKIN');
+      item.raw = parsed.raw;
+      item.unit = parsed.raw.split(' ')[0];
+      item.formatted = parsed.formatted;
+
+      // Recreate linked check-out if the updated Check-In still has nights > 0
+      if (item.type === 'CHECKIN' && parsed.nights > 0) {
+        createLinkedCheckout(date, item, parsed.nights);
+        showToast("Updated", `Check-out synced to ${parsed.nights} night(s).`);
+      } else if (item.type === 'CHECKIN') {
+        showToast("Updated", "Linked check-out removed (no nights set).");
+      }
 
       saveState();
       loadModalDateEntries();
@@ -1278,7 +1334,7 @@
         const unitOnly = parsed.raw.split(' ')[0];
         const cleaner = getCleanerForUnit(unitOnly);
 
-        state.schedules[date].push({
+        const newEntry = {
           id: Date.now() + Math.random(),
           raw: parsed.raw,
           unit: unitOnly,
@@ -1289,26 +1345,13 @@
           lastCode: '',
           newCode: '',
           notes: ''
-        });
+        };
+
+        state.schedules[date].push(newEntry);
 
         // Automatically schedule corresponding Check-Out based on number of nights
         if (actualType === 'CHECKIN' && parsed.nights > 0) {
-          const checkoutDate = addDaysToISO(date, parsed.nights);
-          if (!state.schedules[checkoutDate]) state.schedules[checkoutDate] = [];
-
-          const coParsed = formatUnitText(unitOnly, false);
-          state.schedules[checkoutDate].push({
-            id: Date.now() + Math.random(),
-            raw: coParsed.raw,
-            unit: unitOnly,
-            formatted: coParsed.formatted,
-            cleaner,
-            type: 'CHECKOUT',
-            checked: false,
-            lastCode: '',
-            newCode: '',
-            notes: ''
-          });
+          createLinkedCheckout(date, newEntry, parsed.nights);
           autoCheckoutCount++;
         }
       });
@@ -1350,6 +1393,11 @@
 
     function deleteScheduleItem(date, id) {
       if (state.schedules[date]) {
+        const targetItem = state.schedules[date].find(i => i.id === id);
+        if (targetItem && targetItem.type === 'CHECKIN') {
+          removeLinkedCheckout(date, targetItem);
+        }
+
         state.schedules[date] = state.schedules[date].filter(i => i.id !== id);
         saveState();
         renderDailyView();
