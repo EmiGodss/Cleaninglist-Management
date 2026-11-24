@@ -327,19 +327,19 @@
         </div>
       </div>
 
-      <!-- SATURDAY COLLATED INSPECTIONS BOX (DOWNWARD LIST) -->
-      <div id="saturday-inspection-box" class="hidden glass-card p-5 rounded-2xl shadow-sm border border-amber-500/40 bg-amber-950/15 space-y-3 max-w-2xl">
+      <!-- DAILY COLLATED INSPECTIONS BOX (7 DAYS A WEEK) -->
+      <div id="daily-inspection-box" class="glass-card p-5 rounded-2xl shadow-sm border border-amber-500/40 bg-amber-950/15 space-y-3 max-w-2xl">
         <div class="flex justify-between items-center border-b border-amber-500/20 pb-2.5">
           <div class="flex items-center gap-2">
             <span class="text-base">👩‍💼</span>
-            <h3 class="text-sm font-extrabold text-amber-300 uppercase tracking-wider">Saturday Inspections List</h3>
-            <span id="saturday-inspection-count" class="count-pill bg-amber-900/80 text-amber-200 border border-amber-600/40">0</span>
+            <h3 id="daily-inspection-title" class="text-sm font-extrabold text-amber-300 uppercase tracking-wider">Daily Inspections List</h3>
+            <span id="daily-inspection-count" class="count-pill bg-amber-900/80 text-amber-200 border border-amber-600/40">0</span>
           </div>
-          <button onclick="copySaturdayInspections()" class="px-3 py-1.5 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-extrabold rounded-lg text-xs shadow-sm transition-colors">
+          <button onclick="copyDailyInspections()" class="px-3 py-1.5 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-extrabold rounded-lg text-xs shadow-sm transition-colors">
             Copy List
           </button>
         </div>
-        <div id="saturday-inspection-list" class="flex flex-col space-y-2.5 text-xs"></div>
+        <div id="daily-inspection-list" class="flex flex-col space-y-2.5 text-xs"></div>
       </div>
     </div>
 
@@ -1300,7 +1300,7 @@
       if (item) {
         item[field] = value;
         setTimeout(saveState, 50);
-        renderSaturdayInspections(date);
+        renderDailyInspections(date);
       }
     }
 
@@ -1340,18 +1340,15 @@
       const parts = notesStr.split('|');
       for (const part of parts) {
         const trimmed = part.trim();
-        if (/INSPECTIONS?\s*@/i.test(trimmed) || trimmed.includes('👩‍💼')) {
+        if (/INSPECTIONS?\s*(@|—|-)/i.test(trimmed) || trimmed.includes('👩‍💼')) {
           return trimmed;
         }
       }
       return null;
     }
 
-    function getSaturdayInspectionEntries(date) {
+    function getDailyInspectionEntries(date) {
       if (!date || !state.schedules[date]) return [];
-      const [y, m, d] = date.split('-').map(Number);
-      const dateObj = new Date(y, m - 1, d);
-      if (dateObj.getDay() !== 6) return [];
 
       const entries = [];
       state.schedules[date].forEach(item => {
@@ -1369,22 +1366,23 @@
       return entries;
     }
 
-    function renderSaturdayInspections(date) {
-      const box = document.getElementById('saturday-inspection-box');
-      const listContainer = document.getElementById('saturday-inspection-list');
-      const countPill = document.getElementById('saturday-inspection-count');
+    function renderDailyInspections(date) {
+      const box = document.getElementById('daily-inspection-box');
+      const titleEl = document.getElementById('daily-inspection-title');
+      const listContainer = document.getElementById('daily-inspection-list');
+      const countPill = document.getElementById('daily-inspection-count');
       if (!box || !listContainer || !date) return;
 
       const [y, m, d] = date.split('-').map(Number);
       const dateObj = new Date(y, m - 1, d);
-
-      if (dateObj.getDay() !== 6) {
-        box.classList.add('hidden');
-        return;
-      }
+      const dayName = dateObj.toLocaleDateString('en-US', { weekday: 'long' }).toUpperCase();
 
       box.classList.remove('hidden');
-      const entries = getSaturdayInspectionEntries(date);
+      if (titleEl) {
+        titleEl.innerText = `${dayName} INSPECTIONS LIST`;
+      }
+
+      const entries = getDailyInspectionEntries(date);
       countPill.innerText = entries.length;
       listContainer.innerHTML = '';
 
@@ -1410,19 +1408,22 @@
       });
     }
 
-    function copySaturdayInspections() {
+    function copyDailyInspections() {
       const picker = document.getElementById('daily-date-picker')._flatpickr;
       const date = picker && picker.selectedDates.length > 0 ? toLocalISO(picker.selectedDates[0]) : document.getElementById('daily-date-picker').value;
-      const entries = getSaturdayInspectionEntries(date);
+      const entries = getDailyInspectionEntries(date);
 
       if (entries.length === 0) {
-        showToast("Empty", "No Saturday inspections found to copy.");
+        showToast("Empty", "No inspections found to copy.");
         return;
       }
 
+      const [y, m, d] = date.split('-').map(Number);
+      const dayName = new Date(y, m - 1, d).toLocaleDateString('en-US', { weekday: 'long' });
+
       const formattedText = entries.map(e => `${e.unit} — ${e.inspection}\nCODE: ${e.code}`).join('\n');
       navigator.clipboard.writeText(formattedText).then(() => {
-        showToast("Copied", "Saturday inspections list copied to clipboard.");
+        showToast("Copied", `${dayName} inspections list copied to clipboard.`);
       }).catch(err => {
         console.error("Copy failed: ", err);
       });
@@ -1509,7 +1510,7 @@
       document.getElementById('count-daily-y-out').className = counts.yOut > 0 ? 'count-pill' : 'count-pill-zero';
       document.getElementById('count-daily-y-in').className = counts.yIn > 0 ? 'count-pill' : 'count-pill-zero';
 
-      renderSaturdayInspections(date);
+      renderDailyInspections(date);
     }
 
     function processWeeklyInput() {
